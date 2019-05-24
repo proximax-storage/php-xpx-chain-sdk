@@ -1,0 +1,12 @@
+
+composer.phar
+composer.lock
+phpunit.xml
+vendor
+tests/logs/
+
+phpunit
+phpdoc
+phpdocmd
+build/
+docs/

@@ -1,0 +1,52 @@
+{
+    "name": "nemcoreprojectteam/nem2-sdk-php",
+    "description": "Composer Package for PHP, Wrapper to use the NEM blockchain REST API and SDK with NIS compatibility.",
+    "keywords": ["nem", "cryptocurrency", "api", "sdk", "restful", "nem-php", "php-nem"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Gregory Saive",
+            "email": "greg@evias.be"
+        }
+    ],
+    "repositories": [],
+    "require": {
+        "php": ">=5.5.9",
+        "illuminate/contracts": "5.0.33|5.1.*|5.2.*|5.3.*|5.4.*|5.5.*",
+        "illuminate/support": "5.0.33|5.1.*|5.2.*|5.3.*|5.4.*|5.5.*",
+        "guzzlehttp/guzzle": "5.3.1|6.*",
+        "mdanter/ecc": "0.3.2|0.4.5|0.5.0",
+        "paragonie/sodium_compat": "~1.4.0",
+        "christian-riesen/base32": "~1.3.1",
+        "kornrunner/keccak": "dev-master"
+    },
+    "require-dev": {
+        "mockery/mockery": "0.9.9",
+        "phpunit/phpunit": "^4.8|^5.0|^6.4",
+        "phpspec/phpspec": "~2.1",
+        "phpdocumentor/phpdocumentor" : "~2.8.0",
+        "evert/phpdoc-md" : "~0.2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "NEM\\": "src/",
+            "NEM\\API\\": "src/Api/",
+            "Catapult\\Buffers\\": "src/Buffers/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "NEM\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "preferred-install": "dist"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.0-dev"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
