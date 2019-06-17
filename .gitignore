@@ -4,6 +4,7 @@ composer.lock
 phpunit.xml
 vendor
 tests/logs/
+index.php
 
 phpunit
 phpdoc
