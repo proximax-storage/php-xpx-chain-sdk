@@ -30,8 +30,8 @@
     "autoload": {
         "psr-4": {
             "NEM\\": "src/",
-            "NEM\\API\\": "src/Api/",
-            "Catapult\\Buffers\\": "src/Buffers/"
+            "NEM\\API\\": "src/api/",
+            "Catapult\\Buffers\\": "src/buffers/"
         }
     },
     "autoload-dev": {

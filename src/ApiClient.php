@@ -71,7 +71,7 @@ class ApiClient
      *
      * @var string
      */
-    protected $host = 'http://c3.nem.ninja:3000';
+    protected $host = 'http://bctestnet1.xpxsirius.io:3000';
 
     /**
      * User agent of the HTTP request, set to "PHP-Swagger" by default
