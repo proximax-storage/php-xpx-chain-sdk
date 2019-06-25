@@ -58,7 +58,6 @@ class Sha3Hasher
     static public function hash($algorithm, $data, $raw_output = false)
     {
         $hashBits = self::getHashBitLength($algorithm);
-
         // use PHP implementation of sha3
         return hash("sha3-" . $hashBits, $data, (bool) $raw_output);
     }
