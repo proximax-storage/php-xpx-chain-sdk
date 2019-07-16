@@ -13,26 +13,25 @@ Class Config{
     );
 
     // returns config for HTTP Client from passed node url and network type
-    public function NewConfig($baseUrls,$networkType ,$wsReconnectionTimeout){
+    public function NewConfig($baseUrl,$networkType ,$wsReconnectionTimeout){
         if ($wsReconnectionTimeout == 0) {
             $wsReconnectionTimeout = $this->WebsocketReconnectionDefaultTimeout;
         }
         $confDef = (object)$this->defaultRepConfig;
-        $resovle = $this->NewConfigWithReputation($baseUrls, $networkType, $confDef, $wsReconnectionTimeout);
+        $resovle = $this->NewConfigWithReputation($baseUrl, $networkType, $confDef, $wsReconnectionTimeout);
         return $resovle;
     }
-    public function NewConfigWithReputation($baseUrls, $networkType, $confDef, $wsReconnectionTimeout){
-        if (strlen($baseUrls) == 0) {
-            return "empty base urls";
+
+    public function NewConfigWithReputation($baseUrl, $networkType, $confDef, $wsReconnectionTimeout){
+        if (strlen($baseUrl) == 0) {
+            throw new Exception("empty base urls");
         }
-    
         $c = array(
-            "BaseURLs" => $baseUrls,
+            "BaseURL" => $baseUrl,
             "WsReconnectionTimeout" => $wsReconnectionTimeout,
             "NetworkType" => $networkType,
             "reputationConfig" =>  $confDef,
         );
-    
         return (object)$c;
     }
 }
