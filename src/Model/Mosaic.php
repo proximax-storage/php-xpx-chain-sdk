@@ -30,130 +30,33 @@ use NEM\Utils\Utils;
  * @link https://nemproject.github.io/#mosaicId
  */
 
-class Mosaic extends Model{
+class Mosaic{
 
     public $id; //big Int
 
-    public $idValue; //string
-
     public $amount;//big Int
 
-    public $amountValue; //int
-
-    public function __construct($name = null,$amount = null){
+    public function __construct(string $name = null,int $amount = null){
         $utils = new Utils;
         if ($name === null || $name == "xpx"){
             $this->id = array(481110499,231112638); //xpx id
-            $this->idValue = $utils->bigIntToHexString($this->id);
         }
         else throw new Exception("Wrong mosaic name");
         
-        
         if ($amount === null){
             $this->amount = array(0,0);
-            $this->amountValue = 0;
         }
         else {
             $this->amount = $utils->fromBigInt($amount);
-            $this->amountValue = $amount;
         }
     }
     
-    public function createFromId(array $id,array $amount){
+    public function getIdValue(){
         $utils = new Utils;
-        $this->id = $id;
-        $this->idValue = $utils->bigIntToHexString($this->id);
-        $this->amount = $amount;
-        $this->amountValue = ($amount[1] << 32) | $amount[0];
-        return $this;
-    }
-    /**
-     * List of fillable attributes
-     *
-     * @var array
-     */
-    // protected $fillable = [
-    //     "namespaceId",
-    //     "name"
-    // ];
-
-    /**
-     * Class method to create a new `Mosaic` object from `namespace`
-     * name and `mosaic` mosaic name.
-     * 
-     * @param   string      $namespace
-     * @param   string      $mosaic
-     * @return  \NEM\Models\Mosaic
-     */
-    static public function create(string $namespace, string $mosaic = null)
-    {
-        if (empty($mosaic)) {
-            // `namespace` should contain `FQN`
-            $fullyQualifiedName = $namespace;
-            $splitRegexp = "/([^:]+):([^:]+)/";
-
-            // split with format: `namespace:mosaic`
-            $namespace = preg_replace($splitRegexp, "$1", $fullyQualifiedName);
-            $mosaic    = preg_replace($splitRegexp, "$2", $fullyQualifiedName);
-        }
-
-        if (empty($namespace) || empty($mosaic)) {
-            throw new RuntimeException("Missing namespace or mosaic name for \\NEM\\Models\\Mosaic instance.");
-        }
-
-        return new static([
-            "namespaceId" => $namespace,
-            "name" => $mosaic
-        ]);
+        return $utils->bigIntToHexString($this->id);
     }
 
-    /**
-     * Mosaic DTO build a package with offsets `namespaceId` and
-     * `name` as required by NIS for the mosaic identification.
-     *
-     * @return  array       Associative array with key `namespaceId` and `name` required for a NIS *compliable* mosaic identification.
-     */
-    public function toDTO($filterByKey = null)
-    {
-        return [
-            "namespaceId" => $this->namespaceId,
-            "name" => $this->name,
-        ];
-    }
-
-    /**
-     * Overload of the \NEM\Core\Model::serialize() method to provide
-     * with a specialization for *mosaicId* serialization.
-     *
-     * @see \NEM\Contracts\Serializable
-     * @param   null|string $parameters    non-null will return only the named sub-dtos.
-     * @return  array   Returns a byte-array with values in UInt8 representation.
-     */
-    public function serialize($parameters = null)
-    {
-        $nisData = $this->toDTO();
-
-        // shortcuts
-        $serializer = $this->getSerializer();
-        $namespace  = $nisData["namespaceId"];
-        $mosaicName = $nisData["name"];
-
-        $serializedNS = $serializer->serializeString($namespace);
-        $serializedMos = $serializer->serializeString($mosaicName);
-
-        return $serializer->aggregate($serializedNS, $serializedMos);
-    }
-
-    /**
-     * Getter for the *fully qualified name* of the Mosaic.
-     *
-     * @return string
-     */
-    public function getFQN()
-    {
-        if (empty($this->namespaceId) || empty($this->name))
-            return "";
-
-        return sprintf("%s:%s", $this->namespaceId, $this->name);
+    public function getAmountValue(){
+        return  ($this->amount[1] << 32) | $this->amount[0];
     }
 }

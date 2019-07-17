@@ -7,7 +7,7 @@ use NEM\Model\TransactionDTO;
 use NEM\ApiClient;
 use Base32\Base32;
 use NEM\Infrastructure\TransactionMapping;
-use NEM\Model\Mosaic;
+use NEM\Model\MosaicDTO;
 use NEM\Model\TransactionInfo;
 use NEM\Model\Address;
 use NEM\Model\PublicAccount;
@@ -88,10 +88,11 @@ class Account{
         $ApiClient = new ApiClient;
         $url = $config->BaseURL;
         $ApiClient->setHost($url);
+        $networkType = $config->NetworkType;
 
         $data = $AccountRoutesApi->getAccountInfo($accountId);
         if ($data[1] == 200){ // successfull
-            $account = $this->formatDataAccount($data[0]);
+            $account = $this->formatDataAccount($networkType, $data[0]);
         }
         else $account = null;
         return new AccountDTO($account);
@@ -111,12 +112,13 @@ class Account{
 
         $url = $config->BaseURL;
         $ApiClient->setHost($url);
+        $networkType = $config->NetworkType;
 
         $data = $AccountRoutesApi->getAccountsInfo($addresses);
         $arr_account = array();
         if ($data[1] == 200){ // successfull
             for ($i=0;$i<count($data[0]);$i++){
-                $account = $this->formatDataAccount($data[0][$i]);
+                $account = $this->formatDataAccount($networkType, $data[0][$i]);
                 $AccountDTO = new AccountDTO($account);
                 $arr_account[$i] = $AccountDTO;
             }
@@ -314,8 +316,7 @@ class Account{
         $mosaics_raw = $data->transaction->mosaics;
         $Mosaics = array();
         for ($i=0;$i<count($mosaics_raw);$i++){
-            $mosaic = new Mosaic;
-            $mosaic->createFromId($mosaics_raw[$i]->id,$mosaics_raw[$i]->amount);
+            $mosaic = new MosaicDTO($mosaics_raw[$i]->id,$mosaics_raw[$i]->amount);
             $Mosaics[$i] = $mosaic;
         }
 
@@ -354,53 +355,37 @@ class Account{
      *
      * @param array $data
      * 
-     * @return AccountInfoDTO array
+     * @return AccountDTO array
      */
-    private function formatDataAccount($data){
+    private function formatDataAccount($networkType, $data){
         $hex = new \NEM\Utils\Hex;
         $add = $hex->DecodeString($data->account->address);
         
-        $address = Base32::encode(implode(array_map("chr", $add)));
-        $addressHeight = $data->account->addressHeight[0];
+        $addr = Base32::encode(implode(array_map("chr", $add)));
+        $address = new Address($addr,$networkType);
+        $addressHeight = new HeightDTO($data->account->addressHeight);
+
         $publicKey = $data->account->publicKey;
-        $publicKeyHeight = $data->account->publicKeyHeight[0];
+        $publicKeyHeight = new HeightDTO($data->account->publicKeyHeight);
+
         $mosaics_raw = $data->account->mosaics;
         $mosaics = array();
         for ($i=0;$i<count($mosaics_raw);$i++){
-            $second = dechex($mosaics_raw[$i]->id[0]);
-            $first = dechex($mosaics_raw[$i]->id[1]);
-            if (strlen($first) < 8){
-                for($j=0;$j<8-strlen($first);$j++){
-                    $first = "0" . $first;
-                }
-            }
-            if (strlen($second) < 8){
-                for($j=0;$j<8-strlen($second);$j++){
-                    $second = "0" . $second;
-                }
-            }
-            $mosaic = new \stdClass();
-            $mosaic->id = $first . $second;
-            $mosaic->amount = $mosaics_raw[$i]->amount[0];
+            $mosaic = new MosaicDTO($mosaics_raw[$i]->id,$mosaics_raw[$i]->amount);
             $mosaics[$i] = $mosaic;
         }
-        if (isset($data->account->importance)){
-            $importance = $data->account->importance;
-        }
-        else $importance = null;
 
-        if (isset($data->account->importanceHeight)){
-            $importanceHeight = $data->account->importanceHeight;
-        }
-        else $importanceHeight = null;
+        $accountType = $data->account->accountType;
+        $linkedAccountKey = $data->account->linkedAccountKey;
+
         $account = array(
             "address" => $address,
             "addressHeight" => $addressHeight,
             "publicKey" => $publicKey,
             "publicKeyHeight" => $publicKeyHeight,
             "mosaics" => $mosaics,
-            "importance" => $importance,
-            "importanceHeight" => $importanceHeight
+            "accountType" => $accountType,
+            "linkedAccountKey" => $linkedAccountKey
         );
         return $account;
     }

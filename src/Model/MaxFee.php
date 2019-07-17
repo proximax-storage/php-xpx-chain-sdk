@@ -1,30 +1,25 @@
 <?php
 namespace NEM\Model;
+use NEM\Utils\Utils;
 
 class MaxFee{
-    private $fee_array;
-
-    private $fee_int;
+    public $maxFee; //array
 
     public function __construct($maxFee){
         if (is_array($maxFee)){
-            $this->fee_array = $maxFee;
-            $this->fee_int = (($maxFee[1] << 32) | ($maxFee[0]));
+            $this->maxFee = $maxFee;
         }
         else if (is_numeric($maxFee)){
-            $this->fee_int = $maxFee;
-            $this->fee_array = (new \NEM\Utils\Utils)->fromBigInt($maxFee);
+            $utils = new Utils;
+            $this->fee_array = $utils->fromBigInt($maxFee);
         }
         else return "Wrong fee format";
     }
 
     public function getFeeValue(){
-        return $this->fee_int;
+        return (($maxFee[1] << 32) | ($maxFee[0]));
     }
 
-    public function getFeeArray(){
-        return $this->fee_array;
-    }
 
 }
 ?>

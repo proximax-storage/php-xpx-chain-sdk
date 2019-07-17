@@ -3,7 +3,7 @@ namespace NEM\Model;
 
 class TransactionInfo{
 
-    public $height; //bigInt
+    public $height; //HeightDTO
 
     public $index; //int
 
@@ -54,10 +54,6 @@ class TransactionInfo{
             $this->aggregateId = $aggregateId;
         }
         else $this->aggregateId = null;
-    }
-
-    public function getHeightValue(){
-        return ($this->height[1] << 32) | $this->height[0];
     }
 }
 ?>

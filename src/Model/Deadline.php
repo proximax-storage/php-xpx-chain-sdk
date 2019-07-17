@@ -6,25 +6,17 @@ class Deadline{
 
     private $time; //DateTime
 
-    private $time_date;
-
-    private $time_mili_second;
-
-    private $time_array;
-
     public function __construct($addTime = null){
         $time = new \DateTime();
-        if ($addTime != null){
-            $interval = 'PT' . $addTime . 'H';
+        if ($addTime !== null){
+            $interval = 'PT' . $addTime . 'H'; //unit hour
             $time->add(new \DateInterval($interval));
-        }        
+        }
+        else {
+            $interval = 'PT1M'; //default 1 minute
+            $time->add(new \DateInterval($interval));
+        }      
         $this->time = $time;
-        $this->time_date = $time->format("Y-m-d H:i:s.u O");
-        $this->time_mili_second = date_timestamp_get($time)*1000;
-
-        $tmp = $this->getInstant($this->time_mili_second);
-        $utils = new Utils;
-        $this->time_array = $utils->fromBigInt($tmp);
     }
 
     private function getInstant($time){
@@ -33,14 +25,17 @@ class Deadline{
     }
 
     public function getDate(){
-        return $this->time_date;
+        return $this->time->format("Y-m-d H:i:s.u O");
     }
 
     public function getTimestamp(){
-        return $this->time_mili_second;
+        return date_timestamp_get($this->time)*1000;
     }
+    
     public function getTimeArray(){
-        return $this->time_array;
+        $tmp = $this->getInstant($this->getTimestamp());
+        $utils = new Utils;
+        return $utils->fromBigInt($tmp);
     }
 
     public function createDeadlineByTimestamp($sub_timestamp){
@@ -48,12 +43,6 @@ class Deadline{
         $time = new \DateTime();
         $time->setTimestamp($timestamp);
         $this->time = $time;
-        $this->time_date = $time->format("Y-m-d H:i:s.u O");
-        $this->time_mili_second = date_timestamp_get($time)*1000;
-
-        $tmp = $this->getInstant($this->time_mili_second);
-        $utils = new Utils;
-        $this->time_array = $utils->fromBigInt($tmp);
         return $this;
     }
 }

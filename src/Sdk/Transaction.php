@@ -8,7 +8,7 @@ use NEM\ApiClient;
 use Base32\Base32;
 use NEM\Infrastructure\TransactionMapping;
 use NEM\Model\HeightDTO;
-use NEM\Model\Mosaic;
+use NEM\Model\MosaicDTO;
 use NEM\Model\TransactionInfo;
 use NEM\Model\Address;
 use NEM\Model\PublicAccount;
@@ -159,8 +159,7 @@ class Transaction{
         $mosaics_raw = $data->transaction->mosaics;
         $Mosaics = array();
         for ($i=0;$i<count($mosaics_raw);$i++){
-            $mosaic = new Mosaic;
-            $mosaic->createFromId($mosaics_raw[$i]->id,$mosaics_raw[$i]->amount);
+            $mosaic = new MosaicDTO($mosaics_raw[$i]->id,$mosaics_raw[$i]->amount);
             $Mosaics[$i] = $mosaic;
         }
 

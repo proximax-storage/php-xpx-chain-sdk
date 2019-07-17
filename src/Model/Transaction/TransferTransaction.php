@@ -80,7 +80,6 @@ class TransferTransaction{
         }
         // serialize the recipient
         $recipientBytes = $this->DecodeString($address->address);
-        //var_dump($deadline->getTimeArray());
 
         $v = ($networkType << 8) + $version;
         // Create Vectors
@@ -89,7 +88,6 @@ class TransferTransaction{
         $recipientVector = TransferTransactionBuffer::createRecipientVector($builder, $recipientBytes);
         $mosaicsVector = TransferTransactionBuffer::createMosaicsVector($builder, $mosaicBuffers);
         $deadlineVector = TransferTransactionBuffer::createDeadlineVector($builder, $deadline->getTimeArray());
-        var_dump($deadlineVector);
         $feeVector = TransferTransactionBuffer::createFeeVector($builder, $maxFee);
         
 

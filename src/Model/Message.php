@@ -31,8 +31,7 @@ use RuntimeException;
  * 
  * @link https://nemproject.github.io/#transaction-data-with-decoded-messages
  */
-class Message extends Model
-{
+class Message{
     /**
      * @internal
      * @var integer
@@ -51,78 +50,20 @@ class Message extends Model
      */
     public const TYPE_ENCRYPTED = 2;
 
-    public $type;
+    public $type; //int
 
-    public $payload;// array
+    public $payload; // array
 
-    public $plain;
-    /**
-     * List of fillable attributes
-     *
-     * @var array
-     */
-    // protected $fillable = [
-    //     "plain",
-    //     "payload",
-    //     "type",
-    // ];
+    public $string; //string
 
     public function __construct($message = "",$type = null){
-        $this->plain = $message;
-        //$this->payload = $this->plainToPayload();
+        $this->string = $message;
         $tmp = unpack('C*', $message);
         $this->payload = array_slice($tmp,0,count($tmp));
         if ($type !== null){
             $this->type = $type;
         }
         else $this->type = self::TYPE_HEX;
-    }
-    /**
-     * Account DTO represents NIS API's [AccountMetaDataPair](https://bob.nem.ninja/docs/#accountMetaDataPair).
-     *
-     * @see [AccountMetaDataPair](https://bob.nem.ninja/docs/#accountMetaDataPair)
-     * @return  array       Associative array containing a NIS *compliable* account representation.
-     */
-    public function toDTO($filterByKey = null) 
-    {
-        // CryptoHelper will store a KeyPair when necessary
-        // to allow encryption (needs private + public keys)
-        $helper = new CryptoHelper();
-        $plain  = $this->getPlain();
-
-        if (empty($plain) || !isset($this->type))
-            $this->type = Message::TYPE_SIMPLE;
-
-        if ($this->type == Message::TYPE_HEX) {
-            if (! ctype_xdigit($plain)) {
-                throw new RuntimeException("Invalid hexadecimal representation. Use Message::TYPE_SIMPLE instead of Message::TYPE_HEX.");
-            }
-
-            // hexadecimal message content
-            $payload = "fe" . $plain;
-            $this->type = Message::TYPE_SIMPLE;
-        }
-        elseif ($this->type == Message::TYPE_SIMPLE) {
-            // simple message, unencrypted
-            if (empty($plain)) {
-                $plain = $this->toPlain();
-                $payload = $this->payload;
-            }
-            else {
-                $payload = $this->toHex();
-            }
-        }
-        elseif ($this->type == Message::TYPE_ENCRYPTED) {
-            // encrypted message
-            $payload = $helper->encrypt($plain);
-
-            //XXX HW Trezor include "publicKey" to DTO.
-        }
-
-        return [
-            "payload" => $payload,
-            "type"    => $this->type,
-        ];
     }
 
     /**
@@ -195,9 +136,9 @@ class Message extends Model
         return $this->plain;
     }
 
-    public function plainToPayload(){
-        for ($i=0;$i<strlen($this->plain);$i++){
-            $arr[$i] = bin2hex($this->plain[$i]);
+    public function stringToPayload(){
+        for ($i=0;$i<strlen($this->string);$i++){
+            $arr[$i] = bin2hex($this->string[$i]);
         }
         return $arr;
     }

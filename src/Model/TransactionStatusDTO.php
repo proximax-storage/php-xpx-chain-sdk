@@ -2,9 +2,6 @@
 
 namespace NEM\Model;
 
-use \ArrayAccess;
-use \NEM\ObjectSerializer;
-
 class TransactionStatusDTO {
     private $group;
 
