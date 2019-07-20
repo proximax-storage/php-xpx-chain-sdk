@@ -17,18 +17,17 @@ namespace NEM\Model\Transaction\Schema;
 use NEM\Model\Transaction\Attribute\ScalarAttribute;
 use NEM\Model\Transaction\Attribute\ArrayAttribute;
 use NEM\Model\Transaction\Attribute\TableArrayAttribute;
-use NEM\Model\Transaction\Attribute\TableAttribute;
 use NEM\Model\Transaction\Constants;
 
 /**
- * TransferTransactionSchema class Doc Comment
+ * ModifyMultisigAccountTransactionSchema class Doc Comment
  *
  * @category class
  * @package  NEM
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
-class TransferTransactionSchema extends Schema{
+class ModifyMultisigAccountTransactionSchema extends Schema{
     public function __construct() {
         $arr = array(
             new ScalarAttribute("size",Constants::SIZEOF_INT),
@@ -39,16 +38,12 @@ class TransferTransactionSchema extends Schema{
             new ArrayAttribute("fee", Constants::SIZEOF_INT),
             new ArrayAttribute("deadline", Constants::SIZEOF_INT),
             
-            new ArrayAttribute("recipient", Constants::SIZEOF_BYTE),
-            new ScalarAttribute("messageSize", Constants::SIZEOF_SHORT),
-            new ScalarAttribute("numMosaics", Constants::SIZEOF_BYTE),
-            new TableAttribute("message", array(
+            new ScalarAttribute("minRemovalDelta", Constants::SIZEOF_BYTE),
+            new ScalarAttribute("minApprovalDelta", Constants::SIZEOF_BYTE),
+            new ScalarAttribute("numModifications", Constants::SIZEOF_BYTE),
+            new TableArrayAttribute("modifications", array(
                     new ScalarAttribute("type", Constants::SIZEOF_BYTE),
-                    new ArrayAttribute("payload", Constants::SIZEOF_BYTE)
-            )),
-            new TableArrayAttribute("mosaics", array(
-                    new ArrayAttribute("id", Constants::SIZEOF_INT),
-                    new ArrayAttribute("amount", Constants::SIZEOF_INT)
+                    new ArrayAttribute("cosignatoryPublicKey", Constants::SIZEOF_BYTE)
             ))
         );
         parent::__construct($arr);

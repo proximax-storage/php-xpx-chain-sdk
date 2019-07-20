@@ -27,9 +27,12 @@ use NEM\HeaderSelector;
 use NEM\ObjectSerializer;
 
 /**
- * MosaicRoutesApi service
- * @module api/MosaicRoutesApi
- * @version 1.0.0
+ * MosaicRoutesApi Class Doc Comment
+ *
+ * @category Class
+ * @package  NEM
+ * @author   Swagger Codegen team
+ * @link     https://github.com/swagger-api/swagger-codegen
  */
 class MosaicRoutesApi
 {

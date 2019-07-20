@@ -27,9 +27,12 @@ use NEM\HeaderSelector;
 use NEM\ObjectSerializer;
 
 /**
- * AccountRoutesApi service
- * @module api/AccountRoutesApi
- * @version 1.0.0
+ * AccountRoutesApi Class Doc Comment
+ *
+ * @category Class
+ * @package  NEM
+ * @author   Swagger Codegen team
+ * @link     https://github.com/swagger-api/swagger-codegen
  */
 class AccountRoutesApi
 {

@@ -13,19 +13,28 @@
  * 
  */
 
-namespace NEM\Errors;
-
-use RuntimeException;
+namespace NEM\Model;
 
 /**
- * NISInvalidSignatureContent class Doc Comment
+ * MultisigCosignatoryModificationType class Doc Comment
  *
  * @category class
  * @package  NEM
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
-class NISInvalidSignatureContent
-    extends RuntimeException
-{
+class MultisigCosignatoryModificationType
+{    
+    /**
+     * @internal
+     * @var integer
+     */
+    const ADD = 0;
+
+    /**
+     * @internal
+     * @var integer
+     */
+    const REMOVE = 1;
+
 }

@@ -27,9 +27,12 @@ use NEM\HeaderSelector;
 use NEM\ObjectSerializer;
 
 /**
- * NamespaceRoutesApi service
- * @module api/NamespaceRoutesApi
- * @version 1.0.0
+ * NamespaceRoutesApi Class Doc Comment
+ *
+ * @category Class
+ * @package  NEM
+ * @author   Swagger Codegen team
+ * @link     https://github.com/swagger-api/swagger-codegen
  */
 class NamespaceRoutesApi
 {

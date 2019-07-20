@@ -18,7 +18,7 @@ namespace NEM;
 use \Exception;
 
 /**
- * ApiException Class Doc Comment
+ * HeaderSelector Class Doc Comment
  *
  * @category Class
  * @package  NEM
