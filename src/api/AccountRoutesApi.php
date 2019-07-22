@@ -27,9 +27,12 @@ use NEM\HeaderSelector;
 use NEM\ObjectSerializer;
 
 /**
- * AccountRoutesApi service
- * @module api/AccountRoutesApi
- * @version 1.0.0
+ * AccountRoutesApi Class Doc Comment
+ *
+ * @category Class
+ * @package  NEM
+ * @author   Swagger Codegen team
+ * @link     https://github.com/swagger-api/swagger-codegen
  */
 class AccountRoutesApi
 {
@@ -79,7 +82,7 @@ class AccountRoutesApi
      */
     public function getAccountInfo($accountId)
     {
-        list($response) = $this->getAccountInfoWithHttpInfo($accountId);
+        $response = $this->getAccountInfoWithHttpInfo($accountId);
         return $response;
     }
 
@@ -103,6 +106,7 @@ class AccountRoutesApi
             $options = $this->createHttpClientOption();
             try {
                 $response = $this->client->send($request, $options);
+                
             } catch (RequestException $e) {
                 throw new ApiException(
                     "[{$e->getCode()}] {$e->getMessage()}",
@@ -138,7 +142,8 @@ class AccountRoutesApi
             }
 
             return [
-                ObjectSerializer::deserialize($content, $returnType, []),
+                //ObjectSerializer::deserialize($content, $returnType, []),
+                $content,
                 $response->getStatusCode(),
                 $response->getHeaders()
             ];
@@ -341,7 +346,7 @@ class AccountRoutesApi
      */
     public function getAccountMultisig($publicKey)
     {
-        list($response) = $this->getAccountMultisigWithHttpInfo($publicKey);
+        $response = $this->getAccountMultisigWithHttpInfo($publicKey);
         return $response;
     }
 
@@ -400,7 +405,8 @@ class AccountRoutesApi
             }
 
             return [
-                ObjectSerializer::deserialize($content, $returnType, []),
+                //ObjectSerializer::deserialize($content, $returnType, []),
+                $content,
                 $response->getStatusCode(),
                 $response->getHeaders()
             ];
@@ -865,7 +871,7 @@ class AccountRoutesApi
      */
     public function getAccountsInfo($accountIds)
     {
-        list($response) = $this->getAccountsInfoWithHttpInfo($accountIds);
+        $response = $this->getAccountsInfoWithHttpInfo($accountIds);
         return $response;
     }
 
@@ -918,13 +924,15 @@ class AccountRoutesApi
                 $content = $responseBody; //stream goes to serializer
             } else {
                 $content = $responseBody->getContents();
+                //var_dump($content);
                 if ($returnType !== 'string') {
                     $content = json_decode($content);
                 }
             }
 
             return [
-                ObjectSerializer::deserialize($content, $returnType, []),
+                //ObjectSerializer::deserialize($content, $returnType, []),
+                $content,
                 $response->getStatusCode(),
                 $response->getHeaders()
             ];
@@ -1037,7 +1045,7 @@ class AccountRoutesApi
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
-        $httpBody = '';
+        $httpBody = new \stdClass();;
         $multipart = false;
 
 
@@ -1062,7 +1070,7 @@ class AccountRoutesApi
         // for model (json/xml)
         if (isset($_tempBody)) {
             // $_tempBody is the method argument, if present
-            $httpBody = $_tempBody;
+            $httpBody->addresses = $_tempBody;
             // \stdClass has no __toString(), so we should encode it manually
             if ($httpBody instanceof \stdClass && $headers['Content-Type'] === 'application/json') {
                 $httpBody = \GuzzleHttp\json_encode($httpBody);
@@ -1124,7 +1132,7 @@ class AccountRoutesApi
      */
     public function incomingTransactions($publicKey, $pageSize = null, $id = null)
     {
-        list($response) = $this->incomingTransactionsWithHttpInfo($publicKey, $pageSize, $id);
+        $response = $this->incomingTransactionsWithHttpInfo($publicKey, $pageSize, $id);
         return $response;
     }
 
@@ -1185,7 +1193,8 @@ class AccountRoutesApi
             }
 
             return [
-                ObjectSerializer::deserialize($content, $returnType, []),
+                //ObjectSerializer::deserialize($content, $returnType, []),
+                $content,
                 $response->getStatusCode(),
                 $response->getHeaders()
             ];
@@ -1404,7 +1413,7 @@ class AccountRoutesApi
      */
     public function outgoingTransactions($publicKey, $pageSize = null, $id = null)
     {
-        list($response) = $this->outgoingTransactionsWithHttpInfo($publicKey, $pageSize, $id);
+        $response = $this->outgoingTransactionsWithHttpInfo($publicKey, $pageSize, $id);
         return $response;
     }
 
@@ -1465,7 +1474,8 @@ class AccountRoutesApi
             }
 
             return [
-                ObjectSerializer::deserialize($content, $returnType, []),
+                //ObjectSerializer::deserialize($content, $returnType, []),
+                $content,
                 $response->getStatusCode(),
                 $response->getHeaders()
             ];
@@ -1964,7 +1974,7 @@ class AccountRoutesApi
      */
     public function transactions($publicKey, $pageSize = null, $id = null)
     {
-        list($response) = $this->transactionsWithHttpInfo($publicKey, $pageSize, $id);
+        $response = $this->transactionsWithHttpInfo($publicKey, $pageSize, $id);
         return $response;
     }
 
@@ -2025,7 +2035,8 @@ class AccountRoutesApi
             }
 
             return [
-                ObjectSerializer::deserialize($content, $returnType, []),
+                //ObjectSerializer::deserialize($content, $returnType, []),
+                $content,
                 $response->getStatusCode(),
                 $response->getHeaders()
             ];
@@ -2244,7 +2255,7 @@ class AccountRoutesApi
      */
     public function unconfirmedTransactions($publicKey, $pageSize = null, $id = null)
     {
-        list($response) = $this->unconfirmedTransactionsWithHttpInfo($publicKey, $pageSize, $id);
+        $response = $this->unconfirmedTransactionsWithHttpInfo($publicKey, $pageSize, $id);
         return $response;
     }
 
@@ -2305,7 +2316,8 @@ class AccountRoutesApi
             }
 
             return [
-                ObjectSerializer::deserialize($content, $returnType, []),
+                //ObjectSerializer::deserialize($content, $returnType, []),
+                $content,
                 $response->getStatusCode(),
                 $response->getHeaders()
             ];

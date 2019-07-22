@@ -26,484 +26,57 @@ use \NEM\ObjectSerializer;
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
-class AccountDTO implements ModelInterface, ArrayAccess
-{
-    const DISCRIMINATOR = null;
+class AccountDTO{
+    private $address;
 
-    /**
-      * The original name of the model.
-      *
-      * @var string
-      */
-    protected static $swaggerModelName = 'AccountDTO';
+    private $addressHeight;
 
-    /**
-      * Array of property to type mappings. Used for (de)serialization
-      *
-      * @var string[]
-      */
-    protected static $swaggerTypes = [
-        'address' => 'string',
-        'addressHeight' => '\NEM\Model\UInt64DTO',
-        'publicKey' => 'string',
-        'publicKeyHeight' => '\NEM\Model\UInt64DTO',
-        'mosaics' => '\NEM\Model\MosaicDTO[]',
-        'importance' => '\NEM\Model\UInt64DTO',
-        'importanceHeight' => '\NEM\Model\UInt64DTO'
-    ];
+    private $publicKey;
 
-    /**
-      * Array of property to format mappings. Used for (de)serialization
-      *
-      * @var string[]
-      */
-    protected static $swaggerFormats = [
-        'address' => null,
-        'addressHeight' => null,
-        'publicKey' => null,
-        'publicKeyHeight' => null,
-        'mosaics' => null,
-        'importance' => null,
-        'importanceHeight' => null
-    ];
+    private $publicKeyHeight;
 
-    /**
-     * Array of property to type mappings. Used for (de)serialization
-     *
-     * @return array
-     */
-    public static function swaggerTypes()
-    {
-        return self::$swaggerTypes;
+    private $accountType;
+
+    private $mosaics;
+
+    private $linkedAccountKey;
+
+    public function __construct($dataArray){
+        $this->address = $dataArray["address"];
+        $this->addressHeight = $dataArray["addressHeight"];
+        $this->publicKey = $dataArray["publicKey"];
+        $this->publicKeyHeight = $dataArray["publicKeyHeight"];
+        $this->accountType = $dataArray["accountType"];
+        $this->mosaics = $dataArray["mosaics"];
+        $this->linkedAccountKey = $dataArray["linkedAccountKey"];
     }
 
-    /**
-     * Array of property to format mappings. Used for (de)serialization
-     *
-     * @return array
-     */
-    public static function swaggerFormats()
-    {
-        return self::$swaggerFormats;
+    public function getAddress(){
+        return $this->address;
     }
 
-    /**
-     * Array of attributes where the key is the local name,
-     * and the value is the original name
-     *
-     * @var string[]
-     */
-    protected static $attributeMap = [
-        'address' => 'address',
-        'addressHeight' => 'addressHeight',
-        'publicKey' => 'publicKey',
-        'publicKeyHeight' => 'publicKeyHeight',
-        'mosaics' => 'mosaics',
-        'importance' => 'importance',
-        'importanceHeight' => 'importanceHeight'
-    ];
-
-    /**
-     * Array of attributes to setter functions (for deserialization of responses)
-     *
-     * @var string[]
-     */
-    protected static $setters = [
-        'address' => 'setAddress',
-        'addressHeight' => 'setAddressHeight',
-        'publicKey' => 'setPublicKey',
-        'publicKeyHeight' => 'setPublicKeyHeight',
-        'mosaics' => 'setMosaics',
-        'importance' => 'setImportance',
-        'importanceHeight' => 'setImportanceHeight'
-    ];
-
-    /**
-     * Array of attributes to getter functions (for serialization of requests)
-     *
-     * @var string[]
-     */
-    protected static $getters = [
-        'address' => 'getAddress',
-        'addressHeight' => 'getAddressHeight',
-        'publicKey' => 'getPublicKey',
-        'publicKeyHeight' => 'getPublicKeyHeight',
-        'mosaics' => 'getMosaics',
-        'importance' => 'getImportance',
-        'importanceHeight' => 'getImportanceHeight'
-    ];
-
-    /**
-     * Array of attributes where the key is the local name,
-     * and the value is the original name
-     *
-     * @return array
-     */
-    public static function attributeMap()
-    {
-        return self::$attributeMap;
+    public function getAddressHeight(){
+        return $this->addressHeight;
     }
 
-    /**
-     * Array of attributes to setter functions (for deserialization of responses)
-     *
-     * @return array
-     */
-    public static function setters()
-    {
-        return self::$setters;
+    public function getPublicKey(){
+        return $this->publicKey;
     }
 
-    /**
-     * Array of attributes to getter functions (for serialization of requests)
-     *
-     * @return array
-     */
-    public static function getters()
-    {
-        return self::$getters;
+    public function getPublicKeyHeight(){
+        return $this->publicKeyHeight;
     }
 
-    /**
-     * The original name of the model.
-     *
-     * @return string
-     */
-    public function getModelName()
-    {
-        return self::$swaggerModelName;
+    public function accountType(){
+        return $this->accountType;
     }
 
-    
-
-    
-
-    /**
-     * Associative array for storing property values
-     *
-     * @var mixed[]
-     */
-    protected $container = [];
-
-    /**
-     * Constructor
-     *
-     * @param mixed[] $data Associated array of property values
-     *                      initializing the model
-     */
-    public function __construct(array $data = null)
-    {
-        $this->container['address'] = isset($data['address']) ? $data['address'] : null;
-        $this->container['addressHeight'] = isset($data['addressHeight']) ? $data['addressHeight'] : null;
-        $this->container['publicKey'] = isset($data['publicKey']) ? $data['publicKey'] : null;
-        $this->container['publicKeyHeight'] = isset($data['publicKeyHeight']) ? $data['publicKeyHeight'] : null;
-        $this->container['mosaics'] = isset($data['mosaics']) ? $data['mosaics'] : null;
-        $this->container['importance'] = isset($data['importance']) ? $data['importance'] : null;
-        $this->container['importanceHeight'] = isset($data['importanceHeight']) ? $data['importanceHeight'] : null;
+    public function getMosacics(){
+        return $this->mosacics;
     }
 
-    /**
-     * Show all the invalid properties with reasons.
-     *
-     * @return array invalid properties with reasons
-     */
-    public function listInvalidProperties()
-    {
-        $invalidProperties = [];
-
-        if ($this->container['address'] === null) {
-            $invalidProperties[] = "'address' can't be null";
-        }
-        if ($this->container['addressHeight'] === null) {
-            $invalidProperties[] = "'addressHeight' can't be null";
-        }
-        if ($this->container['publicKey'] === null) {
-            $invalidProperties[] = "'publicKey' can't be null";
-        }
-        if ($this->container['publicKeyHeight'] === null) {
-            $invalidProperties[] = "'publicKeyHeight' can't be null";
-        }
-        if ($this->container['mosaics'] === null) {
-            $invalidProperties[] = "'mosaics' can't be null";
-        }
-        if ($this->container['importance'] === null) {
-            $invalidProperties[] = "'importance' can't be null";
-        }
-        if ($this->container['importanceHeight'] === null) {
-            $invalidProperties[] = "'importanceHeight' can't be null";
-        }
-        return $invalidProperties;
-    }
-
-    /**
-     * Validate all the properties in the model
-     * return true if all passed
-     *
-     * @return bool True if all properties are valid
-     */
-    public function valid()
-    {
-
-        if ($this->container['address'] === null) {
-            return false;
-        }
-        if ($this->container['addressHeight'] === null) {
-            return false;
-        }
-        if ($this->container['publicKey'] === null) {
-            return false;
-        }
-        if ($this->container['publicKeyHeight'] === null) {
-            return false;
-        }
-        if ($this->container['mosaics'] === null) {
-            return false;
-        }
-        if ($this->container['importance'] === null) {
-            return false;
-        }
-        if ($this->container['importanceHeight'] === null) {
-            return false;
-        }
-        return true;
-    }
-
-
-    /**
-     * Gets address
-     *
-     * @return string
-     */
-    public function getAddress()
-    {
-        return $this->container['address'];
-    }
-
-    /**
-     * Sets address
-     *
-     * @param string $address address
-     *
-     * @return $this
-     */
-    public function setAddress($address)
-    {
-        $this->container['address'] = $address;
-
-        return $this;
-    }
-
-    /**
-     * Gets addressHeight
-     *
-     * @return \NEM\Model\UInt64DTO
-     */
-    public function getAddressHeight()
-    {
-        return $this->container['addressHeight'];
-    }
-
-    /**
-     * Sets addressHeight
-     *
-     * @param \NEM\Model\UInt64DTO $addressHeight addressHeight
-     *
-     * @return $this
-     */
-    public function setAddressHeight($addressHeight)
-    {
-        $this->container['addressHeight'] = $addressHeight;
-
-        return $this;
-    }
-
-    /**
-     * Gets publicKey
-     *
-     * @return string
-     */
-    public function getPublicKey()
-    {
-        return $this->container['publicKey'];
-    }
-
-    /**
-     * Sets publicKey
-     *
-     * @param string $publicKey publicKey
-     *
-     * @return $this
-     */
-    public function setPublicKey($publicKey)
-    {
-        $this->container['publicKey'] = $publicKey;
-
-        return $this;
-    }
-
-    /**
-     * Gets publicKeyHeight
-     *
-     * @return \NEM\Model\UInt64DTO
-     */
-    public function getPublicKeyHeight()
-    {
-        return $this->container['publicKeyHeight'];
-    }
-
-    /**
-     * Sets publicKeyHeight
-     *
-     * @param \NEM\Model\UInt64DTO $publicKeyHeight publicKeyHeight
-     *
-     * @return $this
-     */
-    public function setPublicKeyHeight($publicKeyHeight)
-    {
-        $this->container['publicKeyHeight'] = $publicKeyHeight;
-
-        return $this;
-    }
-
-    /**
-     * Gets mosaics
-     *
-     * @return \NEM\Model\MosaicDTO[]
-     */
-    public function getMosaics()
-    {
-        return $this->container['mosaics'];
-    }
-
-    /**
-     * Sets mosaics
-     *
-     * @param \NEM\Model\MosaicDTO[] $mosaics mosaics
-     *
-     * @return $this
-     */
-    public function setMosaics($mosaics)
-    {
-        $this->container['mosaics'] = $mosaics;
-
-        return $this;
-    }
-
-    /**
-     * Gets importance
-     *
-     * @return \NEM\Model\UInt64DTO
-     */
-    public function getImportance()
-    {
-        return $this->container['importance'];
-    }
-
-    /**
-     * Sets importance
-     *
-     * @param \NEM\Model\UInt64DTO $importance importance
-     *
-     * @return $this
-     */
-    public function setImportance($importance)
-    {
-        $this->container['importance'] = $importance;
-
-        return $this;
-    }
-
-    /**
-     * Gets importanceHeight
-     *
-     * @return \NEM\Model\UInt64DTO
-     */
-    public function getImportanceHeight()
-    {
-        return $this->container['importanceHeight'];
-    }
-
-    /**
-     * Sets importanceHeight
-     *
-     * @param \NEM\Model\UInt64DTO $importanceHeight importanceHeight
-     *
-     * @return $this
-     */
-    public function setImportanceHeight($importanceHeight)
-    {
-        $this->container['importanceHeight'] = $importanceHeight;
-
-        return $this;
-    }
-    /**
-     * Returns true if offset exists. False otherwise.
-     *
-     * @param integer $offset Offset
-     *
-     * @return boolean
-     */
-    public function offsetExists($offset)
-    {
-        return isset($this->container[$offset]);
-    }
-
-    /**
-     * Gets offset.
-     *
-     * @param integer $offset Offset
-     *
-     * @return mixed
-     */
-    public function offsetGet($offset)
-    {
-        return isset($this->container[$offset]) ? $this->container[$offset] : null;
-    }
-
-    /**
-     * Sets value based on offset.
-     *
-     * @param integer $offset Offset
-     * @param mixed   $value  Value to be set
-     *
-     * @return void
-     */
-    public function offsetSet($offset, $value)
-    {
-        if (is_null($offset)) {
-            $this->container[] = $value;
-        } else {
-            $this->container[$offset] = $value;
-        }
-    }
-
-    /**
-     * Unsets offset.
-     *
-     * @param integer $offset Offset
-     *
-     * @return void
-     */
-    public function offsetUnset($offset)
-    {
-        unset($this->container[$offset]);
-    }
-
-    /**
-     * Gets the string presentation of the object
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
-            return json_encode(
-                ObjectSerializer::sanitizeForSerialization($this),
-                JSON_PRETTY_PRINT
-            );
-        }
-
-        return json_encode(ObjectSerializer::sanitizeForSerialization($this));
+    public function getlinkedAccountKey(){
+        return $this->linkedAccountKey;
     }
 }
 

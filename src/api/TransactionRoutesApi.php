@@ -596,7 +596,7 @@ class TransactionRoutesApi
      */
     public function announceTransaction($payload)
     {
-        list($response) = $this->announceTransactionWithHttpInfo($payload);
+        $response = $this->announceTransactionWithHttpInfo($payload);
         return $response;
     }
 
@@ -655,7 +655,8 @@ class TransactionRoutesApi
             }
 
             return [
-                ObjectSerializer::deserialize($content, $returnType, []),
+                //ObjectSerializer::deserialize($content, $returnType, []),
+                $content,
                 $response->getStatusCode(),
                 $response->getHeaders()
             ];
@@ -768,7 +769,7 @@ class TransactionRoutesApi
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
-        $httpBody = '';
+        $httpBody = new \stdClass();
         $multipart = false;
 
 
@@ -793,7 +794,7 @@ class TransactionRoutesApi
         // for model (json/xml)
         if (isset($_tempBody)) {
             // $_tempBody is the method argument, if present
-            $httpBody = $_tempBody;
+            $httpBody->payload = $_tempBody;
             // \stdClass has no __toString(), so we should encode it manually
             if ($httpBody instanceof \stdClass && $headers['Content-Type'] === 'application/json') {
                 $httpBody = \GuzzleHttp\json_encode($httpBody);
@@ -853,7 +854,7 @@ class TransactionRoutesApi
      */
     public function getTransaction($transactionId)
     {
-        list($response) = $this->getTransactionWithHttpInfo($transactionId);
+        $response = $this->getTransactionWithHttpInfo($transactionId);
         return $response;
     }
 
@@ -912,7 +913,8 @@ class TransactionRoutesApi
             }
 
             return [
-                ObjectSerializer::deserialize($content, $returnType, []),
+                //ObjectSerializer::deserialize($content, $returnType, []),
+                $content,
                 $response->getStatusCode(),
                 $response->getHeaders()
             ];
@@ -1115,7 +1117,7 @@ class TransactionRoutesApi
      */
     public function getTransactionStatus($hash)
     {
-        list($response) = $this->getTransactionStatusWithHttpInfo($hash);
+        $response = $this->getTransactionStatusWithHttpInfo($hash);
         return $response;
     }
 
@@ -1174,7 +1176,8 @@ class TransactionRoutesApi
             }
 
             return [
-                ObjectSerializer::deserialize($content, $returnType, []),
+                //ObjectSerializer::deserialize($content, $returnType, []),
+                $content,
                 $response->getStatusCode(),
                 $response->getHeaders()
             ];
@@ -1377,7 +1380,7 @@ class TransactionRoutesApi
      */
     public function getTransactions($transactionIds)
     {
-        list($response) = $this->getTransactionsWithHttpInfo($transactionIds);
+        $response = $this->getTransactionsWithHttpInfo($transactionIds);
         return $response;
     }
 
@@ -1436,7 +1439,8 @@ class TransactionRoutesApi
             }
 
             return [
-                ObjectSerializer::deserialize($content, $returnType, []),
+                //ObjectSerializer::deserialize($content, $returnType, []),
+                $content,
                 $response->getStatusCode(),
                 $response->getHeaders()
             ];
@@ -1549,7 +1553,7 @@ class TransactionRoutesApi
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
-        $httpBody = '';
+        $httpBody = new \stdClass();
         $multipart = false;
 
 
@@ -1574,7 +1578,7 @@ class TransactionRoutesApi
         // for model (json/xml)
         if (isset($_tempBody)) {
             // $_tempBody is the method argument, if present
-            $httpBody = $_tempBody;
+            $httpBody->transactionIds = $_tempBody;
             // \stdClass has no __toString(), so we should encode it manually
             if ($httpBody instanceof \stdClass && $headers['Content-Type'] === 'application/json') {
                 $httpBody = \GuzzleHttp\json_encode($httpBody);
@@ -1634,7 +1638,7 @@ class TransactionRoutesApi
      */
     public function getTransactionsStatuses($transactionHashes)
     {
-        list($response) = $this->getTransactionsStatusesWithHttpInfo($transactionHashes);
+        $response = $this->getTransactionsStatusesWithHttpInfo($transactionHashes);
         return $response;
     }
 
@@ -1693,7 +1697,8 @@ class TransactionRoutesApi
             }
 
             return [
-                ObjectSerializer::deserialize($content, $returnType, []),
+                //ObjectSerializer::deserialize($content, $returnType, []),
+                $content,
                 $response->getStatusCode(),
                 $response->getHeaders()
             ];
@@ -1806,7 +1811,7 @@ class TransactionRoutesApi
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
-        $httpBody = '';
+        $httpBody = new \stdClass();
         $multipart = false;
 
 
@@ -1831,7 +1836,7 @@ class TransactionRoutesApi
         // for model (json/xml)
         if (isset($_tempBody)) {
             // $_tempBody is the method argument, if present
-            $httpBody = $_tempBody;
+            $httpBody->hashes = $_tempBody;
             // \stdClass has no __toString(), so we should encode it manually
             if ($httpBody instanceof \stdClass && $headers['Content-Type'] === 'application/json') {
                 $httpBody = \GuzzleHttp\json_encode($httpBody);

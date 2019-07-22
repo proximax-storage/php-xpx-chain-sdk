@@ -4,6 +4,11 @@ composer.lock
 phpunit.xml
 vendor
 tests/logs/
+index.php
+test.php
+test2.php
+test3.php
+test4.php
 
 phpunit
 phpdoc

@@ -27,9 +27,12 @@ use NEM\HeaderSelector;
 use NEM\ObjectSerializer;
 
 /**
- * NamespaceRoutesApi service
- * @module api/NamespaceRoutesApi
- * @version 1.0.0
+ * NamespaceRoutesApi Class Doc Comment
+ *
+ * @category Class
+ * @package  NEM
+ * @author   Swagger Codegen team
+ * @link     https://github.com/swagger-api/swagger-codegen
  */
 class NamespaceRoutesApi
 {
@@ -803,7 +806,7 @@ class NamespaceRoutesApi
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
-        $httpBody = '';
+        $httpBody = new \stdClass();
         $multipart = false;
 
         // query params
@@ -836,7 +839,7 @@ class NamespaceRoutesApi
         // for model (json/xml)
         if (isset($_tempBody)) {
             // $_tempBody is the method argument, if present
-            $httpBody = $_tempBody;
+            $httpBody->publicKeys = $_tempBody;
             // \stdClass has no __toString(), so we should encode it manually
             if ($httpBody instanceof \stdClass && $headers['Content-Type'] === 'application/json') {
                 $httpBody = \GuzzleHttp\json_encode($httpBody);
@@ -1068,7 +1071,7 @@ class NamespaceRoutesApi
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
-        $httpBody = '';
+        $httpBody = new \stdClass;
         $multipart = false;
 
 
@@ -1093,7 +1096,7 @@ class NamespaceRoutesApi
         // for model (json/xml)
         if (isset($_tempBody)) {
             // $_tempBody is the method argument, if present
-            $httpBody = $_tempBody;
+            $httpBody->namespaceIds = $_tempBody;
             // \stdClass has no __toString(), so we should encode it manually
             if ($httpBody instanceof \stdClass && $headers['Content-Type'] === 'application/json') {
                 $httpBody = \GuzzleHttp\json_encode($httpBody);

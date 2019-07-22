@@ -27,9 +27,12 @@ use NEM\HeaderSelector;
 use NEM\ObjectSerializer;
 
 /**
- * BlockchainRoutesApi service
- * @module api/BlockchainRoutesApi
- * @version 1.0.0
+ * BlockchainRoutesApi Class Doc Comment
+ *
+ * @category Class
+ * @package  NEM
+ * @author   Swagger Codegen team
+ * @link     https://github.com/swagger-api/swagger-codegen
  */
 class BlockchainRoutesApi
 {
