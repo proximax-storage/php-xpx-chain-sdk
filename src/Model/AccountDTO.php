@@ -67,7 +67,7 @@ class AccountDTO{
         return $this->publicKeyHeight;
     }
 
-    public function accountType(){
+    public function getAccountType(){
         return $this->accountType;
     }
 

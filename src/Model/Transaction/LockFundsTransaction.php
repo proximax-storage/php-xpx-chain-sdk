@@ -20,6 +20,7 @@ use NEM\Model\Deadline;
 use NEM\Model\TransactionVersion;
 use NEM\Model\TransactionInfo;
 use NEM\Model\PublicAccount;
+use NEM\Utils\Hex;
 use NEM\Infrastructure\Network;
 use NEM\Model\Transaction\Schema\LockFundsTransactionSchema;
 use \Google\FlatBuffers\FlatbufferBuilder;
@@ -68,123 +69,56 @@ class LockFundsTransaction extends \NEM\Model\Transaction{
         $this->signedTransaction = $signedTransaction;
     }
 
-    // public function generateBytes() {
-    //     $networkType = $this->getAbstractTransaction()->networkType;
-    //     $version = $this->getAbstractTransaction()->version;
-    //     $deadline = $this->getAbstractTransaction()->deadline;
-    //     $signature = $this->getAbstractTransaction()->signature;
-    //     $signer = $this->getAbstractTransaction()->signer;
-    //     $maxFee = $this->getAbstractTransaction()->maxFee;
-    //     $type = $this->getAbstractTransaction()->type;
+    public function generateBytes() {
+        $networkType = $this->getAbstractTransaction()->networkType;
+        $version = $this->getAbstractTransaction()->version;
+        $deadline = $this->getAbstractTransaction()->deadline;
+        $signature = $this->getAbstractTransaction()->signature;
+        $signer = $this->getAbstractTransaction()->signer;
+        $maxFee = $this->getAbstractTransaction()->maxFee;
+        $type = $this->getAbstractTransaction()->type;
 
-    //     $message = $this->message;
-    //     $mosaics = $this->mosaics;
-    //     $address = $this->recipient;
+        $duration = $this->duration;
+        $mosaic = $this->mosaic;
+        $signedTransaction = $this->signedTransaction;
 
-    //     $builder = new FlatbufferBuilder(1);
+        $builder = new FlatbufferBuilder(1);
         
-    //     // Create Message
-    //     $bytePayload = $message->payload;
-    //     $payload = MessageBuffer::createPayloadVector($builder, $bytePayload);
-    //     MessageBuffer::startMessageBuffer($builder);
-    //     MessageBuffer::addType($builder, $message->type);
-    //     MessageBuffer::addPayload($builder, $payload);
-    //     $messageVector = MessageBuffer::endMessageBuffer($builder);
+        $v = ($networkType << 8) + $version;
+        // Create Vectors
+        $signatureVector = LockFundsTransactionBuffer::createSignatureVector($builder, array());
+        $signerVector = LockFundsTransactionBuffer::createSignerVector($builder, array());
+        $deadlineVector = LockFundsTransactionBuffer::createDeadlineVector($builder, $deadline->getTimeArray());
+        $feeVector = LockFundsTransactionBuffer::createFeeVector($builder, $maxFee);
+        $mosaicIdVector = LockFundsTransactionBuffer::createMosaicIdVector($builder, $mosaic->getId());
+        $mosaicAmountVector = LockFundsTransactionBuffer::createMosaicAmountVector($builder, $mosaic->getAmount());
+        $durationVector = LockFundsTransactionBuffer::createDurationVector($builder, $duration);
 
-    //     // Create Mosaics
-    //     for ($i = 0; $i < count($mosaics); ++$i) {
-    //         $mosaic = $mosaics[$i];
-    //         $id = MosaicBuffer::createIdVector($builder, $mosaic->id);
-    //         $amount = MosaicBuffer::createAmountVector($builder, $mosaic->amount);
+        $hashVector = LockFundsTransactionBuffer::createHashVector($builder, (new Hex)->DecodeString($signedTransaction->getHash()));
 
-    //         MosaicBuffer::startMosaicBuffer($builder);
-    //         MosaicBuffer::addId($builder, $id);
-    //         MosaicBuffer::addAmount($builder, $amount);
-    //         $mosaicBuffers[$i] = MosaicBuffer::endMosaicBuffer($builder);
-    //     }
-    //     // serialize the recipient
-    //     $recipientBytes = $this->DecodeString($address->address);
 
-    //     $v = ($networkType << 8) + $version;
-    //     // Create Vectors
-    //     $signatureVector = TransferTransactionBuffer::createSignatureVector($builder, array());
-    //     $signerVector = TransferTransactionBuffer::createSignerVector($builder, array());
-    //     $recipientVector = TransferTransactionBuffer::createRecipientVector($builder, $recipientBytes);
-    //     $mosaicsVector = TransferTransactionBuffer::createMosaicsVector($builder, $mosaicBuffers);
-    //     $deadlineVector = TransferTransactionBuffer::createDeadlineVector($builder, $deadline->getTimeArray());
-    //     $feeVector = TransferTransactionBuffer::createFeeVector($builder, $maxFee);
+        LockFundsTransactionBuffer::startLockFundsTransactionBuffer($builder);
+        LockFundsTransactionBuffer::addSize($builder, 176);
+        LockFundsTransactionBuffer::addSignature($builder, $signatureVector);
+        LockFundsTransactionBuffer::addSigner($builder, $signerVector);
+        LockFundsTransactionBuffer::addVersion($builder, $version);
+        LockFundsTransactionBuffer::addType($builder, $type);
+        LockFundsTransactionBuffer::addFee($builder, $feeVector);
+        LockFundsTransactionBuffer::addDeadline($builder, $deadlineVector);
+        LockFundsTransactionBuffer::addMosaicId($builder, $mosaicIdVector);
+        LockFundsTransactionBuffer::addMosaicAmount($builder, $mosaicAmountVector);
+        LockFundsTransactionBuffer::addDuration($builder, $durationVector);
+        LockFundsTransactionBuffer::addHash($builder, $hashVector);
+
+        $codedTransaction = LockFundsTransactionBuffer::endAggregateTransactionBuffer($builder);
         
+        $builder->finish($codedTransfer);
+        $LockFundsTransactionSchema = new LockFundsTransactionSchema;
 
-    //     // total size of transaction
-    //     $size = 
-    //           // header
-    //           120 + 
-    //           // recipient is always 25 bytes
-    //           25 + 
-    //           // message size is short
-    //           2 +
-    //           // message type byte
-    //           1 + 
-    //           // number of mosaics
-    //           1 + 
-    //           // each mosaic has id and amount, both 8byte uint64
-    //           ((8 + 8) * count($mosaics)) + 
-    //           // number of message bytes
-    //           count($bytePayload);
-
-    //     TransferTransactionBuffer::startTransferTransactionBuffer($builder);
-    //     TransferTransactionBuffer::addSize($builder, $size);
-    //     TransferTransactionBuffer::addSignature($builder, $signatureVector);
-    //     TransferTransactionBuffer::addSigner($builder, $signerVector);
-    //     TransferTransactionBuffer::addVersion($builder, $v);
-    //     TransferTransactionBuffer::addType($builder, $type);
-    //     TransferTransactionBuffer::addFee($builder, $feeVector);
-    //     TransferTransactionBuffer::addDeadline($builder, $deadlineVector);
-        
-    //     TransferTransactionBuffer::addRecipient($builder, $recipientVector);
-    //     TransferTransactionBuffer::addNumMosaics($builder, count($mosaics));
-    //     TransferTransactionBuffer::addMessageSize($builder, count($bytePayload) + 1);
-    //     TransferTransactionBuffer::addMessage($builder, $messageVector);
-    //     TransferTransactionBuffer::addMosaics($builder, $mosaicsVector);
-        
-    //     $codedTransfer = TransferTransactionBuffer::endTransferTransactionBuffer($builder);
-        
-    //     $builder->finish($codedTransfer);
-    //     $TransferTransactionSchema = new TransferTransactionSchema;
-    //     //var_dump($builder->sizedByteArray());
-    //     $tmp = unpack("C*",$builder->sizedByteArray());
-    //     $builder_byte = array_slice($tmp,0,count($tmp));
-    //     $output = $TransferTransactionSchema->serialize($builder_byte,0);
-    //     return $output;
-    // }
-
-    // public function DecodeString(string $s){
-    //     $CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
-    //     $arr = unpack('C*', $s);
-    //     $convertedBytes = array();
-    //     $index = 0;
-    //     $bitCount = 0;
-    //     $current = 0;
-    //     for ($i=1;$i<=count($arr);$i++){
-    //         //echo "1";
-    //         $symbolValue = strpos($CHARS,chr($arr[$i]));
-    //         if ($symbolValue < 0) {
-    //             throw new Exception("symbol value must bigger than 0");
-    //         }
-    //         for ($j=4;$j>=0;$j--) {
-    //             $current = ($current << 1) + ($symbolValue >> $j & 0x1);
-    //             $bitCount++;
-    //             //echo $bitCount . "\n";
-    //             if ($bitCount == 8) {
-    //                 //echo $index . "\n";
-    //                 $convertedBytes[$index++] = $current;
-
-    //                 $bitCount = 0;
-    //                 $current = 0;
-    //             }
-    //         }
-    //     }
-    //     return $convertedBytes;
-    // }
+        $tmp = unpack("C*",$builder->sizedByteArray());
+        $builder_byte = array_slice($tmp,0,count($tmp));
+        $output = $LockFundsTransactionSchema->serialize($builder_byte,0);
+        return $output;
+    }
 }
 ?>

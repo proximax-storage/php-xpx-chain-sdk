@@ -2,9 +2,7 @@
     require "vendor/autoload.php";
 
     use NEM\Model\Deadline;
-    use NEM\Model\Mosaic;
     use NEM\Model\Account;
-    use NEM\Model\PublicAccount;
     use NEM\Sdk\Transaction;
     use NEM\Model\Config;
     use NEM\Infrastructure\Network;
@@ -22,7 +20,7 @@
         $config = $config->NewConfig($baseUrl,$networkType,$wsReconnectionTimeout);
     }
 
-    $multisigPrivateKey = "5D3A701DFFD2C70051162D56C6981DC0402B827B93213BC3CD853D7D11835D4D";
+    $multisigPrivateKey = "222AC5EDF4695FA4C45DA6E33CEE8EF622267EFEB3A2664EFE116E56AF9C0726";
 	// Cosignature public keys
 	$cosignatoryOnePublicKey   = "990585BBB7C97BB61D90410B67552D82D30738994BA7CF2B1041D1E0A6E4169B";
 	$cosignatoryTwoPublicKey   = "803BD90020E0BB5F0B03AC75C86056A4D4AB5940F2A3A520694D8E7FF217E961";
@@ -38,7 +36,6 @@
     $cosignerTwoAccount = (new Account)->newAccountFromPublicKey($cosignatoryTwoPublicKey,$networkType);
     $cosignerThreeAccount = (new Account)->newAccountFromPublicKey($cosignatoryThreePublicKey,$networkType);
 
-    //var_dump($cosignerOneAccount->getPublicAccount()->getPublicKey()->getHex());
     $deadline = new Deadline(1); //1 is time include blockchain, unit hour
     $multisigCosignatoryModifications = array(
         new MultisigCosignatoryModification(

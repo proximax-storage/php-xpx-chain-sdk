@@ -27,7 +27,7 @@ use NEM\Model\Transaction\Constants;
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
-class LockFundsTransactionSchema extends Schema{
+class ModifyMultisigAccountTransactionSchema extends Schema{
     public function __construct() {
         $arr = array(
             new ScalarAttribute("size", Constants::SIZEOF_INT),
@@ -37,10 +37,8 @@ class LockFundsTransactionSchema extends Schema{
             new ScalarAttribute("type", Constants::SIZEOF_SHORT),
             new ArrayAttribute("fee", Constants::SIZEOF_INT),
             new ArrayAttribute("deadline", Constants::SIZEOF_INT),
-            new ArrayAttribute("mosaicId", Constants::SIZEOF_INT),
-            new ArrayAttribute("mosaicAmount", Constants::SIZEOF_INT),
-            new ArrayAttribute("duration", Constants::SIZEOF_INT),
-            new ArrayAttribute("hash", Constants::SIZEOF_BYTE)
+            new ScalarAttribute("transactionsSize", Constants::SIZEOF_INT),
+            new ArrayAttribute("transactions", Constants::SIZEOF_BYTE)
         );
     }
 }

@@ -35,5 +35,17 @@ class SignedTransaction{
         $this->payload = $payload;
         $this->hash = $hash;
     }
+
+    public function getType(){
+        return $this->type;
+    }
+
+    public function getPayload(){
+        return $this->payload;
+    }
+
+    public function getHash(){
+        return $this->hash;
+    }
 }
 ?>

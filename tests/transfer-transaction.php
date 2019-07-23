@@ -23,12 +23,11 @@
 
     $privateKey = "D0512165DCF74137B0D6876FC0F6F0E5BAC9F82882A56ADEBA52DBD73C13A025";
     $deadline = new Deadline(1); //1 is time include blockchain, unit hour
-    $address = new Address("VB7Z7YQFUNNLOUOJN3M5VDACBJTDANEQZVSZBU7B", $networkType);
+    $address = new Address("VC6UUGZLEIAGRXCJXMEUEH2QE7VVMYC3Z67RVRIN", $networkType);
     $mosaic = new Mosaic("xpx",10);
-    $mosaic2 = new Mosaic("xpx",10);
     $message = new Message("Hello world");
 
-    $transfer = new TransferTransaction($deadline,$address,array($mosaic,$mosaic2),$message,$networkType);
+    $transfer = new TransferTransaction($deadline,$address,array($mosaic),$message,$networkType);
 
     $account = (new Account)->newAccountFromPrivateKey($privateKey,$networkType);
     

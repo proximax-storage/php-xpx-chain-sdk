@@ -32,9 +32,6 @@ class ScalarAttribute extends SchemaAttribute {
     }
 
     protected function serialize3Params($buffer, $position, $innerObjectPosition) {
-        // echo "ScalarAttribute\n";
-        // var_dump($buffer);
-        // echo $innerObjectPosition . "\n";
         return $this->findParam($innerObjectPosition, $position, $buffer, $this->size);
     }
 }

@@ -17,6 +17,7 @@ namespace NEM\Sdk;
 use NEM\Core\KeyPair;
 use NEM\API\AccountRoutesApi;
 use NEM\Model\AccountDTO;
+use NEM\Model\Account as AccountModel;
 use NEM\Model\TransactionDTO;
 use NEM\ApiClient;
 use Base32\Base32;
@@ -27,6 +28,7 @@ use NEM\Model\Address;
 use NEM\Model\PublicAccount;
 use NEM\Model\Message;
 use NEM\Model\HeightDTO;
+use NEM\Model\MultisigDTO;
 
 /**
  * Account class Doc Comment
@@ -273,15 +275,15 @@ class Account{
         return $arr_transaction;
     }
 
-    /** Chưa xong
+    /**
      *
      * @param config $config
      *
      * @param String $publicKey
      * 
-     * @return TransactionDTO
+     * @return MultisigDTO
      */
-    public function GetAccountMultisig($config){
+    public function GetAccountMultisig($config,$publicKey){
         $AccountRoutesApi = new AccountRoutesApi;
         $ApiClient = new ApiClient;
         $url = $config->BaseURL;
@@ -289,16 +291,12 @@ class Account{
         $networkType = $config->NetworkType;
 
         $data = $AccountRoutesApi->getAccountMultisig($publicKey);
-        $arr_transaction = array();
         if ($data[1] == 200){ // successfull
-            for ($i=0;$i<count($data[0]);$i++){
-                $transaction = $this->formatDataTransaction($networkType, $data[0][$i]);
-                $TransactionDTO = new TransactionDTO($transaction);
-                $arr_transaction[$i] = $TransactionDTO;
-            }
-            
+            $account = $this->formatDataMultisig($networkType, $data[0]);
         }
-        return $arr_transaction;
+        else $account = null;
+
+        return new MultisigDTO($account);
     }
 
     /**
@@ -373,7 +371,7 @@ class Account{
 
 
     /**
-     * @param Address $add
+     * @param int $networkType
      *
      * @param array $data
      * 
@@ -410,6 +408,37 @@ class Account{
             "linkedAccountKey" => $linkedAccountKey
         );
         return $account;
+    }
+
+    /**
+     * @param int $networkType
+     *
+     * @param array $data
+     * 
+     * @return AccountDTO array
+     */
+    private function formatDataMultisig($networkType, $data){
+        $account = (new AccountModel)->newAccountFromPublicKey($data->multisig->account,$networkType);
+        $accountAddress = $account->getAddress();
+        $minApproval = $data->multisig->minApproval;
+        $minRemoval = $data->multisig->minRemoval;
+        $cosignatories = array();
+        $multisigAccounts = array();
+        for ($i=0;$i<count($data->multisig->cosignatories);$i++){
+            $cosignatories[$i] = (new AccountModel)->newAccountFromPublicKey($data->multisig->cosignatories[$i],$networkType);
+        }
+        for ($i=0;$i<count($data->multisig->multisigAccounts);$i++){
+            $multisigAccounts[$i] = (new AccountModel)->newAccountFromPublicKey($data->multisig->multisigAccounts[$i],$networkType);
+        }
+        $multisig = array(
+            "account" => $account,
+            "accountAddress" => $accountAddress,
+            "minApproval" => $minApproval,
+            "minRemoval" => $minRemoval,
+            "cosignatories" => $cosignatories,
+            "multisigAccounts" => $multisigAccounts,
+        );
+        return $multisig;
     }
 }
 ?>
