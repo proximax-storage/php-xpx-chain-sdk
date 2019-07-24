@@ -9,14 +9,13 @@
   
     $baseUrl = "http://bctestnet1.xpxsirius.io:3000";
     $wsReconnectionTimeout = 5000;
-    $pKey = "990585BBB7C97BB61D90410B67552D82D30738994BA7CF2B1041D1E0A6E4169B";
+    $pKey = "E25F5E9B56973E53B7D1EE4017175A632D5E92807FA6615E9EA12498CE3DDAEB";
     $netType = Network::getIdfromName("PublicTest");
 
     if ($netType){
         $config = $config->NewConfig($baseUrl,$netType,$wsReconnectionTimeout);
     }
-    $address = \NEM\Model\Address::fromPublicKey($pKey,$netType);
     $Account = new Account;
-    $acc = $Account->GetAccountInfo($config,$address->address);
+    $acc = $Account->GetAccountMultisig($config,$pKey);
     var_dump($acc);
 ?>

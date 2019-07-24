@@ -42,7 +42,7 @@ class Utils{
         $lenA = count($a);
         $j = $lenA;
 
-        for ($i=$lenA/2;$i<$lenA;$i++) {
+        for ($i=0;$i<$lenA/2;$i++) {
             $j--;
             $temp = $a[$i];
             $a[$i] = $a[$j];
@@ -168,6 +168,17 @@ class Utils{
            }
        }
        return $str;
+    }
+
+    public function intToArray($int){
+        if ($int == null) {
+            return array(0, 0);
+        }
+        $p1 = ($int >> 24) & 0xFF;
+        $p2 = ($int >> 16) & 0xFF;
+        $p3 = ($int >> 8) & 0xFF;
+        $p4 = $int & 0xFF;
+        return array($p1, $p2, $p3, $p4);
     }
 }
 ?>

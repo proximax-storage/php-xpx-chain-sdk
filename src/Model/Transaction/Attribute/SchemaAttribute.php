@@ -48,13 +48,13 @@ abstract class SchemaAttribute {
     }
 
     public function getName() {
-        return $name;
+        return $this->name;
     }
 
     protected function findParam($innerObjectPosition, $position, $buffer, $typeSize) {
-        var_dump("fP");
-        var_dump($innerObjectPosition);
-        var_dump($position);
+        // var_dump("fP");
+        // var_dump($innerObjectPosition);
+        // var_dump($position);
         $offset = $this->__offset($innerObjectPosition, $position, $buffer);
 
         $from = $offset + $innerObjectPosition;
@@ -69,7 +69,8 @@ abstract class SchemaAttribute {
     }
 
     protected function findVector($innerObjectPosition, $position, $buffer, $typeSize) {
-        var_dump("fV");
+        // var_dump("fV");
+        // var_dump($position);
         $offset = $this->__offset($innerObjectPosition, $position, $buffer);
         $offsetLong = $offset + $innerObjectPosition;
         $vecStart = $this->__vector($offsetLong, $buffer);
@@ -81,13 +82,13 @@ abstract class SchemaAttribute {
     }
 
     protected function findObjectStartPosition($innerObjectPosition, $position, $buffer) {
-        var_dump("fO");
+        //var_dump("fO");
         $offset = $this->__offset($innerObjectPosition, $position, $buffer);
         return $this->__indirect($offset + $innerObjectPosition, $buffer);
     }
 
     protected function findArrayLength($innerObjectPosition, $position, $buffer) {
-        var_dump("fA");
+        //var_dump("fA");
         $offset = $this->__offset($innerObjectPosition, $position, $buffer);
         if ($offset == 0){
             return 0;
@@ -97,7 +98,7 @@ abstract class SchemaAttribute {
     }
 
     protected function findObjectArrayElementStartPosition($innerObjectPosition, $position, $buffer, $startPosition) {
-        var_dump("fOA");
+        //var_dump("fOA");
         $offset = $this->__offset($innerObjectPosition, $position, $buffer);
         $vector = $this->__vector($innerObjectPosition + $offset, $buffer);
         return $this->__indirect($vector + $startPosition * 4, $buffer);
@@ -111,11 +112,19 @@ abstract class SchemaAttribute {
         $value |= ($buffer[$offset + 2] & 0xFF) << (8 * 2);
         $value |= ($buffer[$offset + 1] & 0xFF) << (8);
         $value |= ($buffer[$offset] & 0xFF);
+
+        // var_dump("-------------readInt32---value--------------");
+        // var_dump($value);
+        // var_dump($buffer[$offset + 3]);
+        // var_dump($buffer[$offset + 2]);
+        // var_dump($buffer[$offset + 1]);
+        // var_dump($buffer[$offset + 0]);
+        // var_dump("------------------------------");
+ 
         return $value;
     }
 
     protected function readInt16($offset, $buffer) {
-        var_dump($offset);
         /*final ByteBuffer bb = ByteBuffer.wrap(new byte[]{buffer[offset], buffer[offset + 1]});
         bb.order(ByteOrder.LITTLE_ENDIAN);
         return bb.getShort();*/
@@ -125,7 +134,17 @@ abstract class SchemaAttribute {
     }
 
     protected function __offset($innerObjectPosition, $position, $buffer) {
-        $vtable = $innerObjectPosition - $this->readInt32($innerObjectPosition, $buffer);
+        $tmp = $this->readInt32($innerObjectPosition, $buffer);
+        if ($tmp > 255){
+            $tmp = $tmp | 0xFFFFFFFF00000000;
+        }
+        $vtable = $innerObjectPosition - $tmp;
+        // var_dump("------innerObj---position-----vtable---------");
+        // var_dump($innerObjectPosition);
+        // var_dump($position);
+        // var_dump($tmp);
+        // var_dump($vtable);
+        // var_dump("------------------------------");
         return $position < $this->readInt16($vtable, $buffer) ? $this->readInt16($vtable + $position, $buffer) : 0;
     }
 

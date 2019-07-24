@@ -45,6 +45,14 @@ class Mosaic{
             $this->amount = $utils->fromBigInt($amount);
         }
     }
+
+    public function getId(){
+        return $this->id;
+    }
+
+    public function getAmount(){
+        return $this->amount;
+    }
     
     public function getIdValue(){
         $utils = new Utils;

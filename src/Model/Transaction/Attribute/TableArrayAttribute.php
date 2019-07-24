@@ -32,26 +32,14 @@ class TableArrayAttribute extends SchemaAttribute {
     }
 
     protected function serialize3Params($buffer, $position, $innerObjectPosition) {
-        // echo "TableArrayAttribute\n";
-        var_dump("------------------------------");
-        var_dump($innerObjectPosition);
-        var_dump($position);
-        var_dump("------------------------------");
         $resultBytes = array();
         $arrayLength = $this->findArrayLength($innerObjectPosition, $position, $buffer);
-
-        var_dump("-------------2----------------");
-        var_dump($arrayLength);
-        var_dump("-------------2----------------");
         for ($i=0;$i<$arrayLength;$i++) {
-            var_dump("still ngon");
             $startArrayPosition = $this->findObjectArrayElementStartPosition($innerObjectPosition, $position, $buffer, $i);
-            var_dump("ra lai");
-            var_dump(count($this->schema));
             for ($j=0;$j<count($this->schema);++$j){
-                var_dump("------3---");
-                var_dump($this->schema[$j]);
-                var_dump("------3---");
+                // var_dump("------3---");
+                // var_dump($this->schema[$j]);
+                // var_dump("------3---");
                 $tmp = $this->schema[$j]->serialize($buffer, 4 + ($j * 2), $startArrayPosition);
                 $resultBytes = array_merge($resultBytes, $tmp);
             }

@@ -32,8 +32,6 @@ class ArrayAttribute extends SchemaAttribute {
     }
 
     protected function serialize3Params($buffer, $position, $innerObjectPosition) {
-        // echo "ArrayAttribute\n";
-        // echo $innerObjectPosition . "\n";
         return $this->findVector($innerObjectPosition, $position, $buffer, $this->typeSize);
     }
 }

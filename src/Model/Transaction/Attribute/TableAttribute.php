@@ -32,9 +32,6 @@ class TableAttribute extends SchemaAttribute {
     }
 
     protected function serialize3Params($buffer, $position, $innerObjectPosition) {
-        // echo "TableAttribute\n";
-        // echo $innerObjectPosition . "\n";
-        
         $resultBytes = array();
         $tableStartPosition = $this->findObjectStartPosition($innerObjectPosition, $position, $buffer);
         for ($i=0;$i<count($this->schema);++$i) {

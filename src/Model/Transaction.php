@@ -20,7 +20,8 @@ use NEM\Model\Transaction\Transfer;
 use NEM\Model\Transaction\Signature;
 use NEM\Model\Account;
 use NEM\Model\Message;
-
+use NEM\Utils\Hex;
+use NEM\Utils\Utils;
 /**
  * Transaction class Doc Comment
  *
@@ -70,5 +71,25 @@ class Transaction{
 
     public function ToAggregate($signer){
         $this->abstractTransaction->signer = $signer;
+    }
+
+    public function toAggregateTransactionBytes() {
+        $hex = new Hex;
+        $signerBytes = $hex->DecodeString($this->abstractTransaction->signer->getPublicKey()->getHex()); 
+        $bytes = $this->generateBytes();
+        $resultBytes = array();
+
+        $p2 = array_slice($signerBytes,0,32); // Copy signer
+        $p3 = array_slice($bytes,100,4);// Copy type and version
+        $p4 = array_slice($bytes,100 + 2 + 2 + 16, count($bytes) - 120);// Copy following data
+
+        $utils = new Utils;
+        var_dump(count($bytes));
+        $size = $utils->intToArray(count($bytes) - 64 - 16);
+        $p1 = $utils->ReverseByteArray($size);
+
+        $resultBytes = array_merge($p1,$p2,$p3,$p4);
+        var_dump($resultBytes);
+        return $resultBytes;
     }
 }

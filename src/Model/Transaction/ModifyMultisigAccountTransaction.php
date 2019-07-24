@@ -122,9 +122,9 @@ class ModifyMultisigAccountTransaction extends \NEM\Model\Transaction{
         ModifyMultisigAccountTransactionBuffer::addNumModifications($builder, count($modifications));
         ModifyMultisigAccountTransactionBuffer::addModifications($builder, $modificationsVector);
         
-        $codedTransfer = ModifyMultisigAccountTransactionBuffer::endModifyMultisigAccountTransactionBuffer($builder);
+        $codedTransaction = ModifyMultisigAccountTransactionBuffer::endModifyMultisigAccountTransactionBuffer($builder);
         
-        $builder->finish($codedTransfer);
+        $builder->finish($codedTransaction);
         $ModifyMultisigAccountTransactionSchema = new ModifyMultisigAccountTransactionSchema;
         
         $tmp = unpack("C*",$builder->sizedByteArray());
@@ -132,32 +132,5 @@ class ModifyMultisigAccountTransaction extends \NEM\Model\Transaction{
         $output = $ModifyMultisigAccountTransactionSchema->serialize($builder_byte);
         return $output;
     }
-
-    // public function DecodeString(string $s){
-    //     $CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
-    //     $arr = unpack('C*', $s);
-    //     $convertedBytes = array();
-    //     $index = 0;
-    //     $bitCount = 0;
-    //     $current = 0;
-    //     for ($i=1;$i<=count($arr);$i++){
-    //         //echo "1";
-    //         $symbolValue = strpos($CHARS,chr($arr[$i]));
-    //         if ($symbolValue < 0) {
-    //             throw new Exception("symbol value must bigger than 0");
-    //         }
-    //         for ($j=4;$j>=0;$j--) {
-    //             $current = ($current << 1) + ($symbolValue >> $j & 0x1);
-    //             $bitCount++;
-    //             if ($bitCount == 8) {
-    //                 $convertedBytes[$index++] = $current;
-
-    //                 $bitCount = 0;
-    //                 $current = 0;
-    //             }
-    //         }
-    //     }
-    //     return $convertedBytes;
-    // }
 }
 ?>

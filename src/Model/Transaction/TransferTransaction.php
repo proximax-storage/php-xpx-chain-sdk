@@ -144,9 +144,9 @@ class TransferTransaction extends \NEM\Model\Transaction{
         TransferTransactionBuffer::addMessage($builder, $messageVector);
         TransferTransactionBuffer::addMosaics($builder, $mosaicsVector);
         
-        $codedTransfer = TransferTransactionBuffer::endTransferTransactionBuffer($builder);
+        $codedTransaction = TransferTransactionBuffer::endTransferTransactionBuffer($builder);
         
-        $builder->finish($codedTransfer);
+        $builder->finish($codedTransaction);
         $TransferTransactionSchema = new TransferTransactionSchema;
         //var_dump($builder->sizedByteArray());
         $tmp = unpack("C*",$builder->sizedByteArray());

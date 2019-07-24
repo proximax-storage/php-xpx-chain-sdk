@@ -73,4 +73,8 @@ class Account{
     public function getPublicAccount(){
         return $this->publicAccount;
     }
+
+    public function getKeyPair(){
+        return $this->keyPair;
+    }
 }
