@@ -64,6 +64,6 @@
 
     var_dump($signedTransaction);
     $transaction = new Transaction;
-    $transaction->AnnounceTransaction($config, $signedTransaction->payload);
+    $transaction->AnnounceTransaction($config, $signedTransaction);
 
 ?>

@@ -36,7 +36,7 @@ class Mosaic{
         if ($name === null || $name == "xpx"){
             $this->id = array(481110499,231112638); //xpx id
         }
-        else throw new Exception("Wrong mosaic name");
+        else throw new \Exception("Wrong mosaic name");
         
         if ($amount === null){
             $this->amount = array(0,0);

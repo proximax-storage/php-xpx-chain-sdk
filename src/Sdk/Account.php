@@ -60,44 +60,6 @@ class Account{
     public function Sign($tx){
         return signTransactionWith($tx, $this);
     }
-    
-    /**
-     * sign AggregateTransaction with current Account and with every passed cosignatory Account's
-     * returns announced Aggregate SignedTransaction
-     *
-     * @param  AggregateTransaction $tx
-     *
-     * @param Account[] $cosignatories 
-     * 
-     * @return SignedTransaction
-     */
-    // public function SignWithCosignatures($tx, $cosignatories){
-    //     return signTransactionWithCosignatures(tx, a, cosignatories);
-    // }
-    
-    // public function SignCosignatureTransaction(tx *CosignatureTransaction) (*CosignatureSignedTransaction, error) {
-    //     return signCosignatureTransaction(a, tx)
-    // }
-    
-    // public function EncryptMessage(message string, recipientPublicAccount *PublicAccount) (*SecureMessage, error) {
-    //     rpk, err := crypto.NewPublicKeyfromHex(recipientPublicAccount.PublicKey)
-    
-    //     if err != nil {
-    //         return nil, err
-    //     }
-    
-    //     return NewSecureMessageFromPlaintText(message, a.KeyPair.PrivateKey, rpk)
-    // }
-    
-    // public function DecryptMessage(encryptedMessage *SecureMessage, senderPublicAccount *PublicAccount) (*PlainMessage, error) {
-    //     spk, err := crypto.NewPublicKeyfromHex(senderPublicAccount.PublicKey)
-    
-    //     if err != nil {
-    //         return nil, err
-    //     }
-    
-    //     return NewPlainMessageFromEncodedData(encryptedMessage.Payload(), a.KeyPair.PrivateKey, spk)
-    // }
 
     /**
      *

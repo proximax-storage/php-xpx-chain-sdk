@@ -63,22 +63,22 @@ class Address{
         $this->address = $address;
         $this->networkType = dechex($networkType);
         if ($networkType == 168 && $address[0] != "V"){
-            throw new Exception("PublicTest Address must start with V");
+            throw new \Exception("PublicTest Address must start with V");
         }
         else if ($networkType == 184 && $address[0] != "X"){
-            throw new Exception("Public Address must start with X");
+            throw new \Exception("Public Address must start with X");
         }
         else if ($networkType == 96 && $address[0] != "M"){
-            throw new Exception("Mijin Address must start with M");
+            throw new \Exception("Mijin Address must start with M");
         }
         else if ($networkType == 144 && $address[0] != "S"){
-            throw new Exception("MijinTest Address must start with S");
+            throw new \Exception("MijinTest Address must start with S");
         }
         else if ($networkType == 200 && $address[0] != "Z"){
-            throw new Exception("Private Address must start with Z");
+            throw new \Exception("Private Address must start with Z");
         }
         else if ($networkType == 176 && $address[0] != "W"){
-            throw new Exception("PrivateTest Address must start with W");
+            throw new \Exception("PrivateTest Address must start with W");
         }
     }
     

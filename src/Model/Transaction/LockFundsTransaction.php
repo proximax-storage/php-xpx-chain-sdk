@@ -27,6 +27,7 @@ use \Google\FlatBuffers\FlatbufferBuilder;
 use \Catapult\Buffers\MessageBuffer;
 use \Catapult\Buffers\MosaicBuffer;
 use \Catapult\Buffers\LockFundsTransactionBuffer;
+use NEM\Utils\Utils;
 
 /**
  * LockFundsTransaction class Doc Comment
@@ -86,10 +87,10 @@ class LockFundsTransaction extends \NEM\Model\Transaction{
         
         $v = ($networkType << 8) + $version;
         // Create Vectors
-        $signatureVector = LockFundsTransactionBuffer::createSignatureVector($builder, array());
-        $signerVector = LockFundsTransactionBuffer::createSignerVector($builder, array());
+        $signatureVector = LockFundsTransactionBuffer::createSignatureVector($builder, (new Utils)->createArray64Zero());
+        $signerVector = LockFundsTransactionBuffer::createSignerVector($builder, (new Utils)->createArray32Zero());
         $deadlineVector = LockFundsTransactionBuffer::createDeadlineVector($builder, $deadline->getTimeArray());
-        $feeVector = LockFundsTransactionBuffer::createFeeVector($builder, $maxFee);
+        $feeVector = LockFundsTransactionBuffer::createMaxFeeVector($builder, $maxFee);
         $mosaicIdVector = LockFundsTransactionBuffer::createMosaicIdVector($builder, $mosaic->getId());
         $mosaicAmountVector = LockFundsTransactionBuffer::createMosaicAmountVector($builder, $mosaic->getAmount());
         $durationVector = LockFundsTransactionBuffer::createDurationVector($builder, $duration);
@@ -101,18 +102,18 @@ class LockFundsTransaction extends \NEM\Model\Transaction{
         LockFundsTransactionBuffer::addSize($builder, 176);
         LockFundsTransactionBuffer::addSignature($builder, $signatureVector);
         LockFundsTransactionBuffer::addSigner($builder, $signerVector);
-        LockFundsTransactionBuffer::addVersion($builder, $version);
+        LockFundsTransactionBuffer::addVersion($builder, $v);
         LockFundsTransactionBuffer::addType($builder, $type);
-        LockFundsTransactionBuffer::addFee($builder, $feeVector);
+        LockFundsTransactionBuffer::addMaxFee($builder, $feeVector);
         LockFundsTransactionBuffer::addDeadline($builder, $deadlineVector);
         LockFundsTransactionBuffer::addMosaicId($builder, $mosaicIdVector);
         LockFundsTransactionBuffer::addMosaicAmount($builder, $mosaicAmountVector);
         LockFundsTransactionBuffer::addDuration($builder, $durationVector);
         LockFundsTransactionBuffer::addHash($builder, $hashVector);
 
-        $codedTransaction = LockFundsTransactionBuffer::endAggregateTransactionBuffer($builder);
+        $codedTransaction = LockFundsTransactionBuffer::endLockFundsTransactionBuffer($builder);
         
-        $builder->finish($codedTransfer);
+        $builder->finish($codedTransaction);
         $LockFundsTransactionSchema = new LockFundsTransactionSchema;
 
         $tmp = unpack("C*",$builder->sizedByteArray());

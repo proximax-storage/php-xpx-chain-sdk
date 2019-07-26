@@ -27,7 +27,7 @@ use NEM\Model\Transaction\Constants;
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
-class ModifyMultisigAccountTransactionSchema extends Schema{
+class AggregateTransactionSchema extends Schema{
     public function __construct() {
         $arr = array(
             new ScalarAttribute("size", Constants::SIZEOF_INT),
@@ -40,6 +40,7 @@ class ModifyMultisigAccountTransactionSchema extends Schema{
             new ScalarAttribute("transactionsSize", Constants::SIZEOF_INT),
             new ArrayAttribute("transactions", Constants::SIZEOF_BYTE)
         );
+        parent::__construct($arr);
     }
 }
 ?>

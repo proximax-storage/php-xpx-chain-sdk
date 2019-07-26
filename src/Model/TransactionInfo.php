@@ -25,19 +25,19 @@ namespace NEM\Model;
  */
 class TransactionInfo{
 
-    public $height; //HeightDTO
+    private $height; //HeightDTO
 
-    public $index; //int
+    private $index; //int
 
-    public $id; //string
+    private $id; //string
 
-    public $hash; //string
+    private $hash; //string
 
-    public $merkleComponentHash;//string
+    private $merkleComponentHash;//string
 
-    public $aggregateHash;//string
+    private $aggregateHash;//string
 
-    public $aggregateId;//string
+    private $aggregateId;//string
 
 
     public function __construct($height = null, $index = null, $id = null, $hash = null, 
@@ -76,6 +76,38 @@ class TransactionInfo{
             $this->aggregateId = $aggregateId;
         }
         else $this->aggregateId = null;
+    }
+
+    public function getHeight(){
+        return $this->height;
+    }
+
+    public function getIndex(){
+        return $this->index;
+    }
+
+    public function getId(){
+        return $this->id;
+    }
+
+    public function getHash(){
+        return $this->hash;
+    }
+
+    public function getMerkleComponentHash(){
+        return $this->merkleComponentHash;
+    }
+
+    public function getAggregateHash(){
+        return $this->aggregateHash;
+    }
+
+    public function getAggregateId(){
+        return $this->aggregateId;
+    }
+
+    public function setHash($hash){
+        return $this->hash = $hash;
     }
 }
 ?>
