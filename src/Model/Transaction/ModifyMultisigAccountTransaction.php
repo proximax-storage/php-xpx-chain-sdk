@@ -28,6 +28,7 @@ use \Catapult\Buffers\ModifyMultisigAccountTransactionBuffer;
 use \Catapult\Buffers\TransferTransactionBuffer;
 use \Catapult\Buffers\CosignatoryModificationBuffer;
 use NEM\Utils\Hex;
+use NEM\Utils\Utils;
 
 /**
  * ModifyMultisigAccountTransaction class Doc Comment
@@ -100,8 +101,8 @@ class ModifyMultisigAccountTransaction extends \NEM\Model\Transaction{
         $v = ($networkType << 8) + $version;
 
         // Create Vectors
-        $signatureVector = ModifyMultisigAccountTransactionBuffer::createSignatureVector($builder, array());
-        $signerVector = ModifyMultisigAccountTransactionBuffer::createSignerVector($builder, array());
+        $signatureVector = ModifyMultisigAccountTransactionBuffer::createSignatureVector($builder, (new Utils)->createArray64Zero());
+        $signerVector = ModifyMultisigAccountTransactionBuffer::createSignerVector($builder, (new Utils)->createArray32Zero());
         $deadlineVector = ModifyMultisigAccountTransactionBuffer::createDeadlineVector($builder, $deadline->getTimeArray());
         $feeVector = ModifyMultisigAccountTransactionBuffer::createFeeVector($builder, $maxFee);
         

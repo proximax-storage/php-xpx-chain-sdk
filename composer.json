@@ -1,5 +1,5 @@
 {
-    "name": "nemcoreprojectteam/nem2-sdk-php",
+    "name": "proximax/php-xpx-chain-sdk",
     "description": "Composer Package for PHP, Wrapper to use the NEM blockchain REST API and SDK with NIS compatibility.",
     "keywords": ["nem", "cryptocurrency", "api", "sdk", "restful", "nem-php", "php-nem"],
     "license": "MIT",

@@ -75,7 +75,8 @@ class Transaction{
 
     public function toAggregateTransactionBytes() {
         $hex = new Hex;
-        $signerBytes = $hex->DecodeString($this->abstractTransaction->signer->getPublicKey()->getHex()); 
+        $signerBytes = $hex->DecodeString($this->abstractTransaction->signer->getPublicKey()); 
+
         $bytes = $this->generateBytes();
         $resultBytes = array();
 
@@ -84,12 +85,11 @@ class Transaction{
         $p4 = array_slice($bytes,100 + 2 + 2 + 16, count($bytes) - 120);// Copy following data
 
         $utils = new Utils;
-        var_dump(count($bytes));
+        
         $size = $utils->intToArray(count($bytes) - 64 - 16);
         $p1 = $utils->ReverseByteArray($size);
 
         $resultBytes = array_merge($p1,$p2,$p3,$p4);
-        var_dump($resultBytes);
         return $resultBytes;
     }
 }

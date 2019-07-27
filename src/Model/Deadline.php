@@ -31,14 +31,19 @@ class Deadline{
 
     public function __construct($addTime = null){
         $time = new \DateTime();
-        if ($addTime !== null){
-            $interval = 'PT' . $addTime . 'H'; //unit hour
+        if ($addTime === null){
+            $interval = 'PT' . 2 . 'H'; //default 2 hours
             $time->add(new \DateInterval($interval));
         }
-        else {
-            $interval = 'PT1M'; //default 1 minute
-            $time->add(new \DateInterval($interval));
-        }      
+        else if ($addTime !== null){
+            if ($addTime <= 0 || $addTime >= 24){
+                throw new \Exception("Deadline is between 0 and 24 hours");
+            }
+            else{
+                $interval = 'PT' . $addTime . 'H'; //unit hour
+                $time->add(new \DateInterval($interval));
+            }
+        }    
         $this->time = $time;
     }
 

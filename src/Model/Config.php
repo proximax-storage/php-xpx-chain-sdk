@@ -47,7 +47,7 @@ class Config{
 
     public function NewConfigWithReputation($baseUrl, $networkType, $confDef, $wsReconnectionTimeout){
         if (strlen($baseUrl) == 0) {
-            throw new Exception("empty base urls");
+            throw new \Exception("empty base urls");
         }
         $c = array(
             "BaseURL" => $baseUrl,

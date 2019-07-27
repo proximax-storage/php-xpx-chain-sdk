@@ -26,6 +26,7 @@ use \Google\FlatBuffers\FlatbufferBuilder;
 use \Catapult\Buffers\MessageBuffer;
 use \Catapult\Buffers\MosaicBuffer;
 use \Catapult\Buffers\TransferTransactionBuffer;
+use NEM\Utils\Utils;
 
 /**
  * TransferTransaction class Doc Comment
@@ -104,8 +105,8 @@ class TransferTransaction extends \NEM\Model\Transaction{
 
         $v = ($networkType << 8) + $version;
         // Create Vectors
-        $signatureVector = TransferTransactionBuffer::createSignatureVector($builder, array());
-        $signerVector = TransferTransactionBuffer::createSignerVector($builder, array());
+        $signatureVector = TransferTransactionBuffer::createSignatureVector($builder, (new Utils)->createArray64Zero());
+        $signerVector = TransferTransactionBuffer::createSignerVector($builder, (new Utils)->createArray32Zero());
         $recipientVector = TransferTransactionBuffer::createRecipientVector($builder, $recipientBytes);
         $mosaicsVector = TransferTransactionBuffer::createMosaicsVector($builder, $mosaicBuffers);
         $deadlineVector = TransferTransactionBuffer::createDeadlineVector($builder, $deadline->getTimeArray());
@@ -166,7 +167,7 @@ class TransferTransaction extends \NEM\Model\Transaction{
             //echo "1";
             $symbolValue = strpos($CHARS,chr($arr[$i]));
             if ($symbolValue < 0) {
-                throw new Exception("symbol value must bigger than 0");
+                throw new \Exception("symbol value must bigger than 0");
             }
             for ($j=4;$j>=0;$j--) {
                 $current = ($current << 1) + ($symbolValue >> $j & 0x1);

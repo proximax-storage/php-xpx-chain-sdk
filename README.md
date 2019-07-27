@@ -10,10 +10,10 @@ The ProximaX Sirius Catapult Chain PHP SDK works as a lightweight PHP library fo
 
 ## Installation
 
-You can install this package with Composer. You only need to require nemcoreprojectteam/nem2-sdk-php.
+You can install this package with Composer. You only need to require proximax/php-xpx-chain-sdk.
 
 ```php
-composer require nemcoreprojectteam/nem2-sdk-php
+composer require proximax/php-xpx-chain-sdk
 ```
 
 Once you have required the package in your `composer.json` file (or using the command above), you can install the dependencies of this package:

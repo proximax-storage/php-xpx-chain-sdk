@@ -42,6 +42,7 @@ class LockFundsTransactionSchema extends Schema{
             new ArrayAttribute("duration", Constants::SIZEOF_INT),
             new ArrayAttribute("hash", Constants::SIZEOF_BYTE)
         );
+        parent::__construct($arr);
     }
 }
 ?>

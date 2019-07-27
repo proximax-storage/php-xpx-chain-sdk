@@ -40,15 +40,18 @@ class Account{
 
     public function sign($transaction){
         $byte_data = $transaction->generateBytes();
-        $new = array_slice($byte_data,4,count($byte_data)-4);
-
+        // var_dump("---byte--");
+        // var_dump($byte_data);
+        $new = array_slice($byte_data,100,count($byte_data)-100);
+        
         $signature = $this->keyPair->sign($new,"sha3-512",8);
 
         $p1 = array_slice($byte_data,0,4);
+        // var_dump("---4 bit dau--");
+        // var_dump($p1);
         $p = array_merge($p1,$signature,$this->keyPair->getPublicKey(8),$new);
 
-        $hex = new Hex;
-        $ph = $hex->EncodeToString($p);
+        $ph = (new Hex)->EncodeToString($p);
 
         $h = $transaction->createTransactionHash($ph);
 
@@ -58,9 +61,20 @@ class Account{
 
     }
 
+    public function signCosignatureTransaction($cosignTransaction){
+        $signer = $this->publicAccount;
+        $hash = $cosignTransaction->getTransactionToSign()->getAbstractTransaction()->transactionInfo->getHash();
+        //var_dump($hash);
+        $byte = (new Hex)->DecodeString($hash);
+        $signature = $this->keyPair->sign($byte,"sha3-512",8);
+        return new CosignatureSignedTransaction($hash,(new Hex)->EncodeToString($signature),$signer->getPublicKey());
+    }
+    
+
     public function newAccountFromPrivateKey($privateKey,$networkType){
         $keyPair = new KeyPair($privateKey);
-        $publicAccount = new PublicAccount($keyPair->getAddress($networkType),$keyPair->getPublicKey());
+        $address = Address::fromPublicKey($keyPair->getPublicKey()->getHex(),$networkType);
+        $publicAccount = new PublicAccount($address,strtoupper($keyPair->getPublicKey()->getHex()));
         return new Account($keyPair,$publicAccount);
     }
 

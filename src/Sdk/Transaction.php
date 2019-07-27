@@ -258,7 +258,53 @@ class Transaction{
         if ($data[1] == 202){ // successfull
             return $data[0]->message;
         }
-        else throw new Exception("Error");
+        else throw new \Exception("Error");
+    }
+
+    /**
+     *
+     * @param config $config
+     *
+     * @param String $payload
+     * 
+     * @return response
+     */
+    public function AnnounceAggregateBondedTransaction($config, $payload){
+        $TransactionRoutesApi = new TransactionRoutesApi;
+        $ApiClient = new ApiClient;
+        $url = $config->BaseURL;
+        $ApiClient->setHost($url);
+        $networkType = $config->NetworkType;
+
+        $data = $TransactionRoutesApi->announcePartialTransaction($payload);
+        
+        if ($data[1] == 202){ // successfull
+            return $data[0]->message;
+        }
+        else throw new \Exception("Error");
+    }
+
+    /**
+     *
+     * @param config $config
+     *
+     * @param String $payload
+     * 
+     * @return response
+     */
+    public function AnnounceAggregateBondedCosignatureTransaction($config, $payload){
+        $TransactionRoutesApi = new TransactionRoutesApi;
+        $ApiClient = new ApiClient;
+        $url = $config->BaseURL;
+        $ApiClient->setHost($url);
+        $networkType = $config->NetworkType;
+
+        $data = $TransactionRoutesApi->announceCosignatureTransaction($payload);
+        
+        if ($data[1] == 202){ // successfull
+            return $data[0]->message;
+        }
+        else throw new \Exception("Error");
     }
 }
 ?>

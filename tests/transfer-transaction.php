@@ -34,6 +34,6 @@
     $signed = $account->sign($transfer);
 
     $transaction = new Transaction;
-    $transaction->AnnounceTransaction($config, $signed->payload);
+    $transaction->AnnounceTransaction($config, $signed);
 
 ?>

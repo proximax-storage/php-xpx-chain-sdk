@@ -180,5 +180,25 @@ class Utils{
         $p4 = $int & 0xFF;
         return array($p1, $p2, $p3, $p4);
     }
+
+    public function createArray64Zero(){
+        for ($i=0;$i<64;$i++){
+            $array[$i] = 0;
+        }
+        return $array;
+    }
+
+    public function createArray32Zero(){
+        for ($i=0;$i<32;$i++){
+            $array[$i] = 0;
+        }
+        return $array;
+    }
+
+    public function stringToByteArray($string){
+        $tmp = unpack('C*', $string);
+        $array = array_slice($tmp,0,count($tmp));
+        return $array;
+    }
 }
 ?>
