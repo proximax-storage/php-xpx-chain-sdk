@@ -81,7 +81,7 @@ class NetworkRoutesApi
      */
     public function getNetworkType()
     {
-        list($response) = $this->getNetworkTypeWithHttpInfo();
+        $response = $this->getNetworkTypeWithHttpInfo();
         return $response;
     }
 
@@ -139,7 +139,8 @@ class NetworkRoutesApi
             }
 
             return [
-                ObjectSerializer::deserialize($content, $returnType, []),
+                //ObjectSerializer::deserialize($content, $returnType, []),
+                $content,
                 $response->getStatusCode(),
                 $response->getHeaders()
             ];

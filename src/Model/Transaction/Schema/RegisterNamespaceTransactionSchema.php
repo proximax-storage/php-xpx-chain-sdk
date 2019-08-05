@@ -20,14 +20,14 @@ use NEM\Model\Transaction\Attribute\TableArrayAttribute;
 use NEM\Model\Transaction\Constants;
 
 /**
- * LockFundsTransactionSchema class Doc Comment
+ * RegisterNamespaceTransactionSchema class Doc Comment
  *
  * @category class
  * @package  NEM
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
-class LockFundsTransactionSchema extends Schema{
+class RegisterNamespaceTransactionSchema extends Schema{
     public function __construct() {
         $arr = array(
             new ScalarAttribute("size", Constants::SIZEOF_INT),
@@ -37,10 +37,11 @@ class LockFundsTransactionSchema extends Schema{
             new ScalarAttribute("type", Constants::SIZEOF_SHORT),
             new ArrayAttribute("fee", Constants::SIZEOF_INT),
             new ArrayAttribute("deadline", Constants::SIZEOF_INT),
-            new ArrayAttribute("mosaicId", Constants::SIZEOF_INT),
-            new ArrayAttribute("mosaicAmount", Constants::SIZEOF_INT),
-            new ArrayAttribute("duration", Constants::SIZEOF_INT),
-            new ArrayAttribute("hash", Constants::SIZEOF_BYTE)
+            new ScalarAttribute("namespaceType", Constants::SIZEOF_BYTE),
+            new ArrayAttribute("durationParentId", Constants::SIZEOF_INT),
+            new ArrayAttribute("namespaceId", Constants::SIZEOF_INT),
+            new ScalarAttribute("namespaceNameSize", Constants::SIZEOF_BYTE),
+            new ArrayAttribute("name", Constants::SIZEOF_BYTE)
         );
         parent::__construct($arr);
     }

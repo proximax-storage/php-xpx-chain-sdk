@@ -55,7 +55,7 @@ class Account{
 
         $h = $transaction->createTransactionHash($ph);
 
-        $signedTransaction = new SignedTransaction($transaction->getAbstractTransaction()->type,strtoupper($ph),strtoupper($h));
+        $signedTransaction = new SignedTransaction($transaction->getAbstractTransaction()->getType(),strtoupper($ph),strtoupper($h));
 
         return $signedTransaction;
 
@@ -63,8 +63,7 @@ class Account{
 
     public function signCosignatureTransaction($cosignTransaction){
         $signer = $this->publicAccount;
-        $hash = $cosignTransaction->getTransactionToSign()->getAbstractTransaction()->transactionInfo->getHash();
-        //var_dump($hash);
+        $hash = $cosignTransaction->getTransactionToSign()->getAbstractTransaction()->getTransactionInfo()->getHash();
         $byte = (new Hex)->DecodeString($hash);
         $signature = $this->keyPair->sign($byte,"sha3-512",8);
         return new CosignatureSignedTransaction($hash,(new Hex)->EncodeToString($signature),$signer->getPublicKey());

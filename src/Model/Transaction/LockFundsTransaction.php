@@ -28,6 +28,7 @@ use \Catapult\Buffers\MessageBuffer;
 use \Catapult\Buffers\MosaicBuffer;
 use \Catapult\Buffers\LockFundsTransactionBuffer;
 use NEM\Utils\Utils;
+use NEM\Model\AbstractTransaction;
 
 /**
  * LockFundsTransaction class Doc Comment
@@ -46,23 +47,21 @@ class LockFundsTransaction extends \NEM\Model\Transaction{
     private $signedTransaction;
      
     public function __construct($deadline, $mosaic, $duration, $signedTransaction ,$networkType){
-        $abstractTransaction = new \stdClass();
-        $abstractTransaction->version = TransactionVersion::LOCK_VERSION;
-        $abstractTransaction->deadline = $deadline;
-        $abstractTransaction->type = hexdec(TransactionType::LOCK);
+        $version = TransactionVersion::LOCK_VERSION;
+        $type = hexdec(TransactionType::LOCK);
         if (is_string($networkType) && in_array(strtolower($networkType), ["mijin", "mijintest", "public", "publictest", "private", "privatetest", "NotSupportedNet", "aliasaddress"])){
             $networkType = Network::$networkInfos[strtolower($networkType)]["id"];
         }
         else if (is_numeric($networkType) && !in_array($networkType, [96, 144, 184, 168, 200, 176, 0, 145])) {
             throw new NISInvalidNetworkId("Invalid netword ID '" . $networkType . "'");
         } 
-        $abstractTransaction->networkType = $networkType;
+        $maxFee = array(0,0);
+        $signature = ""; 
+        $signer = new PublicAccount;
+        $transactionInfo = new TransactionInfo;
 
-        $abstractTransaction->maxFee = array(0,0);
-        $abstractTransaction->signature = ""; 
-        $abstractTransaction->signer = new PublicAccount;
-        $abstractTransaction->transactionInfo = new TransactionInfo;
-
+        $abstractTransaction = new AbstractTransaction($transactionInfo,$deadline,$networkType,
+                                                    $type,$version,$maxFee,$signature,$signer);
         $this->setAbstractTransaction($abstractTransaction);
 
         $this->mosaic = $mosaic;
@@ -71,13 +70,13 @@ class LockFundsTransaction extends \NEM\Model\Transaction{
     }
 
     public function generateBytes() {
-        $networkType = $this->getAbstractTransaction()->networkType;
-        $version = $this->getAbstractTransaction()->version;
-        $deadline = $this->getAbstractTransaction()->deadline;
-        $signature = $this->getAbstractTransaction()->signature;
-        $signer = $this->getAbstractTransaction()->signer;
-        $maxFee = $this->getAbstractTransaction()->maxFee;
-        $type = $this->getAbstractTransaction()->type;
+        $networkType = $this->getAbstractTransaction()->getNetworkType();
+        $version = $this->getAbstractTransaction()->getVersion();
+        $deadline = $this->getAbstractTransaction()->getDeadline();
+        $signature = $this->getAbstractTransaction()->getSignature();
+        $signer = $this->getAbstractTransaction()->getSigner();
+        $maxFee = $this->getAbstractTransaction()->getMaxFee();
+        $type = $this->getAbstractTransaction()->getType();
 
         $duration = $this->duration;
         $mosaic = $this->mosaic;
@@ -87,8 +86,8 @@ class LockFundsTransaction extends \NEM\Model\Transaction{
         
         $v = ($networkType << 8) + $version;
         // Create Vectors
-        $signatureVector = LockFundsTransactionBuffer::createSignatureVector($builder, (new Utils)->createArray64Zero());
-        $signerVector = LockFundsTransactionBuffer::createSignerVector($builder, (new Utils)->createArray32Zero());
+        $signatureVector = LockFundsTransactionBuffer::createSignatureVector($builder, (new Utils)->createArrayZero(64));
+        $signerVector = LockFundsTransactionBuffer::createSignerVector($builder, (new Utils)->createArrayZero(32));
         $deadlineVector = LockFundsTransactionBuffer::createDeadlineVector($builder, $deadline->getTimeArray());
         $feeVector = LockFundsTransactionBuffer::createMaxFeeVector($builder, $maxFee);
         $mosaicIdVector = LockFundsTransactionBuffer::createMosaicIdVector($builder, $mosaic->getId());

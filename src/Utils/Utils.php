@@ -78,85 +78,12 @@ class Utils{
         return $this->hex->DecodeString($s);
     }
 
-    /**
-     * BigIntToByteArray converts a BigInteger to a little endian byte array.
-     *
-     * @param  BigInt $value
-     *
-     * @param  int $numBytes
-     * 
-     * @return byte array $outputBytes
-     */
-    public function BigIntToByteArray($value, $numBytes){
-        // output must have length NumBytes!
-        $outputBytes = array();
-        $bigIntegerBytes = value.Bytes();
-        $copyStartIndex = 0;
-
-        if (count($bigIntegerBytes) == 0) {
-            return $outputBytes;
-        }
-        if (0x00 == $bigIntegerBytes[0]) {
-            $copyStartIndex = 1;
-        }
-        $numBytesToCopy = count($bigIntegerBytes) - $copyStartIndex;
-        if ($numBytesToCopy > $numBytes) {
-            $copyStartIndex += $numBytesToCopy - $numBytes;
-            $numBytesToCopy = $numBytes;
-        }
-
-        //reverse & copy
-        for ($i=0;$i<$numBytesToCopy;$i++) {
-            $outputBytes[$i] = $bigIntegerBytes[$copyStartIndex+$numBytesToCopy-$i-1];
-        }
-
-        return $outputBytes;
-    }
-
-    /**
-     * BytesToBigInteger converts a little endian byte array to a BigInteger.
-     *
-     * @param  byte array $bytes
-     * 
-     * @return bigInt
-     */
-    // public function BytesToBigInteger($bytes){
-
-    //     $bigEndianBytes = array();
-    //     //reverse & copy
-    //     for ($i=0;$i<count($bytes);$i++) {
-    //         $bigEndianBytes[$i+1] = $bytes[count($bytes)-$i-1];
-    //     }
-    //     return (&big.Int{}).SetBytes($bigEndianBytes);
-    // }
-
-    /**
-     * EqualsBigInts return true is first & second equals
-     *
-     * @param  BigInt $first
-     *
-     * @param  BigInt $second
-     * 
-     * @return bool
-     */
-    // public function EqualsBigInts($first, $second ) {
-    //     if ($first == null && $second == null) {
-    //         return true;
-    //     }
-
-    //     if ($first != null) {
-    //         return $first.Cmp(second) == 0;
-    //     }
-
-    //     return $second.Cmp(first) == 0;
-    // }
-
     public function fromBigInt($int){
         if ($int == null) {
             return array(0, 0);
         }
         $l = $int & 0xFFFFFFFF;
-        $r = $int >> 32;
+        $r = ($int >> 32) & 0xFFFFFFFF;
         return array($l, $r);
     }
 
@@ -181,15 +108,8 @@ class Utils{
         return array($p1, $p2, $p3, $p4);
     }
 
-    public function createArray64Zero(){
-        for ($i=0;$i<64;$i++){
-            $array[$i] = 0;
-        }
-        return $array;
-    }
-
-    public function createArray32Zero(){
-        for ($i=0;$i<32;$i++){
+    public function createArrayZero($num){
+        for ($i=0;$i<$num;$i++){
             $array[$i] = 0;
         }
         return $array;
@@ -199,6 +119,56 @@ class Utils{
         $tmp = unpack('C*', $string);
         $array = array_slice($tmp,0,count($tmp));
         return $array;
+    }
+
+    /**
+     * @param int $num is string input
+     * 
+     * @param int $frombase is type origin input
+     * 
+     * @param int $tobase is type output need
+     */
+    public function improve_base_convert($num, $frombase, $tobase){
+        $numstring = "";
+        while($num >= 1){
+            $char = $num % 10;
+            var_dump((string)$char);
+            $numstring = (string)$char . $numstring;
+            $num = $num / 10;
+        }
+        var_dump("day ne");
+        var_dump($numstring);
+        $chars = "0123456789abcdefghijklmnopqrstuvwxyz";
+        $tostring = substr($chars, 0, $tobase);
+    
+        $length = strlen($numstring);
+        $result = '';
+        for ($i = 0; $i < $length; $i++){
+            $number[$i] = strpos($chars, $numstring{$i});
+        }
+        do{
+            $divide = 0;
+            $newlen = 0;
+            for ($i = 0; $i < $length; $i++){
+                $divide = $divide * $frombase + $number[$i];
+                if ($divide >= $tobase){
+                    $number[$newlen++] = (int)($divide / $tobase);
+                    $divide = $divide % $tobase;
+                } 
+                elseif ($newlen > 0){
+                    $number[$newlen++] = 0;
+                }
+            }
+            $length = $newlen;
+            $result = $tostring{$divide} . $result;
+        } 
+        while ($newlen != 0);
+
+        return $result;
+    }
+
+    public function uint32LittleEndian($arr){
+        return ($arr[3] << 24) | ($arr[2] << 16) | ($arr[1] << 8) | ($arr[0]);
     }
 }
 ?>

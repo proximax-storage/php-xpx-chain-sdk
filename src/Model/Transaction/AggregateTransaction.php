@@ -27,6 +27,7 @@ use \Catapult\Buffers\MessageBuffer;
 use \Catapult\Buffers\MosaicBuffer;
 use \Catapult\Buffers\AggregateTransactionBuffer;
 use NEM\Utils\Utils;
+use NEM\Model\AbstractTransaction;
 
 /**
  * AggregateTransaction class Doc Comment
@@ -41,43 +42,41 @@ class AggregateTransaction extends \NEM\Model\Transaction{
     private $innerTransactions;
      
     public function __construct($deadline, $innerTransactions, $networkType){
-        $abstractTransaction = new \stdClass();
-        $abstractTransaction->version = "";//TransactionVersion::AGGREGATE_BONDED_VERSION;
-        $abstractTransaction->deadline = $deadline;
-        $abstractTransaction->type = "";//hexdec(TransactionType::AGGREGATE_BONDED);
+        $version = "";
+        $type = "";
         if (is_string($networkType) && in_array(strtolower($networkType), ["mijin", "mijintest", "public", "publictest", "private", "privatetest", "NotSupportedNet", "aliasaddress"])){
             $networkType = Network::$networkInfos[strtolower($networkType)]["id"];
         }
         else if (is_numeric($networkType) && !in_array($networkType, [96, 144, 184, 168, 200, 176, 0, 145])) {
             throw new NISInvalidNetworkId("Invalid netword ID '" . $networkType . "'");
         } 
-        $abstractTransaction->networkType = $networkType;
+        $maxFee = array(0,0);
+        $signature = ""; 
+        $signer = new PublicAccount;
+        $transactionInfo = new TransactionInfo;
 
-        $abstractTransaction->maxFee = array(0,0);
-        $abstractTransaction->signature = ""; 
-        $abstractTransaction->signer = new PublicAccount;
-        $abstractTransaction->transactionInfo = new TransactionInfo;
-
+        $abstractTransaction = new AbstractTransaction($transactionInfo,$deadline,$networkType,
+                                                    $type,$version,$maxFee,$signature,$signer);
         $this->setAbstractTransaction($abstractTransaction);
         $this->innerTransactions = $innerTransactions;
     }
 
     public function createBonded(){
-        $this->getAbstractTransaction()->version = TransactionVersion::AGGREGATE_BONDED_VERSION;
-        $this->getAbstractTransaction()->type = hexdec(TransactionType::AGGREGATE_BONDED);
+        $this->getAbstractTransaction()->setVersion(TransactionVersion::AGGREGATE_BONDED_VERSION);
+        $this->getAbstractTransaction()->setType(hexdec(TransactionType::AGGREGATE_BONDED));
     }
     public function createCompleted(){
-        $this->getAbstractTransaction()->version = TransactionVersion::AGGREGATE_COMPLETED_VERSION;
-        $this->getAbstractTransaction()->type = hexdec(TransactionType::AGGREGATE_COMPLETED);
+        $this->getAbstractTransaction()->setVersion(TransactionVersion::AGGREGATE_COMPLETED_VERSION);
+        $this->getAbstractTransaction()->setType(hexdec(TransactionType::AGGREGATE_COMPLETED));
     }
     public function generateBytes() {
-        $networkType = $this->getAbstractTransaction()->networkType;
-        $version = $this->getAbstractTransaction()->version;
-        $deadline = $this->getAbstractTransaction()->deadline;
-        $signature = $this->getAbstractTransaction()->signature;
-        $signer = $this->getAbstractTransaction()->signer;
-        $maxFee = $this->getAbstractTransaction()->maxFee;
-        $type = $this->getAbstractTransaction()->type;
+        $networkType = $this->getAbstractTransaction()->getNetworkType();
+        $version = $this->getAbstractTransaction()->getVersion();
+        $deadline = $this->getAbstractTransaction()->getDeadline();
+        $signature = $this->getAbstractTransaction()->getSignature();
+        $signer = $this->getAbstractTransaction()->getSigner();
+        $maxFee = $this->getAbstractTransaction()->getMaxFee();
+        $type = $this->getAbstractTransaction()->getType();
 
         $innerTransactions = $this->innerTransactions;
 
@@ -86,16 +85,14 @@ class AggregateTransaction extends \NEM\Model\Transaction{
         // Create transactionsBytes
         $transactionsBytes = array();
         for ($i=0;$i<count($innerTransactions);$i++) {
-            //var_dump("---1--");
             $transactionBytes = $innerTransactions[$i]->toAggregateTransactionBytes();
-            //var_dump($transactionBytes);
             $transactionsBytes = array_merge($transactionsBytes, $transactionBytes);
         }
 
         $v = ($networkType << 8) + $version;
         // Create Vectors
-        $signatureVector = AggregateTransactionBuffer::createSignatureVector($builder, (new Utils)->createArray64Zero());
-        $signerVector = AggregateTransactionBuffer::createSignerVector($builder, (new Utils)->createArray32Zero());
+        $signatureVector = AggregateTransactionBuffer::createSignatureVector($builder, (new Utils)->createArrayZero(64));
+        $signerVector = AggregateTransactionBuffer::createSignerVector($builder, (new Utils)->createArrayZero(32));
         $deadlineVector = AggregateTransactionBuffer::createDeadlineVector($builder, $deadline->getTimeArray());
         $feeVector = AggregateTransactionBuffer::createFeeVector($builder, $maxFee);
         $transactionsVector = AggregateTransactionBuffer::createTransactionsVector($builder, $transactionsBytes);

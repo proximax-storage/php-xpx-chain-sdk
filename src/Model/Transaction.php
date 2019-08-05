@@ -41,7 +41,7 @@ class Transaction{
      * 
      * included fields type, networkType, version, deadline, fee, signature, signer, transactionInfo
      */
-    private $abstractTransaction;
+    private $abstractTransaction; //AbstractTransaction
 
     public function createTransactionHash(string $p){
         $hex = new \NEM\Utils\Hex;

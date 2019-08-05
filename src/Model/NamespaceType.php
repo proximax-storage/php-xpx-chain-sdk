@@ -16,19 +16,25 @@
 namespace NEM\Model;
 
 /**
- * TransactionDTO class Doc Comment
+ * NamespaceType class Doc Comment
  *
  * @category class
  * @package  NEM
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
-class TransactionDTO{
+class NamespaceType
+{    
+    /**
+     * @internal
+     * @var integer
+     */
+    const ROOT = 0;
 
-    public $abstractTransaction;
-
-    public function getAbstracTransaction(){
-        return $this->abstractTransaction;
-    }
+    /**
+     * @internal
+     * @var integer
+     */
+    const SUB = 1;
 
 }

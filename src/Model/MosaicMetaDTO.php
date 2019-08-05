@@ -16,19 +16,21 @@
 namespace NEM\Model;
 
 /**
- * TransactionDTO class Doc Comment
+ * MosaicMetaDTO class Doc Comment
  *
  * @category class
  * @package  NEM
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
-class TransactionDTO{
+class MosaicMetaDTO{
+    private $id;//string
 
-    public $abstractTransaction;
-
-    public function getAbstracTransaction(){
-        return $this->abstractTransaction;
+    public function __construct($id){
+        $this->id = $id;
     }
 
+    public function getId(){
+        return  $this->id;
+    }
 }

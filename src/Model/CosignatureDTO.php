@@ -14,21 +14,32 @@
  */
 
 namespace NEM\Model;
-
+use NEM\Model\AbstractTransaction;
 /**
- * TransactionDTO class Doc Comment
+ * CosignatureDTO class Doc Comment
  *
  * @category class
  * @package  NEM
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
-class TransactionDTO{
+class CosignatureDTO{
 
-    public $abstractTransaction;
+    private $signature; //atring
 
-    public function getAbstracTransaction(){
-        return $this->abstractTransaction;
+    private $signer; //PublicAccount
+
+    public function __construct($signature,$signer){
+        $this->signature = $signature;
+        $this->signer = $signer;
     }
 
+    public function getSignature(){
+        return $this->signature;
+    }
+
+    public function getSigner(){
+        return $this->signer;
+    }
 }
+?>
