@@ -95,7 +95,6 @@ class Mosaic{
         $owner = (new Account)->newAccountFromPublicKey($data->mosaic->owner,$networkType);
         $revision = $data->mosaic->revision;
         $properties = $data->mosaic->properties;
-        $levy = $data->mosaic->levy;
 
         $mosaicInfo = array(
             'id' => $id,
@@ -104,8 +103,7 @@ class Mosaic{
             'height' => $height,
             'owner' => $owner,
             'revision' => $revision,
-            'properties' => $properties,
-            'levy' => $levy
+            'properties' => $properties
         );
         return $mosaicInfo;
     }

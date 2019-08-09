@@ -90,6 +90,10 @@ class AbstractTransaction{
     public function setType($type){
         $this->type = $type;
     }
+
+    public function setSigner($signer){
+        $this->signer = $signer;
+    }
 }
 
 

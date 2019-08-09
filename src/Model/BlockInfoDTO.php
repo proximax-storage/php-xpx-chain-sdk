@@ -31,7 +31,7 @@ class BlockInfoDTO{
 
     public function __construct($data = null){
         $this->meta = new BlockMetaDTO($data["hash"],$data["generationHash"],$data["totalFee"],$data["numTransactions"]);
-        $this->block = new BlockDTO($data["signature"],$data["signer"],$data["version"],$data["type"],$data["height"],$data["timestamp"],$data["difficulty"],$data["feeMultiplier"],$data["previousBlockHash"],$data["blockTransactionsHash"],$data["blockReceiptsHash"],$data["stateHash"],$data["beneficiaryPublicKey"]);
+        $this->block = new BlockDTO($data["signature"],$data["signer"],$data["version"],$data["type"],$data["height"],$data["timestamp"],$data["difficulty"],$data["feeMultiplier"],$data["previousBlockHash"],$data["blockTransactionsHash"],$data["blockReceiptsHash"],$data["stateHash"],$data["beneficiary"]);
     }
 
     public function getMeta(){

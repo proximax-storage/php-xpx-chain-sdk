@@ -121,54 +121,22 @@ class Utils{
         return $array;
     }
 
-    /**
-     * @param int $num is string input
-     * 
-     * @param int $frombase is type origin input
-     * 
-     * @param int $tobase is type output need
-     */
-    public function improve_base_convert($num, $frombase, $tobase){
-        $numstring = "";
-        while($num >= 1){
-            $char = $num % 10;
-            var_dump((string)$char);
-            $numstring = (string)$char . $numstring;
-            $num = $num / 10;
-        }
-        var_dump("day ne");
-        var_dump($numstring);
-        $chars = "0123456789abcdefghijklmnopqrstuvwxyz";
-        $tostring = substr($chars, 0, $tobase);
-    
-        $length = strlen($numstring);
-        $result = '';
-        for ($i = 0; $i < $length; $i++){
-            $number[$i] = strpos($chars, $numstring{$i});
-        }
-        do{
-            $divide = 0;
-            $newlen = 0;
-            for ($i = 0; $i < $length; $i++){
-                $divide = $divide * $frombase + $number[$i];
-                if ($divide >= $tobase){
-                    $number[$newlen++] = (int)($divide / $tobase);
-                    $divide = $divide % $tobase;
-                } 
-                elseif ($newlen > 0){
-                    $number[$newlen++] = 0;
-                }
-            }
-            $length = $newlen;
-            $result = $tostring{$divide} . $result;
-        } 
-        while ($newlen != 0);
-
-        return $result;
-    }
-
     public function uint32LittleEndian($arr){
         return ($arr[3] << 24) | ($arr[2] << 16) | ($arr[1] << 8) | ($arr[0]);
+    }
+
+    public function getBytes($bigInt){
+        $p1 = $this->intToArray($bigInt[0]);
+        $p2 = $this->intToArray($bigInt[1]);
+        $tmp = array_merge($p2,$p1);
+
+        $bytes = $this->ReverseByteArray($tmp);
+        if(count($bytes) < 8){
+            $new = $this->createArrayZero(8-count($bytes));
+            $bytes = array_merge($bytes,$new);
+        }
+
+        return $bytes;
     }
 }
 ?>

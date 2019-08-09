@@ -7,9 +7,9 @@
     $config = new Config;
     $network = new Network;
   
-    $baseUrl = "http://bctestnet1.xpxsirius.io:3000";
+    $baseUrl = "http://13.229.183.224:3000";
     $wsReconnectionTimeout = 5000;
-    $transId = "5D1AD25F25969800014884D5";
+    $transId = "5D4CDC46C682350001782297";
     $hash = "555C32CAECA8626A0DBB665CEB708F64C2BF7E8C8C4B6E5FB6FEA0C23EA13C94";
     $netType = Network::getIdfromName("PublicTest");
 

@@ -120,7 +120,6 @@ class Account{
      * @return TransactionDTO
      */
     public function Transactions($config, $publicKey, $option = null){
-        var_dump("here");
         $AccountRoutesApi = new AccountRoutesApi;
         $ApiClient = new ApiClient;
         $url = $config->BaseURL;
@@ -165,8 +164,7 @@ class Account{
         if ($data[1] == 200){ // successfull
             for ($i=0;$i<count($data[0]);$i++){
                 $transaction = (new Transaction)->formatData($networkType, $data[0][$i]);
-                $TransactionDTO = new TransactionDTO($transaction);
-                $arr_transaction[$i] = $TransactionDTO;
+                $arr_transaction[$i] = $transaction;
             }
             
         }
@@ -196,8 +194,7 @@ class Account{
         if ($data[1] == 200){ // successfull
             for ($i=0;$i<count($data[0]);$i++){
                 $transaction = (new Transaction)->formatData($networkType, $data[0][$i]);
-                $TransactionDTO = new TransactionDTO($transaction);
-                $arr_transaction[$i] = $TransactionDTO;
+                $arr_transaction[$i] = $transaction;
             }
             
         }
@@ -228,8 +225,7 @@ class Account{
         if ($data[1] == 200){ // successfull
             for ($i=0;$i<count($data[0]);$i++){
                 $transaction = (new Transaction)->formatData($networkType, $data[0][$i]);
-                $TransactionDTO = new TransactionDTO($transaction);
-                $arr_transaction[$i] = $TransactionDTO;
+                $arr_transaction[$i] = $transaction;
             }
             
         }

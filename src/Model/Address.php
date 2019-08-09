@@ -150,7 +150,6 @@ class Address{
 
         // step 6: base32 encode (5)
         $encodedBase32  = new Buffer(Base32::encode($encodedAddress), Address::BYTES);
-
         return new Address($encodedBase32->getBinary(),$networkId);
     }
 

@@ -28,6 +28,10 @@ use \Catapult\Buffers\MosaicBuffer;
 use \Catapult\Buffers\TransferTransactionBuffer;
 use NEM\Utils\Utils;
 use NEM\Model\AbstractTransaction;
+use Base32\Base32;
+use NEM\Model\Address;
+use NEM\Model\NamespaceId;
+
 /**
  * TransferTransaction class Doc Comment
  *
@@ -99,7 +103,16 @@ class TransferTransaction extends \NEM\Model\Transaction{
             $mosaicBuffers[$i] = MosaicBuffer::endMosaicBuffer($builder);
         }
         // serialize the recipient
-        $recipientBytes = $this->DecodeString($address->address);
+        if ($address instanceof NamespaceId){
+            var_dump("1");
+            //$recipientBytes = (new Utils)->stringToByteArray(Base32::decode($address->getString()));
+            //var_dump($recipientBytes);
+            $recipientBytes = $address->getId();
+        }
+        else if ($address instanceof Address){
+            $recipientBytes = (new Utils)->stringToByteArray(Base32::decode($address->address));
+        }
+        
 
         $v = ($networkType << 8) + $version;
         // Create Vectors
@@ -152,35 +165,6 @@ class TransferTransaction extends \NEM\Model\Transaction{
         $builder_byte = array_slice($tmp,0,count($tmp));
         $output = $TransferTransactionSchema->serialize($builder_byte);
         return $output;
-    }
-
-    public function DecodeString(string $s){
-        $CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
-        $arr = unpack('C*', $s);
-        $convertedBytes = array();
-        $index = 0;
-        $bitCount = 0;
-        $current = 0;
-        for ($i=1;$i<=count($arr);$i++){
-            //echo "1";
-            $symbolValue = strpos($CHARS,chr($arr[$i]));
-            if ($symbolValue < 0) {
-                throw new \Exception("symbol value must bigger than 0");
-            }
-            for ($j=4;$j>=0;$j--) {
-                $current = ($current << 1) + ($symbolValue >> $j & 0x1);
-                $bitCount++;
-                //echo $bitCount . "\n";
-                if ($bitCount == 8) {
-                    //echo $index . "\n";
-                    $convertedBytes[$index++] = $current;
-
-                    $bitCount = 0;
-                    $current = 0;
-                }
-            }
-        }
-        return $convertedBytes;
     }
 }
 ?>

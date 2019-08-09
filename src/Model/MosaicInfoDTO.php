@@ -32,7 +32,7 @@ class MosaicInfoDTO{
 
     public function __construct($data){
         $meta = new MosaicMetaDTO($data["id"]);
-        $mosaic = new MosaicDefinitionDTO($data["mosaicId"],$data["supply"],$data["height"],$data["owner"],$data["revision"],$data["properties"],$data["levy"]);
+        $mosaic = new MosaicDefinitionDTO($data["mosaicId"],$data["supply"],$data["height"],$data["owner"],$data["revision"],$data["properties"]);
         $this->meta = $meta;
         $this->mosaic = $mosaic;
     }

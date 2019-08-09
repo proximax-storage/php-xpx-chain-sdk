@@ -37,13 +37,13 @@ class MosaicPropertiesDTO{
 
     public function __construct(array $properties){
         $utils = new Utils;
-        $flag = '00' . base_convert($utils->bigIntToHexString($properties[0]),16,2);
+        $flag = '00' . base_convert($utils->bigIntToHexString($properties[0]->value),16,2);
         $bitMap = array($flag[strlen($flag)-3],$flag[strlen($flag)-2],$flag[strlen($flag)-1]);
         $this->supplyMutable = (bool)$bitMap[0];
         $this->transferable = (bool)$bitMap[1];
         $this->levyMutable = (bool)$bitMap[2];
-        $this->divisibility = hexdec($utils->bigIntToHexString($properties[1]));
-        $this->duration = hexdec($utils->bigIntToHexString($properties[2]));
+        $this->divisibility = hexdec($utils->bigIntToHexString($properties[1]->value));
+        $this->duration = hexdec($utils->bigIntToHexString($properties[2]->value));
     }
 
     public function getSupplyMutable(){

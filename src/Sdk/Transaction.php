@@ -88,8 +88,7 @@ class Transaction{
         if ($data[1] == 200){ // successfull
             for($i=0;$i<count($data[0]);$i++){
                 $transaction = $this->formatData($networkType, $data[0][$i]);
-                $transactionDTO = new TransactionDTO($transaction);
-                $arr_trans[$i] = $transactionDTO;
+                $arr_trans[$i] = $transaction;
             }
         }
         return $arr_trans;

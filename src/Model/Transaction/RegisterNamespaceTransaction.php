@@ -48,29 +48,6 @@ class RegisterNamespaceTransaction extends \NEM\Model\Transaction{
 
     private $parentId;
      
-    // public function __construct($deadline, $namespaceName, $duration, $networkType){
-    //     $version = TransactionVersion::REGISTER_NAMESPACE_VERSION;
-    //     $type = hexdec(TransactionType::REGISTER_NAMESPACE);
-    //     if (is_string($networkType) && in_array(strtolower($networkType), ["mijin", "mijintest", "public", "publictest", "private", "privatetest", "NotSupportedNet", "aliasaddress"])){
-    //         $networkType = Network::$networkInfos[strtolower($networkType)]["id"];
-    //     }
-    //     else if (is_numeric($networkType) && !in_array($networkType, [96, 144, 184, 168, 200, 176, 0, 145])) {
-    //         throw new NISInvalidNetworkId("Invalid netword ID '" . $networkType . "'");
-    //     } 
-    //     $maxFee = array(0,0);
-    //     $signature = ""; 
-    //     $signer = new PublicAccount;
-    //     $transactionInfo = new TransactionInfo;
-
-    //     $abstractTransaction = new AbstractTransaction($transactionInfo,$deadline,$networkType,
-    //                                                 $type,$version,$maxFee,$signature,$signer);
-    //     $this->setAbstractTransaction($abstractTransaction);
-    //     $this->namespaceName = $namespaceName;
-    //     $this->namespaceId = IdGenerator::NewNamespaceIdFromName($namespaceName);
-    //     $this->namespaceType = NamespaceType::ROOT;
-    //     $this->duration = $duration;
-    //     $this->parentId = array(0,0);
-    // }
     public function NewRegisterRootNamespaceTransaction($deadline, $namespaceName, $duration, $networkType){
         $version = TransactionVersion::REGISTER_NAMESPACE_VERSION;
         $type = hexdec(TransactionType::REGISTER_NAMESPACE);
@@ -149,11 +126,9 @@ class RegisterNamespaceTransaction extends \NEM\Model\Transaction{
         $feeVector = RegisterNamespaceTransactionBuffer::createFeeVector($builder, $maxFee);
         $namespaceIdVector = RegisterNamespaceTransactionBuffer::createNamespaceIdVector($builder, $namespaceId->getId());
         if ($namespaceType == NamespaceType::ROOT){
-            var_dump("1");
             $durationParentIdVector = RegisterNamespaceTransactionBuffer::createDurationParentIdVector($builder, $duration);
         }
         else if ($namespaceType == NamespaceType::SUB){
-            var_dump("2");
             $durationParentIdVector = RegisterNamespaceTransactionBuffer::createDurationParentIdVector($builder, $parentId->getId());
         }
         

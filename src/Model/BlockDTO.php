@@ -50,9 +50,9 @@ class BlockDTO{
 
     private $stateHash;//string
 
-    private $beneficiaryPublicKey;//string
+    private $beneficiary;//string
 
-    public function __construct($signature, $signer, $version, $type, $height, $timestamp, $difficulty, $feeMultiplier, $previousBlockHash, $blockTransactionsHash, $blockReceiptsHash, $stateHash, $beneficiaryPublicKey){
+    public function __construct($signature, $signer, $version, $type, $height, $timestamp, $difficulty, $feeMultiplier, $previousBlockHash, $blockTransactionsHash, $blockReceiptsHash, $stateHash, $beneficiary){
         $this->signature = $signature;
         $this->signer = $signer;
         $this->version = $version;
@@ -65,7 +65,7 @@ class BlockDTO{
         $this->blockTransactionsHash = $blockTransactionsHash;
         $this->blockReceiptsHash = $blockReceiptsHash;
         $this->stateHash = $stateHash;
-        $this->beneficiaryPublicKey = $beneficiaryPublicKey;
+        $this->beneficiary = $beneficiary;
     }
 
     public function getSignature(){
@@ -116,7 +116,7 @@ class BlockDTO{
         return $this->stateHash;
     }
 
-    public function getBeneficiaryPublicKey(){
-        return $this->beneficiaryPublicKey;
+    public function getBeneficiary(){
+        return $this->beneficiary;
     }
 }

@@ -32,10 +32,6 @@ use NEM\Utils\Utils;
  */
 class Transaction{
 
-    const SignatureSize = 64;
-    const SizeSize = 4;
-    const SignerSize = 32;
-
     /**
      * object
      * 
@@ -43,15 +39,15 @@ class Transaction{
      */
     private $abstractTransaction; //AbstractTransaction
 
-    public function createTransactionHash(string $p){
+    public function createTransactionHash(array $payloadBytes,array $generationHashBytes){
         $hex = new \NEM\Utils\Hex;
-        $b = $hex->DecodeString($p);
+        //$b = $hex->DecodeString($p);
+        $p1 = array_slice($payloadBytes,4,32);
+        $p2 = array_slice($payloadBytes,68,32);
+        $p3 = array_slice($generationHashBytes,0,32);
+        $p4 = array_slice($payloadBytes,100,count($payloadBytes)-100);
 
-        $HalfOfSignature = self::SignatureSize / 2;
-
-        $b1 = array_slice($b,self::SizeSize,$HalfOfSignature);
-        $b2 = array_slice($b,self::SizeSize + self::SignatureSize, count($b) - self::SizeSize - self::SignatureSize);
-        $sb = array_merge($b1,$b2);
+        $sb = array_merge($p1,$p2,$p3,$p4);
 
         $sha3Hasher = new \NEM\Core\Sha3Hasher;
 
@@ -70,12 +66,12 @@ class Transaction{
     }
 
     public function ToAggregate($signer){
-        $this->abstractTransaction->signer = $signer;
+        $this->abstractTransaction->setSigner($signer);
     }
 
     public function toAggregateTransactionBytes() {
         $hex = new Hex;
-        $signerBytes = $hex->DecodeString($this->abstractTransaction->signer->getPublicKey()); 
+        $signerBytes = $hex->DecodeString($this->abstractTransaction->getSigner()->getPublicKey()); 
 
         $bytes = $this->generateBytes();
         $resultBytes = array();

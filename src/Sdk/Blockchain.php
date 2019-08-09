@@ -68,11 +68,9 @@ class Blockchain{
         $url = $config->BaseURL;
         $ApiClient->setHost($url);
         $networkType = $config->NetworkType;
-        var_dump("111111111");
         $data = $BlockchainRoutesApi->getBlockByHeight($height);
 
         if ($data[1] == 200){ // successfull
-            var_dump("222222222222");
             $blockInfo = $this->formatDataBlock($networkType,$data[0]);
             return new BlockInfoDTO($blockInfo);
         }
@@ -201,7 +199,7 @@ class Blockchain{
         $blockTransactionsHash = $data->block->blockTransactionsHash;
         $blockReceiptsHash = $data->block->blockReceiptsHash;
         $stateHash = $data->block->stateHash;
-        $beneficiaryPublicKey = $data->block->beneficiaryPublicKey;
+        $beneficiary = $data->block->beneficiary;
 
         $blockInfo = array(
             'hash' => $hash,
@@ -220,7 +218,7 @@ class Blockchain{
             'blockTransactionsHash' => $blockTransactionsHash,
             'blockReceiptsHash' => $blockReceiptsHash,
             'stateHash' => $stateHash,
-            'beneficiaryPublicKey' => $beneficiaryPublicKey
+            'beneficiary' => $beneficiary
         );
         return $blockInfo;
     }

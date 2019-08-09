@@ -36,10 +36,8 @@ class MosaicDefinitionDTO{
     private $revision; //int
   
     private $properties;//MosaicPropertiesDTO 
-  
-    private $levy; //object
 
-    public function __construct(array $mosaicId,array $supply,array $height,PublicAccount $owner,int $revision,array $properties,object $levy){
+    public function __construct(array $mosaicId,array $supply,array $height,PublicAccount $owner,int $revision,array $properties){
         $utils = new Utils;
         $this->mosaicId = $utils->bigIntToHexString($mosaicId);
         $this->supply = hexdec($utils->bigIntToHexString($supply));
@@ -47,7 +45,6 @@ class MosaicDefinitionDTO{
         $this->owner = $owner;
         $this->revision = $revision;
         $this->properties = new MosaicPropertiesDTO($properties);
-        $this->levy = $levy;
     }
 
     public function getMosaicid(){
@@ -72,9 +69,5 @@ class MosaicDefinitionDTO{
 
     public function getProperties(){
         return $this->properties;
-    }
-
-    public function getLevy(){
-        return $this->levy;
     }
 }
