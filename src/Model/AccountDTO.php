@@ -15,9 +15,6 @@
 
 namespace NEM\Model;
 
-use \ArrayAccess;
-use \NEM\ObjectSerializer;
-
 /**
  * AccountDTO Class Doc Comment
  *

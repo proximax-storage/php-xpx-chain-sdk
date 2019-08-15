@@ -27,6 +27,10 @@ use \Catapult\Buffers\MessageBuffer;
 use \Catapult\Buffers\MosaicBuffer;
 use \Catapult\Buffers\TransferTransactionBuffer;
 use NEM\Utils\Utils;
+use NEM\Model\AbstractTransaction;
+use Base32\Base32;
+use NEM\Model\Address;
+use NEM\Model\NamespaceId;
 
 /**
  * TransferTransaction class Doc Comment
@@ -43,23 +47,21 @@ class TransferTransaction extends \NEM\Model\Transaction{
     private $message;
      
     public function __construct($deadline, $address, $mosaics, $message, $networkType){
-        $abstractTransaction = new \stdClass();
-        $abstractTransaction->version = TransactionVersion::TRANSFER_VERSION;
-        $abstractTransaction->deadline = $deadline;
-        $abstractTransaction->type = hexdec(TransactionType::TRANSFER);
+        $version = TransactionVersion::TRANSFER_VERSION;
+        $type = hexdec(TransactionType::TRANSFER);
         if (is_string($networkType) && in_array(strtolower($networkType), ["mijin", "mijintest", "public", "publictest", "private", "privatetest", "NotSupportedNet", "aliasaddress"])){
             $networkType = Network::$networkInfos[strtolower($networkType)]["id"];
         }
         else if (is_numeric($networkType) && !in_array($networkType, [96, 144, 184, 168, 200, 176, 0, 145])) {
             throw new NISInvalidNetworkId("Invalid netword ID '" . $networkType . "'");
         } 
-        $abstractTransaction->networkType = $networkType;
+        $maxFee = array(0,0);
+        $signature = ""; 
+        $signer = new PublicAccount;
+        $transactionInfo = new TransactionInfo;
 
-        $abstractTransaction->maxFee = array(0,0);
-        $abstractTransaction->signature = ""; 
-        $abstractTransaction->signer = new PublicAccount;
-        $abstractTransaction->transactionInfo = new TransactionInfo;
-
+        $abstractTransaction = new AbstractTransaction($transactionInfo,$deadline,$networkType,
+                                                    $type,$version,$maxFee,$signature,$signer);
         $this->setAbstractTransaction($abstractTransaction);
         $this->recipient = $address;
         $this->mosaics = $mosaics;
@@ -67,13 +69,13 @@ class TransferTransaction extends \NEM\Model\Transaction{
     }
 
     public function generateBytes() {
-        $networkType = $this->getAbstractTransaction()->networkType;
-        $version = $this->getAbstractTransaction()->version;
-        $deadline = $this->getAbstractTransaction()->deadline;
-        $signature = $this->getAbstractTransaction()->signature;
-        $signer = $this->getAbstractTransaction()->signer;
-        $maxFee = $this->getAbstractTransaction()->maxFee;
-        $type = $this->getAbstractTransaction()->type;
+        $networkType = $this->getAbstractTransaction()->getNetworkType();
+        $version = $this->getAbstractTransaction()->getVersion();
+        $deadline = $this->getAbstractTransaction()->getDeadline();
+        $signature = $this->getAbstractTransaction()->getSignature();
+        $signer = $this->getAbstractTransaction()->getSigner();
+        $maxFee = $this->getAbstractTransaction()->getMaxFee();
+        $type = $this->getAbstractTransaction()->getType();
 
         $message = $this->message;
         $mosaics = $this->mosaics;
@@ -101,12 +103,21 @@ class TransferTransaction extends \NEM\Model\Transaction{
             $mosaicBuffers[$i] = MosaicBuffer::endMosaicBuffer($builder);
         }
         // serialize the recipient
-        $recipientBytes = $this->DecodeString($address->address);
+        if ($address instanceof NamespaceId){
+            var_dump("1");
+            //$recipientBytes = (new Utils)->stringToByteArray(Base32::decode($address->getString()));
+            //var_dump($recipientBytes);
+            $recipientBytes = $address->getId();
+        }
+        else if ($address instanceof Address){
+            $recipientBytes = (new Utils)->stringToByteArray(Base32::decode($address->address));
+        }
+        
 
         $v = ($networkType << 8) + $version;
         // Create Vectors
-        $signatureVector = TransferTransactionBuffer::createSignatureVector($builder, (new Utils)->createArray64Zero());
-        $signerVector = TransferTransactionBuffer::createSignerVector($builder, (new Utils)->createArray32Zero());
+        $signatureVector = TransferTransactionBuffer::createSignatureVector($builder, (new Utils)->createArrayZero(64));
+        $signerVector = TransferTransactionBuffer::createSignerVector($builder, (new Utils)->createArrayZero(32));
         $recipientVector = TransferTransactionBuffer::createRecipientVector($builder, $recipientBytes);
         $mosaicsVector = TransferTransactionBuffer::createMosaicsVector($builder, $mosaicBuffers);
         $deadlineVector = TransferTransactionBuffer::createDeadlineVector($builder, $deadline->getTimeArray());
@@ -154,35 +165,6 @@ class TransferTransaction extends \NEM\Model\Transaction{
         $builder_byte = array_slice($tmp,0,count($tmp));
         $output = $TransferTransactionSchema->serialize($builder_byte);
         return $output;
-    }
-
-    public function DecodeString(string $s){
-        $CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
-        $arr = unpack('C*', $s);
-        $convertedBytes = array();
-        $index = 0;
-        $bitCount = 0;
-        $current = 0;
-        for ($i=1;$i<=count($arr);$i++){
-            //echo "1";
-            $symbolValue = strpos($CHARS,chr($arr[$i]));
-            if ($symbolValue < 0) {
-                throw new \Exception("symbol value must bigger than 0");
-            }
-            for ($j=4;$j>=0;$j--) {
-                $current = ($current << 1) + ($symbolValue >> $j & 0x1);
-                $bitCount++;
-                //echo $bitCount . "\n";
-                if ($bitCount == 8) {
-                    //echo $index . "\n";
-                    $convertedBytes[$index++] = $current;
-
-                    $bitCount = 0;
-                    $current = 0;
-                }
-            }
-        }
-        return $convertedBytes;
     }
 }
 ?>

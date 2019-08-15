@@ -29,6 +29,7 @@ use \Catapult\Buffers\TransferTransactionBuffer;
 use \Catapult\Buffers\CosignatoryModificationBuffer;
 use NEM\Utils\Hex;
 use NEM\Utils\Utils;
+use NEM\Model\AbstractTransaction;
 
 /**
  * ModifyMultisigAccountTransaction class Doc Comment
@@ -47,23 +48,21 @@ class ModifyMultisigAccountTransaction extends \NEM\Model\Transaction{
     private $modifications; //MultisigCosignatoryModification
      
     public function __construct($deadline, $minApprovalDelta, $minRemovalDelta, $modifications, $networkType){
-        $abstractTransaction = new \stdClass();
-        $abstractTransaction->version = TransactionVersion::MODIFY_MULTISIG_VERSION;
-        $abstractTransaction->deadline = $deadline;
-        $abstractTransaction->type = hexdec(TransactionType::MODIFY_MULTISIG);
+        $version = TransactionVersion::MODIFY_MULTISIG_VERSION;
+        $type = hexdec(TransactionType::MODIFY_MULTISIG);
         if (is_string($networkType) && in_array(strtolower($networkType), ["mijin", "mijintest", "public", "publictest", "private", "privatetest", "NotSupportedNet", "aliasaddress"])){
             $networkType = Network::$networkInfos[strtolower($networkType)]["id"];
         }
         else if (is_numeric($networkType) && !in_array($networkType, [96, 144, 184, 168, 200, 176, 0, 145])) {
             throw new NISInvalidNetworkId("Invalid netword ID '" . $networkType . "'");
         } 
-        $abstractTransaction->networkType = $networkType;
+        $maxFee = array(0,0);
+        $signature = ""; 
+        $signer = new PublicAccount;
+        $transactionInfo = new TransactionInfo;
 
-        $abstractTransaction->maxFee = array(0,0);
-        $abstractTransaction->signature = ""; 
-        $abstractTransaction->signer = new PublicAccount;
-        $abstractTransaction->transactionInfo = new TransactionInfo;
-
+        $abstractTransaction = new AbstractTransaction($transactionInfo,$deadline,$networkType,
+                                                    $type,$version,$maxFee,$signature,$signer);
         $this->setAbstractTransaction($abstractTransaction);
 
         $this->minApprovalDelta = $minApprovalDelta;
@@ -72,13 +71,13 @@ class ModifyMultisigAccountTransaction extends \NEM\Model\Transaction{
     }
 
     public function generateBytes() {
-        $networkType = $this->getAbstractTransaction()->networkType;
-        $version = $this->getAbstractTransaction()->version;
-        $deadline = $this->getAbstractTransaction()->deadline;
-        $signature = $this->getAbstractTransaction()->signature;
-        $signer = $this->getAbstractTransaction()->signer;
-        $maxFee = $this->getAbstractTransaction()->maxFee;
-        $type = $this->getAbstractTransaction()->type;
+        $networkType = $this->getAbstractTransaction()->getNetworkType();
+        $version = $this->getAbstractTransaction()->getVersion();
+        $deadline = $this->getAbstractTransaction()->getDeadline();
+        $signature = $this->getAbstractTransaction()->getSignature();
+        $signer = $this->getAbstractTransaction()->getSigner();
+        $maxFee = $this->getAbstractTransaction()->getMaxFee();
+        $type = $this->getAbstractTransaction()->getType();
 
         $minApprovalDelta = $this->minApprovalDelta;
         $minRemovalDelta = $this->minRemovalDelta;
@@ -101,8 +100,8 @@ class ModifyMultisigAccountTransaction extends \NEM\Model\Transaction{
         $v = ($networkType << 8) + $version;
 
         // Create Vectors
-        $signatureVector = ModifyMultisigAccountTransactionBuffer::createSignatureVector($builder, (new Utils)->createArray64Zero());
-        $signerVector = ModifyMultisigAccountTransactionBuffer::createSignerVector($builder, (new Utils)->createArray32Zero());
+        $signatureVector = ModifyMultisigAccountTransactionBuffer::createSignatureVector($builder, (new Utils)->createArrayZero(64));
+        $signerVector = ModifyMultisigAccountTransactionBuffer::createSignerVector($builder, (new Utils)->createArrayZero(32));
         $deadlineVector = ModifyMultisigAccountTransactionBuffer::createDeadlineVector($builder, $deadline->getTimeArray());
         $feeVector = ModifyMultisigAccountTransactionBuffer::createFeeVector($builder, $maxFee);
         

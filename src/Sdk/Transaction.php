@@ -27,6 +27,13 @@ use NEM\Model\TransactionInfo;
 use NEM\Model\Address;
 use NEM\Model\PublicAccount;
 use NEM\Model\Message;
+use NEM\Model\AbstractTransaction;
+use NEM\Model\Account;
+use NEM\Model\TransactionType;
+use NEM\Model\TransferTransactionDTO;
+use NEM\Model\LockFundsTransactionDTO;
+use NEM\Model\AggregateTransactionDTO;
+use NEM\Model\CosignatureDTO;
 
 /**
  * Transaction class Doc Comment
@@ -56,11 +63,9 @@ class Transaction{
         $data = $TransactionRoutesApi->getTransaction($transId);
         
         if ($data[1] == 200){ // successfull
-            $transaction = $this->formatData($networkType, $data[0]);
+            return $this->formatData($networkType, $data[0]);
         }
-        else $transaction = null;
-
-        return new TransactionDTO($transaction);
+        else return null;
     }
 
     /**
@@ -83,8 +88,7 @@ class Transaction{
         if ($data[1] == 200){ // successfull
             for($i=0;$i<count($data[0]);$i++){
                 $transaction = $this->formatData($networkType, $data[0][$i]);
-                $transactionDTO = new TransactionDTO($transaction);
-                $arr_trans[$i] = $transactionDTO;
+                $arr_trans[$i] = $transaction;
             }
         }
         return $arr_trans;
@@ -149,68 +153,112 @@ class Transaction{
      *
      * @param array $data
      * 
-     * @return TransactionDTO array
+     * @return TransactionDTO
      */
-    private function formatData($networkType, $data){
-        $Height = $data->meta->height;
-        $Index = $data->meta->index;
-        $Id = $data->meta->id;
-        $Content = $data->meta->hash;
-        $MerkleComponentHash = $data->meta->merkleComponentHash;
+    public function formatData($networkType, $data){
+        if (isset($data->meta->height)){
+            $Height = $data->meta->height;
+        }
+        else $Height = "";
+        
+        if (isset($data->meta->index)){
+            $Index = $data->meta->index;
+        }
+        else $Index = "";
 
-        if (isset($data->meta->AggregateHash)){
-            $AggregateHash = $data->meta->AggregateHash;
+        if (isset($data->meta->id)){
+            $Id = $data->meta->id;
+        }
+        else $Id = "";
+
+        if (isset($data->meta->hash)){
+            $Content = $data->meta->hash;
+        }
+        else $Content = "";
+
+        if (isset($data->meta->merkleComponentHash)){
+            $MerkleComponentHash = $data->meta->merkleComponentHash;
+        }
+        else $MerkleComponentHash = "";
+
+        if (isset($data->meta->aggregateHash)){
+            $AggregateHash = $data->meta->aggregateHash;
         }
         else $AggregateHash = "";
 
-        if (isset($data->meta->AggregateId)){
-            $AggregateId = $data->meta->AggregateId;
+        if (isset($data->meta->aggregateId)){
+            $AggregateId = $data->meta->aggregateId;
         }
         else $AggregateId = "";
 
         $transMap = new TransactionMapping;
-        $Type = dechex($data->transaction->type);
-        $Version = $transMap->ExtractVersion($data->transaction->version);
-        $MaxFee = $transMap->ExtractMaxFee($data->transaction->maxFee);
-        $Deadline = $transMap->ExtractDeadline($data->transaction->deadline);
-        $Signature = $data->transaction->signature;
 
-        $Address = Address::fromPublicKey($data->transaction->signer,$networkType);
-        $Signer = new PublicAccount($Address,$data->transaction->signer);
-
-        $mosaics_raw = $data->transaction->mosaics;
-        $Mosaics = array();
-        for ($i=0;$i<count($mosaics_raw);$i++){
-            $mosaic = new MosaicDTO($mosaics_raw[$i]->id,$mosaics_raw[$i]->amount);
-            $Mosaics[$i] = $mosaic;
+        if (isset($data->transaction->type)){
+            $Type = dechex($data->transaction->type);
         }
-
-        $hex = new \NEM\Utils\Hex;
-        $addrDecode = $hex->DecodeString($data->transaction->recipient);
-        $addrString = Base32::encode(implode(array_map("chr", $addrDecode)));
-        $Recipient = new Address($addrString,$networkType);
+        else $Type = "";
         
-        $mess = pack('H*', $data->transaction->message->payload);
-        $Message = new Message($mess,$data->transaction->message->type);
+        if (isset($data->transaction->version)){
+            $Version = $transMap->ExtractVersion($data->transaction->version);
+        }
+        else $Version = "";
+
+        if (isset($data->transaction->maxFee)){
+            $MaxFee = $transMap->ExtractMaxFee($data->transaction->maxFee);
+        }
+        else $MaxFee = "";
+
+        if (isset($data->transaction->deadline)){
+            $Deadline = $transMap->ExtractDeadline($data->transaction->deadline);
+        }
+        else $Deadline = "";
+        
+        if (isset($data->transaction->signature)){
+            $Signature = $data->transaction->signature;
+        }
+        else $Signature = "";
+        
+        if (isset($data->transaction->signer)){
+            $Address = Address::fromPublicKey($data->transaction->signer,$networkType);
+            $Signer = new PublicAccount($Address,$data->transaction->signer);
+        }
+        else $Signer = "";
         
         $TransactionInfo = new TransactionInfo($Height,$Index,$Id,$Content,$MerkleComponentHash,$AggregateHash,$AggregateId);
 
-        $AbstractTransaction = new \stdClass();
-        $AbstractTransaction->NetworkType = $networkType;
-        $AbstractTransaction->TransactionInfo = $TransactionInfo;
-        $AbstractTransaction->Type = $Type;
-        $AbstractTransaction->Version = $Version;
-        $AbstractTransaction->MaxFee = $MaxFee;
-        $AbstractTransaction->Deadline = $Deadline;
-        $AbstractTransaction->Signature = $Signature;
-        $AbstractTransaction->Signer = $Signer;
+        $AbstractTransaction = new AbstractTransaction($TransactionInfo,$Deadline,$networkType,$Type,$Version,$MaxFee,$Signature,$Signer);
 
         $transaction = array(
-            'AbstractTransaction' => $AbstractTransaction,
-            'Mosaics' => $Mosaics,
-            'Recipient' => $Recipient,
-            'Message' => $Message
+            'AbstractTransaction' => $AbstractTransaction
         );
+        
+        switch ($Type){
+            case TransactionType::AGGREGATE_BONDED: //aggregate bonded 
+                $data = $this->formatAggregate($networkType,$data->transaction->cosignatures,$data->transaction->transactions);
+                $transaction["Cosignatures"] = $data->cosignatures;
+                $transaction["Transactions"] = $data->transactions;
+                return new AggregateTransactionDTO($transaction);
+
+            case TransactionType::AGGREGATE_COMPLETED: //aggregate completed
+                $data = $this->formatAggregate($networkType,$data->transaction->cosignatures,$data->transaction->transactions);
+                $transaction["Cosignatures"] = $data->cosignatures;
+                $transaction["Transactions"] = $data->transactions;
+                return new AggregateTransactionDTO($transaction);
+
+            case TransactionType::LOCK: //lock transaction
+                $data = $this->formatLockFunds($data->transaction->duration,$data->transaction->mosaicId,$data->transaction->amount,$data->transaction->hash);
+                $transaction["Duration"] = $data->duration;
+                $transaction["Mosaic"] = $data->mosaic;
+                $transaction["Hash"] = $data->hash;
+                return new LockFundsTransactionDTO($transaction);
+                
+            case TransactionType::TRANSFER: //transfer transaction
+                $data = $this->formatTransfer($networkType,$data->transaction->mosaics,$data->transaction->recipient,$data->transaction->message);
+                $transaction["Mosaics"] = $data->mosaics;
+                $transaction["Recipient"] = $data->recipient;
+                $transaction["Message"] = $data->message;
+                return new TransferTransactionDTO($transaction);
+        }
         return $transaction;
     }
 
@@ -218,7 +266,7 @@ class Transaction{
      *
      * @param array $data
      * 
-     * @return TransactionStatusDTO array
+     * @return TransactionStatusDTO
      */
     private function formatDataStatus($data){
         $group = $data->group;
@@ -305,6 +353,58 @@ class Transaction{
             return $data[0]->message;
         }
         else throw new \Exception("Error");
+    }
+
+    public function formatTransfer($networkType,$mosaics_raw,$recipient_raw,$message_raw){
+        $Mosaics = array();
+        for ($i=0;$i<count($mosaics_raw);$i++){
+            $mosaic = new MosaicDTO($mosaics_raw[$i]->id,$mosaics_raw[$i]->amount);
+            $Mosaics[$i] = $mosaic;
+        }
+
+        $hex = new \NEM\Utils\Hex;
+        $addrDecode = $hex->DecodeString($recipient_raw);
+        $addrString = Base32::encode(implode(array_map("chr", $addrDecode)));
+        $Recipient = new Address($addrString,$networkType);
+        
+        $mess = pack('H*', $message_raw->payload);
+        $Message = new Message($mess,$message_raw->type);
+
+        $result = new \stdClass();
+        $result->mosaics = $Mosaics;
+        $result->recipient = $Recipient;
+        $result->message = $Message;
+        
+        return $result;
+    }
+
+    public function formatLockFunds($duration_raw,$mosaicId_raw,$amount_raw,$hash_raw){
+        $mosaic = new MosaicDTO($mosaicId_raw,$amount_raw);
+
+        $result = new \stdClass();
+        $result->mosaic = $mosaic;
+        $result->duration = (($duration_raw[1] << 32) | ($duration_raw[0]));
+        $result->hash = $hash_raw;
+
+        return $result;
+    }
+
+    public function formatAggregate($networkType,$cosignatures_raw,$transactions_raw){
+        $cosignatures = array();
+        for ($i=0;$i<count($cosignatures_raw);$i++){
+            $signer = (new Account)->newAccountFromPublicKey($cosignatures_raw[$i]->signer,$networkType);
+            $cosignatures[$i] = new CosignatureDTO($cosignatures_raw[$i]->signature,$signer);
+        }
+
+        $transactions = array();
+        for ($i=0;$i<count($transactions_raw);$i++){
+            $transactions[$i] = $this->formatData($networkType,$transactions_raw[$i]);
+        }
+        $result = new \stdClass();
+        $result->cosignatures = $cosignatures;
+        $result->transactions = $transactions;
+
+        return $result;
     }
 }
 ?>

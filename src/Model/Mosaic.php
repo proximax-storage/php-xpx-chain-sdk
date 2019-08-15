@@ -16,6 +16,7 @@
 namespace NEM\Model;
 
 use NEM\Utils\Utils;
+use NEM\Model\NamespaceId;
 
 /**
  * Mosaic class Doc Comment
@@ -31,12 +32,21 @@ class Mosaic{
 
     public $amount;//big Int
 
-    public function __construct(string $name = null,int $amount = null){
+    public function __construct(string $id = null,int $amount = null){
         $utils = new Utils;
-        if ($name === null || $name == "xpx"){
+        if ($id === null || $id == "xpx"){
             $this->id = array(481110499,231112638); //xpx id
         }
-        else throw new \Exception("Wrong mosaic name");
+        else if (is_string($id)){
+            $this->id = $utils->fromBigInt(hexdec($id));
+        }
+        else if (is_array($id)){
+            $this->id = $id;
+        }
+        else if ($id instanceof NamespaceId){
+            $this->id = $id->getId();
+        }
+        else throw new \Exception("Wrong mosaic id");
         
         if ($amount === null){
             $this->amount = array(0,0);

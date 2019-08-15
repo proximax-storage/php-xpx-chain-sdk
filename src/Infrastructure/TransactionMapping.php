@@ -30,6 +30,7 @@ class TransactionMapping{
         $bin = decbin($version);
         return bindec($bin & 0xff);
     } 
+
     public function ExtractDeadline($deadline){
         $sub_timestamp = (($deadline[1] << 32) | ($deadline[0]));
         $deadline = new Deadline;
@@ -38,6 +39,16 @@ class TransactionMapping{
 
     public function ExtractMaxFee($maxFee){
         return new MaxFee($maxFee);
+    }
+
+    public function ExtractDifficulty($difficulty){
+        return (($difficulty[1] << 32) | ($difficulty[0]));
+    } 
+
+    public function ExtractCurrentScore($score){
+        $high = (($score->scoreHigh[1] << 32) | ($score->scoreHigh[0])) & 0x00000000FFFFFFFF; //just get 32 bit low
+        $low = (($score->scoreLow[1] << 32) | ($score->scoreLow[0])) & 0x00000000FFFFFFFF;//just get 32 bit low
+        return ($high << 32) | $low;
     }
 }
 ?>

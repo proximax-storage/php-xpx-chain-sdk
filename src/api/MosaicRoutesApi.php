@@ -82,7 +82,7 @@ class MosaicRoutesApi
      */
     public function getMosaic($mosaicId)
     {
-        list($response) = $this->getMosaicWithHttpInfo($mosaicId);
+        $response = $this->getMosaicWithHttpInfo($mosaicId);
         return $response;
     }
 
@@ -141,7 +141,8 @@ class MosaicRoutesApi
             }
 
             return [
-                ObjectSerializer::deserialize($content, $returnType, []),
+                //ObjectSerializer::deserialize($content, $returnType, []),
+                $content,
                 $response->getStatusCode(),
                 $response->getHeaders()
             ];
@@ -344,7 +345,7 @@ class MosaicRoutesApi
      */
     public function getMosaics($mosaicIds)
     {
-        list($response) = $this->getMosaicsWithHttpInfo($mosaicIds);
+        $response = $this->getMosaicsWithHttpInfo($mosaicIds);
         return $response;
     }
 
@@ -403,7 +404,8 @@ class MosaicRoutesApi
             }
 
             return [
-                ObjectSerializer::deserialize($content, $returnType, []),
+                //ObjectSerializer::deserialize($content, $returnType, []),
+                $content,
                 $response->getStatusCode(),
                 $response->getHeaders()
             ];

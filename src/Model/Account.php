@@ -38,24 +38,22 @@ class Account{
         $this->publicAccount = $publicAccount;
     }
 
-    public function sign($transaction){
+    public function sign($transaction, $generationHash){
+        $generationHashBytes = (new Hex)->DecodeString($generationHash); 
         $byte_data = $transaction->generateBytes();
-        // var_dump("---byte--");
-        // var_dump($byte_data);
         $new = array_slice($byte_data,100,count($byte_data)-100);
-        
-        $signature = $this->keyPair->sign($new,"sha3-512",8);
+        $signingBytes = array_merge($generationHashBytes,$new);
+
+        $signature = $this->keyPair->sign($signingBytes,"sha3-512",8);
 
         $p1 = array_slice($byte_data,0,4);
-        // var_dump("---4 bit dau--");
-        // var_dump($p1);
         $p = array_merge($p1,$signature,$this->keyPair->getPublicKey(8),$new);
 
         $ph = (new Hex)->EncodeToString($p);
 
-        $h = $transaction->createTransactionHash($ph);
+        $h = $transaction->createTransactionHash($p,$generationHashBytes);
 
-        $signedTransaction = new SignedTransaction($transaction->getAbstractTransaction()->type,strtoupper($ph),strtoupper($h));
+        $signedTransaction = new SignedTransaction($transaction->getAbstractTransaction()->getType(),strtoupper($ph),strtoupper($h));
 
         return $signedTransaction;
 
@@ -63,8 +61,7 @@ class Account{
 
     public function signCosignatureTransaction($cosignTransaction){
         $signer = $this->publicAccount;
-        $hash = $cosignTransaction->getTransactionToSign()->getAbstractTransaction()->transactionInfo->getHash();
-        //var_dump($hash);
+        $hash = $cosignTransaction->getTransactionToSign()->getAbstractTransaction()->getTransactionInfo()->getHash();
         $byte = (new Hex)->DecodeString($hash);
         $signature = $this->keyPair->sign($byte,"sha3-512",8);
         return new CosignatureSignedTransaction($hash,(new Hex)->EncodeToString($signature),$signer->getPublicKey());

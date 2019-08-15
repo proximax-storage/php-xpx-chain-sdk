@@ -7,10 +7,10 @@
     $config = new Config;
     $network = new Network;
   
-    $baseUrl = "http://bctestnet1.xpxsirius.io:3000";
+    $baseUrl = "http://192.168.0.105:3000";
     $wsReconnectionTimeout = 5000;
-    $pKey = "E25F5E9B56973E53B7D1EE4017175A632D5E92807FA6615E9EA12498CE3DDAEB";
-    $netType = Network::getIdfromName("PublicTest");
+    $pKey = "357966ED5562BAEBF4CBF9D4CB1C7EC30F910C9ADC1B72093C6FEBAF9A75A8C6";
+    $netType = Network::getIdfromName("MijinTest");
 
     if ($netType){
         $config = $config->NewConfig($baseUrl,$netType,$wsReconnectionTimeout);

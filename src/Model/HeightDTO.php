@@ -27,7 +27,7 @@ use NEM\Utils\Utils;
 class HeightDTO{
     private $height; //big int  
 
-    public function __construct($height){
+    public function __construct($height = null){
         if (is_numeric($height)){
             $utils = new Utils;
             $this->height = $utils->fromBigInt($height);

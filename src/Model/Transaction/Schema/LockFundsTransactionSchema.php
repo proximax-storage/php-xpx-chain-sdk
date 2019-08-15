@@ -20,7 +20,7 @@ use NEM\Model\Transaction\Attribute\TableArrayAttribute;
 use NEM\Model\Transaction\Constants;
 
 /**
- * ModifyMultisigAccountTransactionSchema class Doc Comment
+ * LockFundsTransactionSchema class Doc Comment
  *
  * @category class
  * @package  NEM

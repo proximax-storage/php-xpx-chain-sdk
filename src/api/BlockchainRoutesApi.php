@@ -82,7 +82,7 @@ class BlockchainRoutesApi
      */
     public function getBlockByHeight($height)
     {
-        list($response) = $this->getBlockByHeightWithHttpInfo($height);
+        $response = $this->getBlockByHeightWithHttpInfo($height);
         return $response;
     }
 
@@ -141,7 +141,8 @@ class BlockchainRoutesApi
             }
 
             return [
-                ObjectSerializer::deserialize($content, $returnType, []),
+                //ObjectSerializer::deserialize($content, $returnType, []),
+                $content,
                 $response->getStatusCode(),
                 $response->getHeaders()
             ];
@@ -346,7 +347,7 @@ class BlockchainRoutesApi
      */
     public function getBlockTransactions($height, $pageSize = null, $id = null)
     {
-        list($response) = $this->getBlockTransactionsWithHttpInfo($height, $pageSize, $id);
+        $response = $this->getBlockTransactionsWithHttpInfo($height, $pageSize, $id);
         return $response;
     }
 
@@ -407,7 +408,8 @@ class BlockchainRoutesApi
             }
 
             return [
-                ObjectSerializer::deserialize($content, $returnType, []),
+                //ObjectSerializer::deserialize($content, $returnType, []),
+                $content,
                 $response->getStatusCode(),
                 $response->getHeaders()
             ];
@@ -623,7 +625,7 @@ class BlockchainRoutesApi
      */
     public function getBlockchainHeight()
     {
-        list($response) = $this->getBlockchainHeightWithHttpInfo();
+        $response = $this->getBlockchainHeightWithHttpInfo();
         return $response;
     }
 
@@ -681,7 +683,8 @@ class BlockchainRoutesApi
             }
 
             return [
-                ObjectSerializer::deserialize($content, $returnType, []),
+                //ObjectSerializer::deserialize($content, $returnType, []),
+                $content,
                 $response->getStatusCode(),
                 $response->getHeaders()
             ];
@@ -866,7 +869,7 @@ class BlockchainRoutesApi
      */
     public function getBlockchainScore()
     {
-        list($response) = $this->getBlockchainScoreWithHttpInfo();
+        $response = $this->getBlockchainScoreWithHttpInfo();
         return $response;
     }
 
@@ -924,7 +927,8 @@ class BlockchainRoutesApi
             }
 
             return [
-                ObjectSerializer::deserialize($content, $returnType, []),
+                //ObjectSerializer::deserialize($content, $returnType, []),
+                $content,
                 $response->getStatusCode(),
                 $response->getHeaders()
             ];
@@ -1111,7 +1115,7 @@ class BlockchainRoutesApi
      */
     public function getBlocksByHeightWithLimit($height, $limit)
     {
-        list($response) = $this->getBlocksByHeightWithLimitWithHttpInfo($height, $limit);
+        $response = $this->getBlocksByHeightWithLimitWithHttpInfo($height, $limit);
         return $response;
     }
 
@@ -1171,7 +1175,8 @@ class BlockchainRoutesApi
             }
 
             return [
-                ObjectSerializer::deserialize($content, $returnType, []),
+                //ObjectSerializer::deserialize($content, $returnType, []),
+                $content,
                 $response->getStatusCode(),
                 $response->getHeaders()
             ];
@@ -1398,7 +1403,7 @@ class BlockchainRoutesApi
      */
     public function getDiagnosticStorage()
     {
-        list($response) = $this->getDiagnosticStorageWithHttpInfo();
+        $response = $this->getDiagnosticStorageWithHttpInfo();
         return $response;
     }
 
@@ -1456,7 +1461,8 @@ class BlockchainRoutesApi
             }
 
             return [
-                ObjectSerializer::deserialize($content, $returnType, []),
+                //ObjectSerializer::deserialize($content, $returnType, []),
+                $content,
                 $response->getStatusCode(),
                 $response->getHeaders()
             ];

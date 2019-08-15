@@ -17,17 +17,19 @@
     $config = new Config;
     $network = new Network;
   
-    $baseUrl = "http://bctestnet1.xpxsirius.io:3000";
+    $baseUrl = "http://192.168.0.105:3000";
     $wsReconnectionTimeout = 5000;
-    $networkType = Network::getIdfromName("PublicTest");
+    $networkType = Network::getIdfromName("MijinTest");
     if ($networkType){
         $config = $config->NewConfig($baseUrl,$networkType,$wsReconnectionTimeout);
     }
 
     // Cosignature public keys
 	$firstAccountPrivateKey      = "760B7E531925FAB015349C12093943E86FBFBE5CB831F14447ED190EC10F6B1B";
-    $secondAccountPrivateKey      = "B55478C892A6476760C5E77E443FE411F2D62B0F42496FC12EDB37F3306F8D69";
+    $secondAccountPrivateKey     = "B55478C892A6476760C5E77E443FE411F2D62B0F42496FC12EDB37F3306F8D69";
     
+    $generationHash = "7B631D803F912B00DC0CBED3014BBD17A302BA50B99D233B9C2D9533B842ABDF";
+
     $firstAccount = (new Account)->newAccountFromPrivateKey($firstAccountPrivateKey,$networkType);
     $secondAccount = (new Account)->newAccountFromPrivateKey($secondAccountPrivateKey,$networkType);
 
@@ -43,7 +45,7 @@
     $secondTransaction = new TransferTransaction(
         new Deadline(1),
         $firstAccount->getPublicAccount()->getAddress(),
-        array(new Mosaic("xpx",20)),
+        array(new Mosaic("xpx",0)),
         new Message("ok"),
         $networkType
     );
@@ -57,7 +59,7 @@
         $networkType
     );
     $aggregateBoundedTransaction->createBonded();
-    $signedAggregateBoundedTransaction = $firstAccount->sign($aggregateBoundedTransaction);
+    $signedAggregateBoundedTransaction = $firstAccount->sign($aggregateBoundedTransaction,$generationHash);
 
     $lockFundsTrx = new LockFundsTransaction(
         new Deadline(1),
@@ -67,16 +69,14 @@
         $networkType
     );
 
-    $signedTransaction = $firstAccount->sign($lockFundsTrx);
+    $signedTransaction = $firstAccount->sign($lockFundsTrx,$generationHash);
 
     $transaction = new Transaction;
     $transaction->AnnounceTransaction($config, $signedTransaction);
     sleep(30);// 30 seconds
 
-
     $transaction = new Transaction;
     $transaction->AnnounceAggregateBondedTransaction($config, $signedAggregateBoundedTransaction);
-    
     sleep(30);// 30 seconds
 
     $signatureSecondAccountTransaction = new CosignatureTransaction($aggregateBoundedTransaction);

@@ -49,7 +49,7 @@ class CosignatureTransaction{
     }
 
     public function setHash($hash){
-        return $this->transactionToCosign->getAbstractTransaction()->transactionInfo->setHash($hash);
+        return $this->transactionToCosign->getAbstractTransaction()->getTransactionInfo()->setHash($hash);
     }
 
 }
