@@ -13,16 +13,16 @@
  * 
  */
 
-namespace NEM\Core;
+namespace Proximax\Core;
 
 use kornrunner\Keccak;
-use NEM\Core\Buffer;
+use Proximax\Core\Buffer;
 
 /**
  * KeccakHasher class Doc Comment
  *
  * @category class
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -60,7 +60,7 @@ class KeccakHasher
      * Non-Incremental Keccak Hash implementation.
      * 
      * @param   null|string|integer     $algorithm      The hashing algorithm or Hash Bit Length.
-     * @param   string|\NEM\Core\Buffer $data           The data that needs to be hashed.
+     * @param   string|\Proximax\Core\Buffer $data           The data that needs to be hashed.
      * @param   boolean                 $raw_output     Whether to return raw data or a Hexadecimal hash.
      * @return  string
      */
@@ -110,7 +110,7 @@ class KeccakHasher
      * keccak-256, keccak-224.
      * 
      * @param   integer|string  $algorithm
-     * @return  \NEM\Core\KeccakSponge
+     * @return  \Proximax\Core\KeccakSponge
 */
     static public function hash_init($algorithm)
     {
@@ -133,10 +133,10 @@ class KeccakHasher
     /**
      * Add data to an incremental Keccak Sponge instance.
      * 
-     * @param   \NEM\Core\KeccakSponge  $sponge
+     * @param   \Proximax\Core\KeccakSponge  $sponge
      * @param   string                  $data
      * @param   integer                 $dataBitLen
-     * @return  \NEM\Core\KeccakSponge
+     * @return  \Proximax\Core\KeccakSponge
 */
     static public function hash_update(KeccakSponge $sponge, $data, $dataBitLen = null)
     {
@@ -174,7 +174,7 @@ class KeccakHasher
      * Finalize an *Incremental Keccak Hash* generation.
      * 
      * @param   boolean                 $raw_output
-     * @return  string|\NEM\Core\Buffer
+     * @return  string|\Proximax\Core\Buffer
 */
     public function hash_final(KeccakSponge $sponge, bool $raw_output = false)
     {

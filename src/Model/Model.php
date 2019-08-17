@@ -13,16 +13,16 @@
  * 
  */
 
-namespace NEM\Model;
+namespace Proximax\Model;
 
 use \Illuminate\Support\Collection;
 use \Illuminate\Support\Str;
 use \Illuminate\Support\Arr;
 
-use NEM\Infrastructure\ServiceInterface;
-use NEM\Models\Mutators\ModelMutator;
-use NEM\Contracts\DataTransferObject;
-use NEM\Contracts\Serializable;
+use Proximax\Infrastructure\ServiceInterface;
+use Proximax\Models\Mutators\ModelMutator;
+use Proximax\Contracts\DataTransferObject;
+use Proximax\Contracts\Serializable;
 
 use ArrayObject;
 use BadMethodCallException;
@@ -33,7 +33,7 @@ use RuntimeException;
  * Model class Doc Comment
  *
  * @category class
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -44,10 +44,10 @@ class Model
     /**
      * Inject getSerializer() and setSerializer()
      * 
-     * @see \NEM\Traits\Serializable
-     * @see \NEM\Core\Serializer
+     * @see \Proximax\Traits\Serializable
+     * @see \Proximax\Core\Serializer
      */
-    use \NEM\Traits\Serializable;
+    use \Proximax\Traits\Serializable;
 
     /**
      * List of fillable attributes
@@ -145,13 +145,13 @@ class Model
     /**
      * Generic helper to convert a Model instance to a Data Transfer Object.
      *
-     * This will make it easy to bridge implemented models to NEM *NIS compliant*
+     * This will make it easy to bridge implemented models to Proximax *NIS compliant*
      * objects.
      *
      * More complicated objects may overload this method to provide with finer
      * grained data transfer objects.
      *
-     * @see http://bob.nem.ninja/docs/  NIS API Documentation
+     * @see http://bob.Proximax.ninja/docs/  NIS API Documentation
      * @param   null|string $filterByKey    non-null will return only the named sub-dtos.
      * @return  array       Associative     array representation of the object *compliable* with NIS definition.
      */
@@ -170,7 +170,7 @@ class Model
             }
             elseif (in_array($attrib, $this->relations) || method_exists($this, $attrib)) {
                 // unparsed sub DTO passed - parse the DTO to make sure
-                // we are working with NEM *NIS compliant* objects *always*.
+                // we are working with Proximax *NIS compliant* objects *always*.
                 $related   = $this->resolveRelationship($attrib, $data);
                 $attribDTO = $related->toDTO();
             }
@@ -196,7 +196,7 @@ class Model
      * The `parameters` argument can be used to filter sub-dtos
      * or fields of a given model instance.
      *
-     * @see \NEM\Contracts\Serializable
+     * @see \Proximax\Contracts\Serializable
      * @param   null|string $parameters    non-null will return only the named sub-dtos.
      * @return  array   Returns a byte-array with values in UInt8 representation.
      */
@@ -210,7 +210,7 @@ class Model
      * Setter for the `fillable` property.
      *
      * @param   array   $fieldNames     An array of field names
-     * @return  \NEM\Models\ModelInterface
+     * @return  \Proximax\Models\ModelInterface
      */
     public function setFields(array $fieldNames)
     {
@@ -226,7 +226,7 @@ class Model
      * properties into one array of field names.
      *
      * @param   array   $fieldNames     An array of field names
-     * @return  \NEM\Models\ModelInterface
+     * @return  \Proximax\Models\ModelInterface
      */
     public function getFields()
     {
@@ -245,7 +245,7 @@ class Model
      * relationships automatically when needed.
      *
      * @internal
-     * @return  \NEM\Contracts\DataTransferObject
+     * @return  \Proximax\Contracts\DataTransferObject
      */
     public function setAttributes(array $attributes)
     {
@@ -398,7 +398,7 @@ class Model
      * which will automatically be resolved into relationships.
      *
      * @param   array   $relations      An array of field names which need to be parsed as relationships.
-     * @return  \NEM\Contracts\DataTransferObject
+     * @return  \Proximax\Contracts\DataTransferObject
      */
     public function setRelations(array $relations)
     {
@@ -439,9 +439,9 @@ class Model
      * This list is used when extending models instances to provide with
      * class specific field additions.
      *
-     * @see \NEM\Models\Transaction
+     * @see \Proximax\Models\Transaction
      * @param   array   $relations      An array of field names which need to be parsed as relationships.
-     * @return  \NEM\Contracts\DataTransferObject
+     * @return  \Proximax\Contracts\DataTransferObject
      */
     public function setAppends(array $appends)
     {
@@ -566,7 +566,7 @@ class Model
     }
 
     /**
-     * Build a Model Relationship between \NEM\Contracts\DataTransferObject objects.
+     * Build a Model Relationship between \Proximax\Contracts\DataTransferObject objects.
      *
      * Relation can be defined with the `$relations` property on extending classes.
      *
@@ -591,7 +591,7 @@ class Model
         }
 
         // try to craft relationship with simple snake_case to camelCase
-        $relation = "\\NEM\\Models\\" . Str::studly($alias);
+        $relation = "\\Proximax\\Models\\" . Str::studly($alias);
 
         if (! class_exists($relation)) {
             throw new BadMethodCallException("Relationship method for field '" . $alias . "' not implemented in " . get_class($this));

@@ -13,13 +13,13 @@
  * 
  */
 
-namespace NEM\Contracts;
+namespace Proximax\Contracts;
 
 /**
  * Serializable interface Doc Comment
  *
  * @category interface
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */

@@ -13,13 +13,13 @@
  * 
  */
 
-namespace NEM\Contracts;
+namespace Proximax\Contracts;
 
 /**
  * Connector interface Doc Comment
  *
  * @category interface
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -29,7 +29,7 @@ interface Connector
      * Setter for `use_ssl` property.
      *
      * @param  string $host
-     * @return \NEM\API
+     * @return \Proximax\API
      */
     public function setUseSsl($use_ssl);
 
@@ -46,7 +46,7 @@ interface Connector
      * which Protocol is used in the Base URL.
      *
      * @param  string $protocol
-     * @return \NEM\Contracts\Connector
+     * @return \Proximax\Contracts\Connector
      */
     public function setProtocol($protocol);
 
@@ -62,7 +62,7 @@ interface Connector
      * Setter for `host` property.
      *
      * @param  string $host
-     * @return \NEM\Contracts\Connector
+     * @return \Proximax\Contracts\Connector
      */
     public function setHost($host);
 
@@ -77,7 +77,7 @@ interface Connector
      * Setter for `port` property.
      *
      * @param  integer $port
-     * @return \NEM\Contracts\Connector
+     * @return \Proximax\Contracts\Connector
      */
     public function setPort($port);
 
@@ -92,7 +92,7 @@ interface Connector
      * Setter for `endpoint` property.
      *
      * @param  string $endpoint
-     * @return \NEM\Contracts\Connector
+     * @return \Proximax\Contracts\Connector
      */
     public function setEndpoint($endpoint);
 

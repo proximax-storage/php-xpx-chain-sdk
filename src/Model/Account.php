@@ -13,18 +13,18 @@
  * 
  */
 
-namespace NEM\Model;
-use NEM\Utils\Hex;
-use NEM\Model\Transaction;
-use NEM\Model\SignedTransaction;
-use NEM\Core\KeyPair;
-use NEM\Model\PublicAccount;
+namespace Proximax\Model;
+use Proximax\Utils\Hex;
+use Proximax\Model\Transaction;
+use Proximax\Model\SignedTransaction;
+use Proximax\Core\KeyPair;
+use Proximax\Model\PublicAccount;
 
 /**
  * Account class Doc Comment
  *
  * @category class
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */

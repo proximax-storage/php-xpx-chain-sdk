@@ -13,32 +13,32 @@
  * 
  */
 
-namespace NEM\Model\Transaction;
+namespace Proximax\Model\Transaction;
 
-use NEM\Model\TransactionType;
-use NEM\Model\Deadline;
-use NEM\Model\TransactionVersion;
-use NEM\Model\TransactionInfo;
-use NEM\Model\PublicAccount;
-use NEM\Infrastructure\Network;
-use NEM\Model\Transaction\Schema\AliasTransactionSchema;
+use Proximax\Model\TransactionType;
+use Proximax\Model\Deadline;
+use Proximax\Model\TransactionVersion;
+use Proximax\Model\TransactionInfo;
+use Proximax\Model\PublicAccount;
+use Proximax\Infrastructure\Network;
+use Proximax\Model\Transaction\Schema\AliasTransactionSchema;
 use \Google\FlatBuffers\FlatbufferBuilder;
 use \Catapult\Buffers\MosaicBuffer;
 use \Catapult\Buffers\AliasTransactionBuffer;
-use NEM\Utils\Utils;
-use NEM\Model\AbstractTransaction;
-use NEM\Model\Transaction\IdGenerator;
+use Proximax\Utils\Utils;
+use Proximax\Model\AbstractTransaction;
+use Proximax\Model\Transaction\IdGenerator;
 use Base32\Base32;
 
 /**
  * AliasTransaction class Doc Comment
  *
  * @category class
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
-class AliasTransaction extends \NEM\Model\Transaction{
+class AliasTransaction extends \Proximax\Model\Transaction{
 
     private $mosaicId;//mosaic <optional>
     private $address; //address <optional>
@@ -111,12 +111,10 @@ class AliasTransaction extends \NEM\Model\Transaction{
 
         $builder = new FlatbufferBuilder(1);
         if ($type == hexdec(TransactionType::ADDRESS_ALIAS)){
-            var_dump("1");
             $tmp = Base32::decode($address->toClean());
             $aliasIdBytes = (new Utils)->stringToByteArray($tmp);
         }
         else if ($type == hexdec(TransactionType::MOSAIC_ALIAS)){
-            var_dump("2");
             $aliasIdBytes = (new Utils)->getBytes($mosaicId->getId());
         }
         $v = ($networkType << 8) + $version;

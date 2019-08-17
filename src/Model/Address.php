@@ -13,16 +13,16 @@
  * 
  */
 
-namespace NEM\Model;
+namespace Proximax\Model;
 
-use NEM\Errors\NISInvalidNetworkName;
-use NEM\Errors\NISInvalidNetworkId;
-use NEM\Errors\NISInvalidPublicKeyFormat;
-use NEM\Infrastructure\Network;
-use NEM\Contracts\KeyPair;
-use NEM\Core\Buffer;
-use NEM\Core\Encoder;
-use NEM\Core\Encryption;
+use Proximax\Errors\NISInvalidNetworkName;
+use Proximax\Errors\NISInvalidNetworkId;
+use Proximax\Errors\NISInvalidPublicKeyFormat;
+use Proximax\Infrastructure\Network;
+use Proximax\Contracts\KeyPair;
+use Proximax\Core\Buffer;
+use Proximax\Core\Encoder;
+use Proximax\Core\Encryption;
 use kornrunner\Keccak;
 use Base32\Base32;
 
@@ -30,13 +30,13 @@ use Base32\Base32;
  * Address class Doc Comment
  *
  * @category class
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
 class Address{
     /**
-     * The number of characters of a NEM Address.
+     * The number of characters of a Proximax Address.
      *
      * @var integer
      */
@@ -92,12 +92,12 @@ class Address{
      *
      * @param   mixed           $publicKey
      * @param   string|integer  $networkId        A network ID OR a network name. (default mainnet)
-     * @return  \NEM\Models\Address
-     * @throws  \NEM\Errors\NISInvalidPublicKeyFormat   On unidentifiable public key format.
-     * @throws  \NEM\Errors\NISInvalidNetworkName       On invalid network name provided in `version` (when string).
-     * @throws  \NEM\Errors\NISInvalidVersionByte       On invalid network byte provided in `version` (when integer).
+     * @return  \Proximax\Models\Address
+     * @throws  \Proximax\Errors\NISInvalidPublicKeyFormat   On unidentifiable public key format.
+     * @throws  \Proximax\Errors\NISInvalidNetworkName       On invalid network name provided in `version` (when string).
+     * @throws  \Proximax\Errors\NISInvalidVersionByte       On invalid network byte provided in `version` (when integer).
      */
-    static public function fromPublicKey($publicKey, $networkId = 168) // 168 = public test
+    static public function fromPublicKey($publicKey, $networkId) // 168 = public test
     {
         // discover public key content
         if ($publicKey instanceof Buffer) {

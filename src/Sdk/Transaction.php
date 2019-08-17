@@ -13,33 +13,33 @@
  * 
  */
 
-namespace NEM\Sdk;
-use NEM\Core\KeyPair;
-use NEM\API\TransactionRoutesApi;
-use NEM\Model\TransactionDTO;
-use NEM\Model\TransactionStatusDTO;
-use NEM\ApiClient;
+namespace Proximax\Sdk;
+use Proximax\Core\KeyPair;
+use Proximax\API\TransactionRoutesApi;
+use Proximax\Model\TransactionDTO;
+use Proximax\Model\TransactionStatusDTO;
+use Proximax\ApiClient;
 use Base32\Base32;
-use NEM\Infrastructure\TransactionMapping;
-use NEM\Model\HeightDTO;
-use NEM\Model\MosaicDTO;
-use NEM\Model\TransactionInfo;
-use NEM\Model\Address;
-use NEM\Model\PublicAccount;
-use NEM\Model\Message;
-use NEM\Model\AbstractTransaction;
-use NEM\Model\Account;
-use NEM\Model\TransactionType;
-use NEM\Model\TransferTransactionDTO;
-use NEM\Model\LockFundsTransactionDTO;
-use NEM\Model\AggregateTransactionDTO;
-use NEM\Model\CosignatureDTO;
+use Proximax\Infrastructure\TransactionMapping;
+use Proximax\Model\HeightDTO;
+use Proximax\Model\MosaicDTO;
+use Proximax\Model\TransactionInfo;
+use Proximax\Model\Address;
+use Proximax\Model\PublicAccount;
+use Proximax\Model\Message;
+use Proximax\Model\AbstractTransaction;
+use Proximax\Model\Account;
+use Proximax\Model\TransactionType;
+use Proximax\Model\TransferTransactionDTO;
+use Proximax\Model\LockFundsTransactionDTO;
+use Proximax\Model\AggregateTransactionDTO;
+use Proximax\Model\CosignatureDTO;
 
 /**
  * Transaction class Doc Comment
  *
  * @category class
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -362,7 +362,7 @@ class Transaction{
             $Mosaics[$i] = $mosaic;
         }
 
-        $hex = new \NEM\Utils\Hex;
+        $hex = new \Proximax\Utils\Hex;
         $addrDecode = $hex->DecodeString($recipient_raw);
         $addrString = Base32::encode(implode(array_map("chr", $addrDecode)));
         $Recipient = new Address($addrString,$networkType);

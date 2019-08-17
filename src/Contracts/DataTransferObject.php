@@ -13,13 +13,13 @@
  * 
  */
 
-namespace NEM\Contracts;
+namespace Proximax\Contracts;
 
 /**
  * DataTransferObject interface Doc Comment
  *
  * @category interface
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -28,7 +28,7 @@ interface DataTransferObject
     /**
      * Setter for the `attributes` property.
      *
-     * @return  \NEM\Models\ModelInterface
+     * @return  \Proximax\Models\ModelInterface
      */
     public function setAttributes(array $attributes);
 

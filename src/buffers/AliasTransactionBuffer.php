@@ -96,12 +96,12 @@ class AliasTransactionBuffer extends Table
     }
 
     /**
-     * @return ushort
+     * @return uint
      */
     public function getVersion()
     {
         $o = $this->__offset(10);
-        return $o != 0 ? $this->bb->getUshort($o + $this->bb_pos) : 0;
+        return $o != 0 ? $this->bb->getUint($o + $this->bb_pos) : 0;
     }
 
     /**
@@ -317,12 +317,12 @@ class AliasTransactionBuffer extends Table
 
     /**
      * @param FlatBufferBuilder $builder
-     * @param ushort
+     * @param uint
      * @return void
      */
     public static function addVersion(FlatBufferBuilder $builder, $version)
     {
-        $builder->addUshortX(3, $version, 0);
+        $builder->addUintX(3, $version, 0);
     }
 
     /**

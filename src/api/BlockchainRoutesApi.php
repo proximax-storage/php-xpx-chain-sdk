@@ -13,7 +13,7 @@
  * 
  */
 
-namespace NEM\API;
+namespace Proximax\API;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
@@ -21,16 +21,16 @@ use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\RequestOptions;
-use NEM\ApiException;
-use NEM\ApiClient;
-use NEM\HeaderSelector;
-use NEM\ObjectSerializer;
+use Proximax\ApiException;
+use Proximax\ApiClient;
+use Proximax\HeaderSelector;
+use Proximax\ObjectSerializer;
 
 /**
  * BlockchainRoutesApi Class Doc Comment
  *
  * @category Class
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -76,9 +76,9 @@ class BlockchainRoutesApi
      *
      * @param  int $height Block height (required)
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return \NEM\Model\BlockInfoDTO
+     * @return \Proximax\Model\BlockInfoDTO
      */
     public function getBlockByHeight($height)
     {
@@ -93,13 +93,13 @@ class BlockchainRoutesApi
      *
      * @param  int $height Block height (required)
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return array of \NEM\Model\BlockInfoDTO, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Proximax\Model\BlockInfoDTO, HTTP status code, HTTP response headers (array of strings)
      */
     public function getBlockByHeightWithHttpInfo($height)
     {
-        $returnType = '\NEM\Model\BlockInfoDTO';
+        $returnType = '\Proximax\Model\BlockInfoDTO';
         $request = $this->getBlockByHeightRequest($height);
 
         try {
@@ -152,7 +152,7 @@ class BlockchainRoutesApi
                 case 200:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\NEM\Model\BlockInfoDTO',
+                        '\Proximax\Model\BlockInfoDTO',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -194,7 +194,7 @@ class BlockchainRoutesApi
      */
     public function getBlockByHeightAsyncWithHttpInfo($height)
     {
-        $returnType = '\NEM\Model\BlockInfoDTO';
+        $returnType = '\Proximax\Model\BlockInfoDTO';
         $request = $this->getBlockByHeightRequest($height);
 
         return $this->client
@@ -341,7 +341,7 @@ class BlockchainRoutesApi
      * @param  int $pageSize The numbers of transactions to return (optional)
      * @param  string $id Id last transaction id to apply pagination (optional)
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      * @return object[]
      */
@@ -360,7 +360,7 @@ class BlockchainRoutesApi
      * @param  int $pageSize The numbers of transactions to return (optional)
      * @param  string $id Id last transaction id to apply pagination (optional)
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      * @return array of object[], HTTP status code, HTTP response headers (array of strings)
      */
@@ -619,9 +619,9 @@ class BlockchainRoutesApi
      * Get the current height of the chain
      *
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return \NEM\Model\HeightDTO
+     * @return \Proximax\Model\HeightDTO
      */
     public function getBlockchainHeight()
     {
@@ -635,13 +635,13 @@ class BlockchainRoutesApi
      * Get the current height of the chain
      *
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return array of \NEM\Model\HeightDTO, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Proximax\Model\HeightDTO, HTTP status code, HTTP response headers (array of strings)
      */
     public function getBlockchainHeightWithHttpInfo()
     {
-        $returnType = '\NEM\Model\HeightDTO';
+        $returnType = '\Proximax\Model\HeightDTO';
         $request = $this->getBlockchainHeightRequest();
 
         try {
@@ -694,7 +694,7 @@ class BlockchainRoutesApi
                 case 200:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\NEM\Model\HeightDTO',
+                        '\Proximax\Model\HeightDTO',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -734,7 +734,7 @@ class BlockchainRoutesApi
      */
     public function getBlockchainHeightAsyncWithHttpInfo()
     {
-        $returnType = '\NEM\Model\HeightDTO';
+        $returnType = '\Proximax\Model\HeightDTO';
         $request = $this->getBlockchainHeightRequest();
 
         return $this->client
@@ -863,9 +863,9 @@ class BlockchainRoutesApi
      * Get the current score of the chain
      *
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return \NEM\Model\BlockchainScoreDTO
+     * @return \Proximax\Model\BlockchainScoreDTO
      */
     public function getBlockchainScore()
     {
@@ -879,13 +879,13 @@ class BlockchainRoutesApi
      * Get the current score of the chain
      *
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return array of \NEM\Model\BlockchainScoreDTO, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Proximax\Model\BlockchainScoreDTO, HTTP status code, HTTP response headers (array of strings)
      */
     public function getBlockchainScoreWithHttpInfo()
     {
-        $returnType = '\NEM\Model\BlockchainScoreDTO';
+        $returnType = '\Proximax\Model\BlockchainScoreDTO';
         $request = $this->getBlockchainScoreRequest();
 
         try {
@@ -938,7 +938,7 @@ class BlockchainRoutesApi
                 case 200:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\NEM\Model\BlockchainScoreDTO',
+                        '\Proximax\Model\BlockchainScoreDTO',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -978,7 +978,7 @@ class BlockchainRoutesApi
      */
     public function getBlockchainScoreAsyncWithHttpInfo()
     {
-        $returnType = '\NEM\Model\BlockchainScoreDTO';
+        $returnType = '\Proximax\Model\BlockchainScoreDTO';
         $request = $this->getBlockchainScoreRequest();
 
         return $this->client
@@ -1109,9 +1109,9 @@ class BlockchainRoutesApi
      * @param  int $height The block height at which information should be returned (required)
      * @param  int $limit Block limit (required)
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return \NEM\Model\BlockInfoDTO[]
+     * @return \Proximax\Model\BlockInfoDTO[]
      */
     public function getBlocksByHeightWithLimit($height, $limit)
     {
@@ -1127,13 +1127,13 @@ class BlockchainRoutesApi
      * @param  int $height The block height at which information should be returned (required)
      * @param  int $limit Block limit (required)
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return array of \NEM\Model\BlockInfoDTO[], HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Proximax\Model\BlockInfoDTO[], HTTP status code, HTTP response headers (array of strings)
      */
     public function getBlocksByHeightWithLimitWithHttpInfo($height, $limit)
     {
-        $returnType = '\NEM\Model\BlockInfoDTO[]';
+        $returnType = '\Proximax\Model\BlockInfoDTO[]';
         $request = $this->getBlocksByHeightWithLimitRequest($height, $limit);
 
         try {
@@ -1186,7 +1186,7 @@ class BlockchainRoutesApi
                 case 200:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\NEM\Model\BlockInfoDTO[]',
+                        '\Proximax\Model\BlockInfoDTO[]',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -1230,7 +1230,7 @@ class BlockchainRoutesApi
      */
     public function getBlocksByHeightWithLimitAsyncWithHttpInfo($height, $limit)
     {
-        $returnType = '\NEM\Model\BlockInfoDTO[]';
+        $returnType = '\Proximax\Model\BlockInfoDTO[]';
         $request = $this->getBlocksByHeightWithLimitRequest($height, $limit);
 
         return $this->client
@@ -1397,9 +1397,9 @@ class BlockchainRoutesApi
      * Get the storage information
      *
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return \NEM\Model\BlockchainStorageInfoDTO
+     * @return \Proximax\Model\BlockchainStorageInfoDTO
      */
     public function getDiagnosticStorage()
     {
@@ -1413,13 +1413,13 @@ class BlockchainRoutesApi
      * Get the storage information
      *
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return array of \NEM\Model\BlockchainStorageInfoDTO, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Proximax\Model\BlockchainStorageInfoDTO, HTTP status code, HTTP response headers (array of strings)
      */
     public function getDiagnosticStorageWithHttpInfo()
     {
-        $returnType = '\NEM\Model\BlockchainStorageInfoDTO';
+        $returnType = '\Proximax\Model\BlockchainStorageInfoDTO';
         $request = $this->getDiagnosticStorageRequest();
 
         try {
@@ -1472,7 +1472,7 @@ class BlockchainRoutesApi
                 case 200:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\NEM\Model\BlockchainStorageInfoDTO',
+                        '\Proximax\Model\BlockchainStorageInfoDTO',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -1512,7 +1512,7 @@ class BlockchainRoutesApi
      */
     public function getDiagnosticStorageAsyncWithHttpInfo()
     {
-        $returnType = '\NEM\Model\BlockchainStorageInfoDTO';
+        $returnType = '\Proximax\Model\BlockchainStorageInfoDTO';
         $request = $this->getDiagnosticStorageRequest();
 
         return $this->client

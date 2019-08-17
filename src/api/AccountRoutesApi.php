@@ -13,7 +13,7 @@
  * 
  */
 
-namespace NEM\API;
+namespace Proximax\API;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
@@ -21,16 +21,16 @@ use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\RequestOptions;
-use NEM\ApiException;
-use NEM\ApiClient;
-use NEM\HeaderSelector;
-use NEM\ObjectSerializer;
+use Proximax\ApiException;
+use Proximax\ApiClient;
+use Proximax\HeaderSelector;
+use Proximax\ObjectSerializer;
 
 /**
  * AccountRoutesApi Class Doc Comment
  *
  * @category Class
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -76,9 +76,9 @@ class AccountRoutesApi
      *
      * @param  string $accountId Account address or publicKey (required)
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return \NEM\Model\AccountInfoDTO
+     * @return \Proximax\Model\AccountInfoDTO
      */
     public function getAccountInfo($accountId)
     {
@@ -93,13 +93,13 @@ class AccountRoutesApi
      *
      * @param  string $accountId Account address or publicKey (required)
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return array of \NEM\Model\AccountInfoDTO, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Proximax\Model\AccountInfoDTO, HTTP status code, HTTP response headers (array of strings)
      */
     public function getAccountInfoWithHttpInfo($accountId)
     {
-        $returnType = '\NEM\Model\AccountInfoDTO';
+        $returnType = '\Proximax\Model\AccountInfoDTO';
         $request = $this->getAccountInfoRequest($accountId);
 
         try {
@@ -153,7 +153,7 @@ class AccountRoutesApi
                 case 200:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\NEM\Model\AccountInfoDTO',
+                        '\Proximax\Model\AccountInfoDTO',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -195,7 +195,7 @@ class AccountRoutesApi
      */
     public function getAccountInfoAsyncWithHttpInfo($accountId)
     {
-        $returnType = '\NEM\Model\AccountInfoDTO';
+        $returnType = '\Proximax\Model\AccountInfoDTO';
         $request = $this->getAccountInfoRequest($accountId);
 
         return $this->client
@@ -340,9 +340,9 @@ class AccountRoutesApi
      *
      * @param  string $publicKey The multisig account public key for which information should be retreived. (required)
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return \NEM\Model\MultisigAccountInfoDTO
+     * @return \Proximax\Model\MultisigAccountInfoDTO
      */
     public function getAccountMultisig($publicKey)
     {
@@ -357,13 +357,13 @@ class AccountRoutesApi
      *
      * @param  string $publicKey The multisig account public key for which information should be retreived. (required)
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return array of \NEM\Model\MultisigAccountInfoDTO, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Proximax\Model\MultisigAccountInfoDTO, HTTP status code, HTTP response headers (array of strings)
      */
     public function getAccountMultisigWithHttpInfo($publicKey)
     {
-        $returnType = '\NEM\Model\MultisigAccountInfoDTO';
+        $returnType = '\Proximax\Model\MultisigAccountInfoDTO';
         $request = $this->getAccountMultisigRequest($publicKey);
 
         try {
@@ -416,7 +416,7 @@ class AccountRoutesApi
                 case 200:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\NEM\Model\MultisigAccountInfoDTO',
+                        '\Proximax\Model\MultisigAccountInfoDTO',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -458,7 +458,7 @@ class AccountRoutesApi
      */
     public function getAccountMultisigAsyncWithHttpInfo($publicKey)
     {
-        $returnType = '\NEM\Model\MultisigAccountInfoDTO';
+        $returnType = '\Proximax\Model\MultisigAccountInfoDTO';
         $request = $this->getAccountMultisigRequest($publicKey);
 
         return $this->client
@@ -603,9 +603,9 @@ class AccountRoutesApi
      *
      * @param  string $publicKey The multisig account public key for which information should be retreived. (required)
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return \NEM\Model\MultisigAccountGraphInfoDTO[]
+     * @return \Proximax\Model\MultisigAccountGraphInfoDTO[]
      */
     public function getAccountMultisigGraph($publicKey)
     {
@@ -620,13 +620,13 @@ class AccountRoutesApi
      *
      * @param  string $publicKey The multisig account public key for which information should be retreived. (required)
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return array of \NEM\Model\MultisigAccountGraphInfoDTO[], HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Proximax\Model\MultisigAccountGraphInfoDTO[], HTTP status code, HTTP response headers (array of strings)
      */
     public function getAccountMultisigGraphWithHttpInfo($publicKey)
     {
-        $returnType = '\NEM\Model\MultisigAccountGraphInfoDTO[]';
+        $returnType = '\Proximax\Model\MultisigAccountGraphInfoDTO[]';
         $request = $this->getAccountMultisigGraphRequest($publicKey);
 
         try {
@@ -678,7 +678,7 @@ class AccountRoutesApi
                 case 200:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\NEM\Model\MultisigAccountGraphInfoDTO[]',
+                        '\Proximax\Model\MultisigAccountGraphInfoDTO[]',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -720,7 +720,7 @@ class AccountRoutesApi
      */
     public function getAccountMultisigGraphAsyncWithHttpInfo($publicKey)
     {
-        $returnType = '\NEM\Model\MultisigAccountGraphInfoDTO[]';
+        $returnType = '\Proximax\Model\MultisigAccountGraphInfoDTO[]';
         $request = $this->getAccountMultisigGraphRequest($publicKey);
 
         return $this->client
@@ -863,11 +863,11 @@ class AccountRoutesApi
      *
      * Get accounts information
      *
-     * @param  \NEM\Model\AccountIds $accountIds Array of publicKeys and address (required)
+     * @param  \Proximax\Model\AccountIds $accountIds Array of publicKeys and address (required)
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return \NEM\Model\AccountInfoDTO[]
+     * @return \Proximax\Model\AccountInfoDTO[]
      */
     public function getAccountsInfo($accountIds)
     {
@@ -880,15 +880,15 @@ class AccountRoutesApi
      *
      * Get accounts information
      *
-     * @param  \NEM\Model\AccountIds $accountIds Array of publicKeys and address (required)
+     * @param  \Proximax\Model\AccountIds $accountIds Array of publicKeys and address (required)
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return array of \NEM\Model\AccountInfoDTO[], HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Proximax\Model\AccountInfoDTO[], HTTP status code, HTTP response headers (array of strings)
      */
     public function getAccountsInfoWithHttpInfo($accountIds)
     {
-        $returnType = '\NEM\Model\AccountInfoDTO[]';
+        $returnType = '\Proximax\Model\AccountInfoDTO[]';
         $request = $this->getAccountsInfoRequest($accountIds);
 
         try {
@@ -924,14 +924,12 @@ class AccountRoutesApi
                 $content = $responseBody; //stream goes to serializer
             } else {
                 $content = $responseBody->getContents();
-                //var_dump($content);
                 if ($returnType !== 'string') {
                     $content = json_decode($content);
                 }
             }
 
             return [
-                //ObjectSerializer::deserialize($content, $returnType, []),
                 $content,
                 $response->getStatusCode(),
                 $response->getHeaders()
@@ -942,7 +940,7 @@ class AccountRoutesApi
                 case 200:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\NEM\Model\AccountInfoDTO[]',
+                        '\Proximax\Model\AccountInfoDTO[]',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -957,7 +955,7 @@ class AccountRoutesApi
      *
      * Get accounts information
      *
-     * @param  \NEM\Model\AccountIds $accountIds Array of publicKeys and address (required)
+     * @param  \Proximax\Model\AccountIds $accountIds Array of publicKeys and address (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
@@ -977,14 +975,14 @@ class AccountRoutesApi
      *
      * Get accounts information
      *
-     * @param  \NEM\Model\AccountIds $accountIds Array of publicKeys and address (required)
+     * @param  \Proximax\Model\AccountIds $accountIds Array of publicKeys and address (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
     public function getAccountsInfoAsyncWithHttpInfo($accountIds)
     {
-        $returnType = '\NEM\Model\AccountInfoDTO[]';
+        $returnType = '\Proximax\Model\AccountInfoDTO[]';
         $request = $this->getAccountsInfoRequest($accountIds);
 
         return $this->client
@@ -1027,7 +1025,7 @@ class AccountRoutesApi
     /**
      * Create request for operation 'getAccountsInfo'
      *
-     * @param  \NEM\Model\AccountIds $accountIds Array of publicKeys and address (required)
+     * @param  \Proximax\Model\AccountIds $accountIds Array of publicKeys and address (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
@@ -1126,7 +1124,7 @@ class AccountRoutesApi
      * @param  int $pageSize The numbers of transactions to return (optional)
      * @param  string $id Id last transaction id to apply pagination (optional)
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      * @return object[]
      */
@@ -1145,7 +1143,7 @@ class AccountRoutesApi
      * @param  int $pageSize The numbers of transactions to return (optional)
      * @param  string $id Id last transaction id to apply pagination (optional)
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      * @return array of object[], HTTP status code, HTTP response headers (array of strings)
      */
@@ -1407,7 +1405,7 @@ class AccountRoutesApi
      * @param  int $pageSize The numbers of transactions to return (optional)
      * @param  string $id Id last transaction id to apply pagination (optional)
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      * @return object[]
      */
@@ -1426,7 +1424,7 @@ class AccountRoutesApi
      * @param  int $pageSize The numbers of transactions to return (optional)
      * @param  string $id Id last transaction id to apply pagination (optional)
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      * @return array of object[], HTTP status code, HTTP response headers (array of strings)
      */
@@ -1688,7 +1686,7 @@ class AccountRoutesApi
      * @param  int $pageSize The numbers of transactions to return (optional)
      * @param  string $id Id last transaction id to apply pagination (optional)
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      * @return object[]
      */
@@ -1707,7 +1705,7 @@ class AccountRoutesApi
      * @param  int $pageSize The numbers of transactions to return (optional)
      * @param  string $id Id last transaction id to apply pagination (optional)
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      * @return array of object[], HTTP status code, HTTP response headers (array of strings)
      */
@@ -1968,7 +1966,7 @@ class AccountRoutesApi
      * @param  int $pageSize The numbers of transactions to return (optional)
      * @param  string $id Id last transaction id to apply pagination (optional)
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      * @return object[]
      */
@@ -1987,7 +1985,7 @@ class AccountRoutesApi
      * @param  int $pageSize The numbers of transactions to return (optional)
      * @param  string $id Id last transaction id to apply pagination (optional)
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      * @return array of object[], HTTP status code, HTTP response headers (array of strings)
      */
@@ -2249,7 +2247,7 @@ class AccountRoutesApi
      * @param  int $pageSize The numbers of transactions to return (optional)
      * @param  string $id Id last transaction id to apply pagination (optional)
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      * @return object[]
      */
@@ -2268,7 +2266,7 @@ class AccountRoutesApi
      * @param  int $pageSize The numbers of transactions to return (optional)
      * @param  string $id Id last transaction id to apply pagination (optional)
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      * @return array of object[], HTTP status code, HTTP response headers (array of strings)
      */

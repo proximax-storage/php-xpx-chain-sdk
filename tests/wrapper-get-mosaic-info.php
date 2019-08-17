@@ -1,15 +1,16 @@
 <?php
     require "vendor/autoload.php";
 
-    use NEM\Sdk\Mosaic;
-    use NEM\Model\Config;
-    use NEM\Infrastructure\Network;
-    use NEM\Infrastructure\Mosaic as MosaicDefine;
+    use Proximax\Sdk\Mosaic;
+    use Proximax\Model\Config;
+    use Proximax\Infrastructure\Network;
+    use Proximax\Infrastructure\Mosaic as MosaicDefine;
+    use Proximax\Utils\Utils;
 
     $config = new Config;
     $network = new Network;
   
-    $baseUrl = "http://13.229.183.224:3000";
+    $baseUrl = "http://192.168.0.107:3000";
     $wsReconnectionTimeout = 5000;
     $networkType = Network::getIdfromName("PublicTest");
     if ($networkType){

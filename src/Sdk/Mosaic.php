@@ -13,16 +13,16 @@
  * 
  */
 
-namespace NEM\Sdk;
-use NEM\API\MosaicRoutesApi;
-use NEM\ApiClient;
-use NEM\Model\MosaicInfoDTO;
-use NEM\Model\Account;
+namespace Proximax\Sdk;
+use Proximax\API\MosaicRoutesApi;
+use Proximax\ApiClient;
+use Proximax\Model\MosaicInfoDTO;
+use Proximax\Model\Account;
 /**
  * Mosaic class Doc Comment
  *
  * @category class
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */

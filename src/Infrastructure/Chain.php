@@ -13,25 +13,25 @@
  * 
  */
 
-namespace NEM\Infrastructure;
+namespace Proximax\Infrastructure;
 
-use NEM\NemSDK;
+use Proximax\ProximaxSDK;
 
 /**
  * Chain class Doc Comment
  *
  * @category class
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
 class Chain {
 
-	public $nemSDK;
+	public $ProximaxSDK;
 	private $endpoint = "/chain/";
 
-	public function __construct( NemSDK $nemSDK ) {
-		$this->nemSDK = $nemSDK;
+	public function __construct( ProximaxSDK $ProximaxSDK ) {
+		$this->ProximaxSDK = $ProximaxSDK;
 	}
 
 	/**
@@ -39,7 +39,7 @@ class Chain {
 	 * @returns Observable<BlockHeight>
 	 */
 	public function getBlockchainHeight() {
-		return $this->nemSDK->api->getJSON( $this->endpoint . 'height', "" );
+		return $this->ProximaxSDK->api->getJSON( $this->endpoint . 'height', "" );
 	}
 
 	/**
@@ -48,7 +48,7 @@ class Chain {
 	 * @returns Observable<BlockChainScore>
 	 */
 	public function getBlockchainScore() {
-		return $this->nemSDK->api->getJSON( $this->endpoint . 'score', "" );
+		return $this->ProximaxSDK->api->getJSON( $this->endpoint . 'score', "" );
 	}
 
 	/**
@@ -56,7 +56,7 @@ class Chain {
 	 * @returns Observable<Block>
 	 */
 	public function getBlockchainLastBlock() {
-		return $this->nemSDK->api->getJSON( $this->endpoint . 'last-block', "" );
+		return $this->ProximaxSDK->api->getJSON( $this->endpoint . 'last-block', "" );
 	}
 
 	/**
@@ -64,7 +64,7 @@ class Chain {
 	 * @returns Observable<Block>
 	 */
 	public function getNodeInfo() {
-		return json_decode( $this->nemSDK->api->getJSON( '/node/info', "" ) );
+		return json_decode( $this->ProximaxSDK->api->getJSON( '/node/info', "" ) );
 	}
 
 }

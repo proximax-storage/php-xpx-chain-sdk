@@ -13,16 +13,16 @@
  * 
  */
 
-namespace NEM\Model;
+namespace Proximax\Model;
 
-use NEM\Core\Encryption as CryptoHelper;
+use Proximax\Core\Encryption as CryptoHelper;
 use RuntimeException;
 
 /**
  * Message class Doc Comment
  *
  * @category class
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -109,10 +109,10 @@ class Message{
     }
 
     /**
-     * Setter for the plaintext content of a NEM Message.
+     * Setter for the plaintext content of a Proximax Message.
      * 
      * @param   string  $plain
-     * @return  \NEM\Models\Message
+     * @return  \Proximax\Models\Message
      */
     public function setPlain($plain)
     {
@@ -121,10 +121,10 @@ class Message{
     }
 
     /**
-     * Getter for the plaintext content of a NEM Message.
+     * Getter for the plaintext content of a Proximax Message.
      * 
      * @param   string  $plain
-     * @return  \NEM\Models\Message
+     * @return  \Proximax\Models\Message
      */
     public function getPlain()
     {

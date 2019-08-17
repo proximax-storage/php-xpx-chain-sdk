@@ -13,26 +13,26 @@
  * 
  */
 
-namespace NEM\Model\Transaction;
+namespace Proximax\Model\Transaction;
 
-use NEM\Model\TransactionType;
-use NEM\Model\Deadline;
-use NEM\Model\TransactionVersion;
-use NEM\Model\TransactionInfo;
-use NEM\Model\PublicAccount;
-use NEM\Infrastructure\Network;
-use NEM\Model\Transaction\Schema\TransferTransactionSchema;
+use Proximax\Model\TransactionType;
+use Proximax\Model\Deadline;
+use Proximax\Model\TransactionVersion;
+use Proximax\Model\TransactionInfo;
+use Proximax\Model\PublicAccount;
+use Proximax\Infrastructure\Network;
+use Proximax\Model\Transaction\Schema\TransferTransactionSchema;
 use \Google\FlatBuffers\FlatbufferBuilder;
 use \Catapult\Buffers\MessageBuffer;
 use \Catapult\Buffers\MosaicBuffer;
 use \Catapult\Buffers\TransferTransactionBuffer;
-use NEM\Utils\Utils;
+use Proximax\Utils\Utils;
 
 /**
  * TransferTransaction class Doc Comment
  *
  * @category class
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */

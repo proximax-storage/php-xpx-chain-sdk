@@ -13,13 +13,13 @@
  * 
  */
 
-namespace NEM\Model;
+namespace Proximax\Model;
 
 /**
  * MultisigCosignatoryModificationType class Doc Comment
  *
  * @category class
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */

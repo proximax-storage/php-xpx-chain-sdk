@@ -13,34 +13,34 @@
  * 
  */
 
-namespace NEM\Model\Transaction;
+namespace Proximax\Model\Transaction;
 
-use NEM\Model\TransactionType;
-use NEM\Model\Deadline;
-use NEM\Model\TransactionVersion;
-use NEM\Model\TransactionInfo;
-use NEM\Model\PublicAccount;
-use NEM\Infrastructure\Network;
-use NEM\Model\Transaction\Schema\TransferTransactionSchema;
+use Proximax\Model\TransactionType;
+use Proximax\Model\Deadline;
+use Proximax\Model\TransactionVersion;
+use Proximax\Model\TransactionInfo;
+use Proximax\Model\PublicAccount;
+use Proximax\Infrastructure\Network;
+use Proximax\Model\Transaction\Schema\TransferTransactionSchema;
 use \Google\FlatBuffers\FlatbufferBuilder;
 use \Catapult\Buffers\MessageBuffer;
 use \Catapult\Buffers\MosaicBuffer;
 use \Catapult\Buffers\TransferTransactionBuffer;
-use NEM\Utils\Utils;
-use NEM\Model\AbstractTransaction;
+use Proximax\Utils\Utils;
+use Proximax\Model\AbstractTransaction;
 use Base32\Base32;
-use NEM\Model\Address;
-use NEM\Model\NamespaceId;
+use Proximax\Model\Address;
+use Proximax\Model\NamespaceId;
 
 /**
  * TransferTransaction class Doc Comment
  *
  * @category class
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
-class TransferTransaction extends \NEM\Model\Transaction{
+class TransferTransaction extends \Proximax\Model\Transaction{
 
     private $recipient;
     private $mosaics; //array
@@ -104,9 +104,6 @@ class TransferTransaction extends \NEM\Model\Transaction{
         }
         // serialize the recipient
         if ($address instanceof NamespaceId){
-            var_dump("1");
-            //$recipientBytes = (new Utils)->stringToByteArray(Base32::decode($address->getString()));
-            //var_dump($recipientBytes);
             $recipientBytes = $address->getId();
         }
         else if ($address instanceof Address){
@@ -121,7 +118,7 @@ class TransferTransaction extends \NEM\Model\Transaction{
         $recipientVector = TransferTransactionBuffer::createRecipientVector($builder, $recipientBytes);
         $mosaicsVector = TransferTransactionBuffer::createMosaicsVector($builder, $mosaicBuffers);
         $deadlineVector = TransferTransactionBuffer::createDeadlineVector($builder, $deadline->getTimeArray());
-        $feeVector = TransferTransactionBuffer::createFeeVector($builder, $maxFee);
+        $feeVector = TransferTransactionBuffer::createMaxFeeVector($builder, $maxFee);
         
 
         // total size of transaction
@@ -147,7 +144,7 @@ class TransferTransaction extends \NEM\Model\Transaction{
         TransferTransactionBuffer::addSigner($builder, $signerVector);
         TransferTransactionBuffer::addVersion($builder, $v);
         TransferTransactionBuffer::addType($builder, $type);
-        TransferTransactionBuffer::addFee($builder, $feeVector);
+        TransferTransactionBuffer::addMaxFee($builder, $feeVector);
         TransferTransactionBuffer::addDeadline($builder, $deadlineVector);
         
         TransferTransactionBuffer::addRecipient($builder, $recipientVector);
@@ -160,7 +157,6 @@ class TransferTransaction extends \NEM\Model\Transaction{
         
         $builder->finish($codedTransaction);
         $TransferTransactionSchema = new TransferTransactionSchema;
-        //var_dump($builder->sizedByteArray());
         $tmp = unpack("C*",$builder->sizedByteArray());
         $builder_byte = array_slice($tmp,0,count($tmp));
         $output = $TransferTransactionSchema->serialize($builder_byte);

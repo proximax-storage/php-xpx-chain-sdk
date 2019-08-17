@@ -13,13 +13,13 @@
  * 
  */
 
-namespace NEM\Model\Transaction\Attribute;
+namespace Proximax\Model\Transaction\Attribute;
 
 /**
  * ArrayAttribute class Doc Comment
  *
  * @category class
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */

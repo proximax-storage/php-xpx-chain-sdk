@@ -13,13 +13,13 @@
  * 
  */
 
-namespace NEM\Contracts;
+namespace Proximax\Contracts;
 
 /**
  * KeyPair interface Doc Comment
  *
  * @category interface
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -31,7 +31,7 @@ interface KeyPair
      *
      * @internal
      * @param   string|integer                  Which encoding to use (One of: "hex", "uint8", "int32")
-     * @return  \NEM\Core\Buffer|string|array
+     * @return  \Proximax\Core\Buffer|string|array
      */
     public function getPublicKey($enc = null);
 
@@ -41,7 +41,7 @@ interface KeyPair
      *
      * @internal
      * @param   string|integer                  Which encoding to use (One of: "hex", "uint8", "int32")
-     * @return  \NEM\Core\Buffer|string|array
+     * @return  \Proximax\Core\Buffer|string|array
      */
     public function getPrivateKey($enc = null);
 
@@ -52,7 +52,7 @@ interface KeyPair
      *
      * @internal
      * @param   string|integer                  Which encoding to use (One of: "hex", "uint8", "int32")
-     * @return  \NEM\Core\Buffer|string|array
+     * @return  \Proximax\Core\Buffer|string|array
      */
     public function getSecretKey($enc = null);
 }

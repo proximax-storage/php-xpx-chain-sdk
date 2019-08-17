@@ -13,13 +13,13 @@
  * 
  */
 
-namespace NEM\Core;
+namespace Proximax\Core;
 
 use Mdanter\Ecc\EccFactory;
 use Mdanter\Ecc\Math\GmpMathInterface;
 
-use NEM\Contracts\Serializable;
-use NEM\Core\Encoder;
+use Proximax\Contracts\Serializable;
+use Proximax\Core\Encoder;
 
 use InvalidArgumentException;
 use RuntimeException;
@@ -28,7 +28,7 @@ use RuntimeException;
  * Buffer class Doc Comment
  *
  * @category class
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -133,7 +133,7 @@ class Buffer
      *
      * @param   string|integer  $data
      * @param   integer         $byteSize
-     * @return  \NEM\Core\Buffer
+     * @return  \Proximax\Core\Buffer
      */
     static public function bufferize($data, $byteSize = null, $paddingDirection = self::PAD_LEFT)
     {
@@ -159,7 +159,7 @@ class Buffer
      * be normalized with Normalization Form KD.
      *
      * @param   string  $string
-     * @return  \NEM\Core\Buffer
+     * @return  \Proximax\Core\Buffer
      */
     static public function fromString($string, $paddingDirection = self::PAD_LEFT)
     {
@@ -180,13 +180,13 @@ class Buffer
      *
      * @param   string                  $hexString
      * @param   integer                 $byteSize
-     * @return  \NEM\Core\Buffer
+     * @return  \Proximax\Core\Buffer
      * @throws  \InvalidArgumentException   On non-hexadecimal content in `hexString`
      */
     static public function fromHex($hexString = '', $byteSize = null, $paddingDirection = self::PAD_LEFT)
     {
         if (strlen($hexString) > 0 && !ctype_xdigit($hexString)) {
-            throw new InvalidArgumentException('NEM\\Core\\Buffer::hex: non-hexadecimal character passed');
+            throw new InvalidArgumentException('Proximax\\Core\\Buffer::hex: non-hexadecimal character passed');
         }
 
         // format to binary hexadecimal string
@@ -198,7 +198,7 @@ class Buffer
      * Build a Buffer object from a UInt8 array.
      * 
      * @param   array   $uint8
-     * @return  \NEM\Core\Buffer
+     * @return  \Proximax\Core\Buffer
      */
     static public function fromUInt8(array $uint8)
     {
@@ -223,7 +223,7 @@ class Buffer
      * @param   int|string                          $integer
      * @param   null|int                            $byteSize
      * @param   \Mdanter\Ecc\Math\GmpMathInterface  $math       Allow to define custom Math Adapter.
-     * @return  \NEM\Core\Buffer
+     * @return  \Proximax\Core\Buffer
      * @throws  InvalidArgumentException   On negative integer value
      */
     static public function fromInt($integer, $byteSize = null, GmpMathInterface $math = null, $paddingDirection = self::PAD_LEFT)
@@ -362,7 +362,7 @@ class Buffer
      *
      * Reverse the bytes order of a Buffer. (Flip byte order)
      *
-     * @return  \NEM\Core\Buffer
+     * @return  \Proximax\Core\Buffer
      */
     public function flip()
     {
@@ -374,7 +374,7 @@ class Buffer
      *
      * Reverse the bytes order of a Buffer. (Flip byte order)
      *
-     * @return  \NEM\Core\Buffer
+     * @return  \Proximax\Core\Buffer
      */
     public function reverse()
     {
@@ -388,7 +388,7 @@ class Buffer
      *
      * @param   integer             $start     Where in the buffer content should we start?
      * @param   integer|null        $end       (Optional) end of slice
-     * @return  \NEM\Core\Buffer
+     * @return  \Proximax\Core\Buffer
      * @throws  \InvalidArgumentException    On invalid start or end parameter
      * @throws  \RuntimeException            On invalid resulting string slice
      */
@@ -483,7 +483,7 @@ class Buffer
      * Convert a decimal number into a Buffer
      *
      * @param   integer     $decimal
-     * @return  \NEM\Core\Buffer
+     * @return  \Proximax\Core\Buffer
      */
     public function decimalToBuffer($decimal)
     {
@@ -496,8 +496,8 @@ class Buffer
      * Flip byte order (reverse order) of this binary string. Accepts a string or Buffer,
      * and will return whatever type it was given.
      *
-     * @param   null|string|\NEM\Core\Buffer  $bytes  Bytes that must be reversed.
-     * @return  string|\NEM\Core\Buffer
+     * @param   null|string|\Proximax\Core\Buffer  $bytes  Bytes that must be reversed.
+     * @return  string|\Proximax\Core\Buffer
      */
     public function flipBytes($bytes = null)
     {
@@ -544,8 +544,8 @@ class Buffer
      *
      * Concatenate buffers
      *
-     * @param   \NEM\Core\Buffer    $buffer1
-     * @return  \NEM\Core\Buffer
+     * @param   \Proximax\Core\Buffer    $buffer1
+     * @return  \Proximax\Core\Buffer
      */
     public function concat(Buffer $buffer)
     {
@@ -611,7 +611,7 @@ class Buffer
      * - sha1 (20 bytes)
      *
      * @param   string  $algorithm      Hash algorithm (Example: sha512)
-     * @return  \NEM\Core\Buffer
+     * @return  \Proximax\Core\Buffer
      */
     public function hash($algorithm = "sha512")
     {

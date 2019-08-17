@@ -13,40 +13,40 @@
  * 
  */
 
-namespace NEM\Infrastructure;
+namespace Proximax\Infrastructure;
 
-use NEM\API;
+use Proximax\API;
 
 /**
  * ConnectionPool class Doc Comment
  *
  * @category class
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
 class ConnectionPool
 {
     /**
-     * List of currently used NEM Nodes.
+     * List of currently used Proximax Nodes.
      * 
      * @var array
      */
     protected $nodes = [
         "mainnet" => [
-            "http://hugealice.nem.ninja:7890",
-            "http://alice2.nem.ninja:7890",
-            "http://alice3.nem.ninja:7890",
-            "http://alice4.nem.ninja:7890",
-            "http://alice5.nem.ninja:7890",
-            "http://alice6.nem.ninja:7890",
-            "http://alice7.nem.ninja:7890",
-            "http://alice8.nem.ninja:7890",
-            "http://alice9.nem.ninja:7890",
-            "http://bigalice3.nem.ninja:7890",
+            "http://hugealice.Proximax.ninja:7890",
+            "http://alice2.Proximax.ninja:7890",
+            "http://alice3.Proximax.ninja:7890",
+            "http://alice4.Proximax.ninja:7890",
+            "http://alice5.Proximax.ninja:7890",
+            "http://alice6.Proximax.ninja:7890",
+            "http://alice7.Proximax.ninja:7890",
+            "http://alice8.Proximax.ninja:7890",
+            "http://alice9.Proximax.ninja:7890",
+            "http://bigalice3.Proximax.ninja:7890",
         ],
         "testnet" => [
-            "http://bigalice2.nem.ninja:7890",
+            "http://bigalice2.Proximax.ninja:7890",
             "http://50.3.87.123:7890",
         ],
         "mijin"   => [],
@@ -78,7 +78,7 @@ class ConnectionPool
     protected $network = "testnet";
 
     /**
-     * Constructor for the NEM ConnectionPool instances.
+     * Constructor for the Proximax ConnectionPool instances.
      * 
      * @param   null|string|integer     $network
      */
@@ -99,11 +99,11 @@ class ConnectionPool
     }
 
     /**
-     * Get a connected API using the NEM node configured
+     * Get a connected API using the Proximax node configured
      * at the current `poolIndex`
      * 
      * @param   boolean     $forceNew
-     * @return  \NEM\API
+     * @return  \Proximax\API
      */
     public function getEndpoint($forceNew = false)
     {

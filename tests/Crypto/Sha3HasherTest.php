@@ -1,6 +1,6 @@
 <?php
 /**
- * Part of the nemcoreprojectteam/nem2-sdk-php package.
+ * Part of the Proximaxcoreprojectteam/Proximax2-sdk-php package.
  *
  * NOTICE OF LICENSE
  *
@@ -9,17 +9,17 @@
  * This source file is subject to the MIT License that is
  * bundled with this package in the LICENSE file.
  *
- * @package    nemcoreprojectteam/nem2-sdk-php
+ * @package    Proximaxcoreprojectteam/Proximax2-sdk-php
  * @version    1.0.0
  * @author     Grégory Saive <greg@evias.be>
  * @license    MIT License
- * @copyright  (c) 2018, NEM
- * @link       http://github.com/nemcoreprojectteam/nem2-sdk-php
+ * @copyright  (c) 2018, Proximax
+ * @link       http://github.com/Proximaxcoreprojectteam/Proximax2-sdk-php
  */
-namespace NEM\Tests\Crypto;
+namespace Proximax\Tests\Crypto;
 
-use NEM\Tests\TestCase;
-use NEM\Crypto\Sha3Hasher;
+use Proximax\Tests\TestCase;
+use Proximax\Crypto\Sha3Hasher;
 
 class Sha3HasherTest
     extends TestCase

@@ -13,13 +13,13 @@
  * 
  */
 
-namespace NEM\Traits;
+namespace Proximax\Traits;
 
 /**
  * Connectable trait Doc Comment
  *
  * @category trait
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -68,7 +68,7 @@ trait Connectable
      *
      *     username:password@
      *
-     * @see  \NEM\Traits\Connectable@getBasicAuth()
+     * @see  \Proximax\Traits\Connectable@getBasicAuth()
      * @var array   valid keys include: username, password
      */
     protected $basicAuth = [];
@@ -77,7 +77,7 @@ trait Connectable
      * Setter for `use_ssl` property.
      *
      * @param  string $host
-     * @return \NEM\API
+     * @return \Proximax\API
      */
     public function setUseSsl($use_ssl)
     {
@@ -101,7 +101,7 @@ trait Connectable
      * which Protocol is used in the Base URL.
      *
      * @param  string $protocol
-     * @return \NEM\Contracts\HttpHandler
+     * @return \Proximax\Contracts\HttpHandler
      */
     public function setProtocol($protocol)
     {
@@ -138,7 +138,7 @@ trait Connectable
      * Setter for `host` property.
      *
      * @param  string $host
-     * @return \NEM\API
+     * @return \Proximax\API
      */
     public function setHost($host)
     {
@@ -160,7 +160,7 @@ trait Connectable
      * Setter for `port` property.
      *
      * @param  integer $port
-     * @return \NEM\API
+     * @return \Proximax\API
      */
     public function setPort($port)
     {
@@ -182,7 +182,7 @@ trait Connectable
      * Setter for `endpoint` property.
      *
      * @param  string $endpoint
-     * @return \NEM\API
+     * @return \Proximax\API
      */
     public function setEndpoint($endpoint)
     {
@@ -304,7 +304,7 @@ trait Connectable
      * a fully qualified base url.
      * 
      * @param   string  $baseUrl
-     * @return  \NEM\Traits\Connectable
+     * @return  \Proximax\Traits\Connectable
      */
     public function fillFromBaseUrl($baseUrl)
     {
@@ -312,7 +312,7 @@ trait Connectable
         $matches = [];
 
         $scheme = "http";
-        $host   = "hugealice.nem.ninja";
+        $host   = "hugealice.Proximax.ninja";
         $port   = 7890;
         if ((bool) preg_match_all($reg, $baseUrl, $matches)) {
             $scheme = $matches[1][0];

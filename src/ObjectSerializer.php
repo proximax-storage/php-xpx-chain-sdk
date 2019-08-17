@@ -13,13 +13,13 @@
  * 
  */
 
-namespace NEM;
+namespace Proximax;
 
 /**
  * ObjectSerializer Class Doc Comment
  *
  * @category Class
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -279,7 +279,7 @@ class ObjectSerializer
             // If a discriminator is defined and points to a valid subclass, use it.
             $discriminator = $class::DISCRIMINATOR;
             if (!empty($discriminator) && isset($data->{$discriminator}) && is_string($data->{$discriminator})) {
-                $subclass = '\NEM\Model\\' . $data->{$discriminator};
+                $subclass = '\Proximax\Model\\' . $data->{$discriminator};
                 if (is_subclass_of($subclass, $class)) {
                     $class = $subclass;
                 }

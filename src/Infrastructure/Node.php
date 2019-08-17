@@ -13,29 +13,29 @@
  * 
  */
 
-namespace NEM\Infrastructure;
+namespace Proximax\Infrastructure;
 
-use NEM\NemSDK;
+use Proximax\ProximaxSDK;
 
 /**
  * Node class Doc Comment
  *
  * @category class
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
 class Node {
 
-	public $nemSDK;
+	public $ProximaxSDK;
 	public $endpoint = '/node/';
 
-	public function __construct( NemSDK $nemSDK ) {
-		$this->nemSDK = $nemSDK;
+	public function __construct( ProximaxSDK $ProximaxSDK ) {
+		$this->ProximaxSDK = $ProximaxSDK;
 	}
 
 	public function info() {
-		return json_decode( $this->nemSDK->api->getJSON( $this->endpoint . 'info', "" ) );
+		return json_decode( $this->ProximaxSDK->api->getJSON( $this->endpoint . 'info', "" ) );
 	}
 
 

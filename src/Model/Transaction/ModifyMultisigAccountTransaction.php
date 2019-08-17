@@ -13,33 +13,33 @@
  * 
  */
 
-namespace NEM\Model\Transaction;
-use NEM\Model\TransactionType;
-use NEM\Model\Deadline;
-use NEM\Model\TransactionVersion;
-use NEM\Model\TransactionInfo;
-use NEM\Model\PublicAccount;
-use NEM\Infrastructure\Network;
-use NEM\Model\Transaction\Schema\ModifyMultisigAccountTransactionSchema;
+namespace Proximax\Model\Transaction;
+use Proximax\Model\TransactionType;
+use Proximax\Model\Deadline;
+use Proximax\Model\TransactionVersion;
+use Proximax\Model\TransactionInfo;
+use Proximax\Model\PublicAccount;
+use Proximax\Infrastructure\Network;
+use Proximax\Model\Transaction\Schema\ModifyMultisigAccountTransactionSchema;
 use \Google\FlatBuffers\FlatbufferBuilder;
 use \Catapult\Buffers\MessageBuffer;
 use \Catapult\Buffers\MosaicBuffer;
 use \Catapult\Buffers\ModifyMultisigAccountTransactionBuffer;
 use \Catapult\Buffers\TransferTransactionBuffer;
 use \Catapult\Buffers\CosignatoryModificationBuffer;
-use NEM\Utils\Hex;
-use NEM\Utils\Utils;
-use NEM\Model\AbstractTransaction;
+use Proximax\Utils\Hex;
+use Proximax\Utils\Utils;
+use Proximax\Model\AbstractTransaction;
 
 /**
  * ModifyMultisigAccountTransaction class Doc Comment
  *
  * @category class
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
-class ModifyMultisigAccountTransaction extends \NEM\Model\Transaction{
+class ModifyMultisigAccountTransaction extends \Proximax\Model\Transaction{
 
     private $minApprovalDelta; //int
 
@@ -103,7 +103,7 @@ class ModifyMultisigAccountTransaction extends \NEM\Model\Transaction{
         $signatureVector = ModifyMultisigAccountTransactionBuffer::createSignatureVector($builder, (new Utils)->createArrayZero(64));
         $signerVector = ModifyMultisigAccountTransactionBuffer::createSignerVector($builder, (new Utils)->createArrayZero(32));
         $deadlineVector = ModifyMultisigAccountTransactionBuffer::createDeadlineVector($builder, $deadline->getTimeArray());
-        $feeVector = ModifyMultisigAccountTransactionBuffer::createFeeVector($builder, $maxFee);
+        $feeVector = ModifyMultisigAccountTransactionBuffer::createMaxFeeVector($builder, $maxFee);
         
 
         $fixSize = 123; // replace by the all numbers sum or add a comment explaining this
@@ -114,7 +114,7 @@ class ModifyMultisigAccountTransaction extends \NEM\Model\Transaction{
         ModifyMultisigAccountTransactionBuffer::addSigner($builder, $signerVector);
         ModifyMultisigAccountTransactionBuffer::addVersion($builder, $v);
         ModifyMultisigAccountTransactionBuffer::addType($builder, $type);
-        ModifyMultisigAccountTransactionBuffer::addFee($builder, $feeVector);
+        ModifyMultisigAccountTransactionBuffer::addMaxFee($builder, $feeVector);
         ModifyMultisigAccountTransactionBuffer::addDeadline($builder, $deadlineVector);
 
         ModifyMultisigAccountTransactionBuffer::addMinRemovalDelta($builder, $minRemovalDelta);

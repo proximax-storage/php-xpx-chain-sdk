@@ -96,12 +96,12 @@ class MosaicSupplyChangeTransactionBuffer extends Table
     }
 
     /**
-     * @return ushort
+     * @return uint
      */
     public function getVersion()
     {
         $o = $this->__offset(10);
-        return $o != 0 ? $this->bb->getUshort($o + $this->bb_pos) : 0;
+        return $o != 0 ? $this->bb->getUint($o + $this->bb_pos) : 0;
     }
 
     /**
@@ -117,7 +117,7 @@ class MosaicSupplyChangeTransactionBuffer extends Table
      * @param int offset
      * @return uint
      */
-    public function getFee($j)
+    public function getMaxFee($j)
     {
         $o = $this->__offset(14);
         return $o != 0 ? $this->bb->getUint($this->__vector($o) + $j * 4) : 0;
@@ -126,7 +126,7 @@ class MosaicSupplyChangeTransactionBuffer extends Table
     /**
      * @return int
      */
-    public function getFeeLength()
+    public function getMaxFeeLength()
     {
         $o = $this->__offset(14);
         return $o != 0 ? $this->__vector_len($o) : 0;
@@ -211,7 +211,7 @@ class MosaicSupplyChangeTransactionBuffer extends Table
      * @param FlatBufferBuilder $builder
      * @return MosaicSupplyChangeTransactionBuffer
      */
-    public static function createMosaicSupplyChangeTransactionBuffer(FlatBufferBuilder $builder, $size, $signature, $signer, $version, $type, $fee, $deadline, $mosaicId, $direction, $delta)
+    public static function createMosaicSupplyChangeTransactionBuffer(FlatBufferBuilder $builder, $size, $signature, $signer, $version, $type, $maxFee, $deadline, $mosaicId, $direction, $delta)
     {
         $builder->startObject(10);
         self::addSize($builder, $size);
@@ -219,7 +219,7 @@ class MosaicSupplyChangeTransactionBuffer extends Table
         self::addSigner($builder, $signer);
         self::addVersion($builder, $version);
         self::addType($builder, $type);
-        self::addFee($builder, $fee);
+        self::addMaxFee($builder, $maxFee);
         self::addDeadline($builder, $deadline);
         self::addMosaicId($builder, $mosaicId);
         self::addDirection($builder, $direction);
@@ -257,7 +257,7 @@ class MosaicSupplyChangeTransactionBuffer extends Table
     {
         $builder->startVector(1, count($data), 1);
         for ($i = count($data) - 1; $i >= 0; $i--) {
-            $builder->addByte($data[$i]);
+            $builder->putByte($data[$i]);
         }
         return $builder->endVector();
     }
@@ -291,7 +291,7 @@ class MosaicSupplyChangeTransactionBuffer extends Table
     {
         $builder->startVector(1, count($data), 1);
         for ($i = count($data) - 1; $i >= 0; $i--) {
-            $builder->addByte($data[$i]);
+            $builder->putByte($data[$i]);
         }
         return $builder->endVector();
     }
@@ -308,12 +308,12 @@ class MosaicSupplyChangeTransactionBuffer extends Table
 
     /**
      * @param FlatBufferBuilder $builder
-     * @param ushort
+     * @param uint
      * @return void
      */
     public static function addVersion(FlatBufferBuilder $builder, $version)
     {
-        $builder->addUshortX(3, $version, 0);
+        $builder->addUintX(3, $version, 0);
     }
 
     /**
@@ -331,9 +331,9 @@ class MosaicSupplyChangeTransactionBuffer extends Table
      * @param VectorOffset
      * @return void
      */
-    public static function addFee(FlatBufferBuilder $builder, $fee)
+    public static function addMaxFee(FlatBufferBuilder $builder, $maxFee)
     {
-        $builder->addOffsetX(5, $fee, 0);
+        $builder->addOffsetX(5, $maxFee, 0);
     }
 
     /**
@@ -341,11 +341,11 @@ class MosaicSupplyChangeTransactionBuffer extends Table
      * @param array offset array
      * @return int vector offset
      */
-    public static function createFeeVector(FlatBufferBuilder $builder, array $data)
+    public static function createMaxFeeVector(FlatBufferBuilder $builder, array $data)
     {
         $builder->startVector(4, count($data), 4);
         for ($i = count($data) - 1; $i >= 0; $i--) {
-            $builder->addUint($data[$i]);
+            $builder->putUint($data[$i]);
         }
         return $builder->endVector();
     }
@@ -355,7 +355,7 @@ class MosaicSupplyChangeTransactionBuffer extends Table
      * @param int $numElems
      * @return void
      */
-    public static function startFeeVector(FlatBufferBuilder $builder, $numElems)
+    public static function startMaxFeeVector(FlatBufferBuilder $builder, $numElems)
     {
         $builder->startVector(4, $numElems, 4);
     }
@@ -379,7 +379,7 @@ class MosaicSupplyChangeTransactionBuffer extends Table
     {
         $builder->startVector(4, count($data), 4);
         for ($i = count($data) - 1; $i >= 0; $i--) {
-            $builder->addUint($data[$i]);
+            $builder->putUint($data[$i]);
         }
         return $builder->endVector();
     }
@@ -413,7 +413,7 @@ class MosaicSupplyChangeTransactionBuffer extends Table
     {
         $builder->startVector(4, count($data), 4);
         for ($i = count($data) - 1; $i >= 0; $i--) {
-            $builder->addUint($data[$i]);
+            $builder->putUint($data[$i]);
         }
         return $builder->endVector();
     }
@@ -457,7 +457,7 @@ class MosaicSupplyChangeTransactionBuffer extends Table
     {
         $builder->startVector(4, count($data), 4);
         for ($i = count($data) - 1; $i >= 0; $i--) {
-            $builder->addUint($data[$i]);
+            $builder->putUint($data[$i]);
         }
         return $builder->endVector();
     }

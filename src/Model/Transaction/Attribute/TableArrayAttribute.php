@@ -13,13 +13,13 @@
  * 
  */
 
-namespace NEM\Model\Transaction\Attribute;
+namespace Proximax\Model\Transaction\Attribute;
 
 /**
  * TableArrayAttribute class Doc Comment
  *
  * @category class
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -37,9 +37,6 @@ class TableArrayAttribute extends SchemaAttribute {
         for ($i=0;$i<$arrayLength;$i++) {
             $startArrayPosition = $this->findObjectArrayElementStartPosition($innerObjectPosition, $position, $buffer, $i);
             for ($j=0;$j<count($this->schema);++$j){
-                // var_dump("------3---");
-                // var_dump($this->schema[$j]);
-                // var_dump("------3---");
                 $tmp = $this->schema[$j]->serialize($buffer, 4 + ($j * 2), $startArrayPosition);
                 $resultBytes = array_merge($resultBytes, $tmp);
             }

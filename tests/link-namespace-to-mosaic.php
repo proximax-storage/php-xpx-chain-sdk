@@ -1,16 +1,16 @@
 <?php
     require "vendor/autoload.php";
 
-    use NEM\Model\Transaction\AliasTransaction;
-    use NEM\Model\AliasActionType;
-    use NEM\Model\Deadline;
-    use NEM\Model\Account;
-    use NEM\Sdk\Transaction;
-    use NEM\Model\Config;
-    use NEM\Infrastructure\Network;
-    use NEM\Utils\Utils;
-    use NEM\Model\Address;
-    use NEM\Model\MosaicId;
+    use Proximax\Model\Transaction\AliasTransaction;
+    use Proximax\Model\AliasActionType;
+    use Proximax\Model\Deadline;
+    use Proximax\Model\Account;
+    use Proximax\Sdk\Transaction;
+    use Proximax\Model\Config;
+    use Proximax\Infrastructure\Network;
+    use Proximax\Utils\Utils;
+    use Proximax\Model\Address;
+    use Proximax\Model\MosaicId;
 
     $config = new Config;
     $network = new Network;
@@ -25,8 +25,7 @@
     $generationHash = "7B631D803F912B00DC0CBED3014BBD17A302BA50B99D233B9C2D9533B842ABDF";
 
     $namespace = "mynamespace";
-    $mosaicId  = new MosaicId("104ee0b329c5f452");
-
+    $mosaicId  = new MosaicId(array(2227523919,1484419338));
     $transfer = (new AliasTransaction)->NewMosaicAliasTransaction(
         new Deadline(1),
         AliasActionType::LINK,

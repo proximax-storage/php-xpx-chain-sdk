@@ -13,7 +13,7 @@
  * 
  */
 
-namespace NEM\Model\Mutators;
+namespace Proximax\Model\Mutators;
 
 use Illuminate\Support\Str;
 use BadMethodCallException;
@@ -22,7 +22,7 @@ use BadMethodCallException;
  * ModelMutator class Doc Comment
  *
  * @category class
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -32,20 +32,20 @@ class ModelMutator
      * Mutate a Model object.
      *
      * This method takes a *snake_case* model name and converts it
-     * to a class name in the namespace \NEM\Models.
+     * to a class name in the namespace \Proximax\Models.
      *
      * @internal
      * @param  string   $name           The model name you would like to create.
      * @param  array    $attributes     The model's attribute values.
-     * @return \NEM\Models\ModelInterface
+     * @return \Proximax\Models\ModelInterface
      */
     public function mutate($name, $attributes)
     {
         // snake_case to camelCase
-        $modelClass = "\\NEM\\Models\\" . Str::studly($name);
+        $modelClass = "\\Proximax\\Models\\" . Str::studly($name);
 
         if (!class_exists($modelClass)) {
-            throw new BadMethodCallException("Model class '" . $modelClass . "' could not be found in \\NEM\\Model namespace.");
+            throw new BadMethodCallException("Model class '" . $modelClass . "' could not be found in \\Proximax\\Model namespace.");
         }
 
         //XXX add fields list to Models
@@ -57,13 +57,13 @@ class ModelMutator
      * This __call hook makes sure calls to the Mutator object
      * will always instantiate a Models class provided by the SDK.
      *
-     * @example Example *method* calls for \NEM\Models\ModelMutator
+     * @example Example *method* calls for \Proximax\Models\ModelMutator
      *
      * $sdk = new SDK();
-     * $sdk->models()->address(["address" => "NB72EM6TTSX72O47T3GQFL345AB5WYKIDODKPPYW"]); // will automatically craft a \NEM\Models\Address object
-     * $sdk->models()->namespace(["namespace" => "evias"]); // will automatically craft a \NEM\Models\Namespace object
+     * $sdk->models()->address(["address" => "NB72EM6TTSX72O47T3GQFL345AB5WYKIDODKPPYW"]); // will automatically craft a \Proximax\Models\Address object
+     * $sdk->models()->namespace(["namespace" => "evias"]); // will automatically craft a \Proximax\Models\Namespace object
      *
-     * @example Example building \NEM\Models\Model objects with the ModelMutator
+     * @example Example building \Proximax\Models\Model objects with the ModelMutator
      *
      * $sdk = new SDK();
      * $addr = $sdk->models()->address();
@@ -73,7 +73,7 @@ class ModelMutator
      * @internal
      * @param  string   $name           The model name you would like to create.
      * @param  array    $attributes     The model's attribute values.
-     * @return \NEM\Models\ModelInterface
+     * @return \Proximax\Models\ModelInterface
      */
     public function __call($name, array $arguments)
     {

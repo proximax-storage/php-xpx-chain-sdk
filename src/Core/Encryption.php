@@ -13,11 +13,11 @@
  * 
  */
 
-namespace NEM\Core;
+namespace Proximax\Core;
 
-use NEM\Core\KeyPair;
-use NEM\Core\Buffer;
-use NEM\Core\Sha3Hasher;
+use Proximax\Core\KeyPair;
+use Proximax\Core\Buffer;
+use Proximax\Core\Sha3Hasher;
 use \ParagonIE_Sodium_Compat;
 use \ParagonIE_Sodium_Core_Ed25519 as Ed25519;
 use \ParagonIE_Sodium_Core_X25519 as Ed25519ref10;
@@ -28,7 +28,7 @@ use RuntimeException;
  * Encryption class Doc Comment
  *
  * @category class
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -46,11 +46,11 @@ class Encryption
     static public $algorithm = "sha3-512";
 
     /**
-     * Helper to prepare a `data` attribute into a \NEM\Core\Buffer
+     * Helper to prepare a `data` attribute into a \Proximax\Core\Buffer
      * object for easier internal data representations.
      * 
-     * @param   null|string|\NEM\Core\Buffer    $data   The data that needs to be added to the returned Buffer.
-     * @return  \NEM\Core\Buffer
+     * @param   null|string|\Proximax\Core\Buffer    $data   The data that needs to be added to the returned Buffer.
+     * @return  \Proximax\Core\Buffer
      */
     protected static function prepareInputBuffer($data)
     {
@@ -79,14 +79,14 @@ class Encryption
      * of supported algorithms.
      *
      * This method can be used when PBKDF2 must be used, typically with
-     * NEM this is used to derive a Private key off a Password.
+     * Proximax this is used to derive a Private key off a Password.
      * 
      * @param   string                  $algorithm  Which hash algorithm to use for key derivation.
-     * @param   string|NEM\Core\Buffer  $password   Password for key derivation as *Buffer*.
-     * @param   string|NEM\Core\Buffer  $salt       Salt for key derivation as *Buffer*.
+     * @param   string|Proximax\Core\Buffer  $password   Password for key derivation as *Buffer*.
+     * @param   string|Proximax\Core\Buffer  $salt       Salt for key derivation as *Buffer*.
      * @param   integer                 $count      Count of Derivation iterations.
      * @param   integer                 $keyLength  Length of produced Key (count of Bytes).
-     * @return  NEM\Core\Buffer
+     * @return  Proximax\Core\Buffer
      *
      * @throws  RuntimeException            On invalid hash algorithm (maybe missing php extension)
      * @throws  InvalidArgumentException    On negative *$keyLength* argument.
@@ -123,9 +123,9 @@ class Encryption
      * The hash algorithm can contain `keccak-256` for example.
      * 
      * @param   string                     $algo
-     * @param   string|\NEM\Core\Buffer    $data
+     * @param   string|\Proximax\Core\Buffer    $data
      * @param   boolean                    $returnRaw 
-     * @return  \NEM\Core\Buffer
+     * @return  \Proximax\Core\Buffer
      */
     public static function hash($algo, $data, $returnRaw = false)
     {
@@ -159,7 +159,7 @@ class Encryption
      * hash_update() method.
      * 
      * @param   string              $algorithm
-     * @return  resource|\NEM\Core\KeccakSponge
+     * @return  resource|\Proximax\Core\KeccakSponge
      */
     public static function hash_init($algorithm)
     {
@@ -181,8 +181,8 @@ class Encryption
      * This method will edit the Resource directly.
      * 
      * @param   resource|KeccakSponge        $hasher
-     * @param   string|\NEM\Core\Buffer     $data
-     * @return  resource|\NEM\Core\KeccakSponge
+     * @param   string|\Proximax\Core\Buffer     $data
+     * @return  resource|\Proximax\Core\KeccakSponge
      */
     public static function hash_update($hasher, $data)
     {
@@ -201,7 +201,7 @@ class Encryption
      * 
      * @param   resource|KeccakSponge    $hasher
      * @param   bool                    $returnRaw
-     * @return  \NEM\Core\Buffer|string
+     * @return  \Proximax\Core\Buffer|string
      */
     public static function hash_final($hasher, $returnRaw = false)
     {
@@ -221,9 +221,9 @@ class Encryption
      * A MAC authenticates a message. It is a signature based on a secret key (salt).
      *
      * @param   string                  $algorithm  Which hash algorithm to use.
-     * @param   string|NEM\Core\Buffer  $data
-     * @param   string|NEM\Core\Buffer  $salt
-     * @return  NEM\Core\Buffer
+     * @param   string|Proximax\Core\Buffer  $data
+     * @param   string|Proximax\Core\Buffer  $salt
+     * @return  Proximax\Core\Buffer
      */
     public static function hmac($algo, $data, $salt)
     {
@@ -239,9 +239,9 @@ class Encryption
      * `checksumLen`. Default length is 4 bytes.
      *
      * @param   string                     $algo
-     * @param   string|\NEM\Core\Buffer    $data
+     * @param   string|\Proximax\Core\Buffer    $data
      * @param   integer                    $checksumLen
-     * @return  \NEM\Core\Buffer 
+     * @return  \Proximax\Core\Buffer 
      */
     public static function checksum($algo, $data, $checksumLen = 4)
     {
@@ -255,7 +255,7 @@ class Encryption
     /**
      * This method lets you sign `data` with a given `keyPair`.
      * 
-     * The signature scheme of NEM can be divided in following steps:
+     * The signature scheme of Proximax can be divided in following steps:
      * 
      * - step 1: hash the keypair secret key (byte-level reversed private key) with keccak-512
      * - step 2: generate `r` with `r = H(priv[32..64], data)`
@@ -265,10 +265,10 @@ class Encryption
      * - step 6: concatenate encodedR and encodedS to obtain 64 bytes signature
      * - step 7: assert that the signature is canonical or return false
      * 
-     * @param   \NEM\Core\KeyPair           $keyPair       The KeyPair used for encryption.
-     * @param   string|\NEM\Core\Buffer     $data           The data that you want to sign.
+     * @param   \Proximax\Core\KeyPair           $keyPair       The KeyPair used for encryption.
+     * @param   string|\Proximax\Core\Buffer     $data           The data that you want to sign.
      * @param   string                      $algorithm      The hash algorithm used for signature creation.
-     * @return  false|\NEM\Core\Buffer
+     * @return  false|\Proximax\Core\Buffer
      */
     public static function sign(KeyPair $keyPair, $data, $algorithm = "sha3-512")
     {

@@ -13,13 +13,13 @@
  * 
  */
 
-namespace NEM\Utils;
+namespace Proximax\Utils;
 
 /**
  * Utils Class Doc Comment
  *
  * @category Class
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -72,7 +72,7 @@ class Utils{
      * @return byte array $b
      */
     public function HexDecodeStringOdd($s){
-        if (count($s)%2 != 0) {
+        if (strlen($s)%2 != 0) {
             $s = "0" + $s;
         }
         return $this->hex->DecodeString($s);
@@ -121,8 +121,21 @@ class Utils{
         return $array;
     }
 
+    public function putUint16LittleEndian($int){
+        if ($int == null) {
+            return array(0, 0);
+        }
+        $l = $int & 0xFF;
+        $r = ($int >> 8) & 0xFF;
+        return array($l, $r);
+    }
+
     public function uint32LittleEndian($arr){
         return ($arr[3] << 24) | ($arr[2] << 16) | ($arr[1] << 8) | ($arr[0]);
+    }
+
+    public function uint64LittleEndian($arr){
+        return ($arr[7] << 56) | ($arr[6] << 48) | ($arr[5] << 40) | ($arr[4] << 32) | ($arr[3] << 24) | ($arr[2] << 16) | ($arr[1] << 8) | ($arr[0]);
     }
 
     public function getBytes($bigInt){

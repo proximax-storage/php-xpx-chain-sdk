@@ -13,28 +13,28 @@
  * 
  */
 
-namespace NEM\Sdk;
-use NEM\Core\KeyPair;
-use NEM\API\AccountRoutesApi;
-use NEM\Model\AccountDTO;
-use NEM\Model\Account as AccountModel;
-use NEM\Model\TransactionDTO;
-use NEM\ApiClient;
+namespace Proximax\Sdk;
+use Proximax\Core\KeyPair;
+use Proximax\API\AccountRoutesApi;
+use Proximax\Model\AccountDTO;
+use Proximax\Model\Account as AccountModel;
+use Proximax\Model\TransactionDTO;
+use Proximax\ApiClient;
 use Base32\Base32;
-use NEM\Infrastructure\TransactionMapping;
-use NEM\Model\MosaicDTO;
-use NEM\Model\TransactionInfo;
-use NEM\Model\Address;
-use NEM\Model\PublicAccount;
-use NEM\Model\Message;
-use NEM\Model\HeightDTO;
-use NEM\Model\MultisigDTO;
+use Proximax\Infrastructure\TransactionMapping;
+use Proximax\Model\MosaicDTO;
+use Proximax\Model\TransactionInfo;
+use Proximax\Model\Address;
+use Proximax\Model\PublicAccount;
+use Proximax\Model\Message;
+use Proximax\Model\HeightDTO;
+use Proximax\Model\MultisigDTO;
 
 /**
  * Account class Doc Comment
  *
  * @category class
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -265,7 +265,7 @@ class Account{
      * @return AccountDTO array
      */
     private function formatDataAccount($networkType, $data){
-        $hex = new \NEM\Utils\Hex;
+        $hex = new \Proximax\Utils\Hex;
         $add = $hex->DecodeString($data->account->address);
         
         $addr = Base32::encode(implode(array_map("chr", $add)));

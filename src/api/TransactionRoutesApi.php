@@ -13,7 +13,7 @@
  * 
  */
 
-namespace NEM\API;
+namespace Proximax\API;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
@@ -21,16 +21,16 @@ use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\RequestOptions;
-use NEM\ApiException;
-use NEM\ApiClient;
-use NEM\HeaderSelector;
-use NEM\ObjectSerializer;
+use Proximax\ApiException;
+use Proximax\ApiClient;
+use Proximax\HeaderSelector;
+use Proximax\ObjectSerializer;
 
 /**
  * TransactionRoutesApi Class Doc Comment
  *
  * @category Class
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -74,9 +74,9 @@ class TransactionRoutesApi
      *
      * Creates cosignature transaction
      *
-     * @param  \NEM\Model\TransactionPayload $payload Transaction payload (required)
+     * @param  \Proximax\Model\TransactionPayload $payload Transaction payload (required)
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      * @return object
      */
@@ -91,9 +91,9 @@ class TransactionRoutesApi
      *
      * Creates cosignature transaction
      *
-     * @param  \NEM\Model\TransactionPayload $payload Transaction payload (required)
+     * @param  \Proximax\Model\TransactionPayload $payload Transaction payload (required)
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      * @return array of object, HTTP status code, HTTP response headers (array of strings)
      */
@@ -167,7 +167,7 @@ class TransactionRoutesApi
      *
      * Creates cosignature transaction
      *
-     * @param  \NEM\Model\TransactionPayload $payload Transaction payload (required)
+     * @param  \Proximax\Model\TransactionPayload $payload Transaction payload (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
@@ -187,7 +187,7 @@ class TransactionRoutesApi
      *
      * Creates cosignature transaction
      *
-     * @param  \NEM\Model\TransactionPayload $payload Transaction payload (required)
+     * @param  \Proximax\Model\TransactionPayload $payload Transaction payload (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
@@ -237,7 +237,7 @@ class TransactionRoutesApi
     /**
      * Create request for operation 'announceCosignatureTransaction'
      *
-     * @param  \NEM\Model\TransactionPayload $payload Transaction payload (required)
+     * @param  \Proximax\Model\TransactionPayload $payload Transaction payload (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
@@ -334,9 +334,9 @@ class TransactionRoutesApi
      *
      * Creates partial transaction
      *
-     * @param  \NEM\Model\TransactionPayload $payload Transaction payload (required)
+     * @param  \Proximax\Model\TransactionPayload $payload Transaction payload (required)
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      * @return object
      */
@@ -351,9 +351,9 @@ class TransactionRoutesApi
      *
      * Creates partial transaction
      *
-     * @param  \NEM\Model\TransactionPayload $payload Transaction payload (required)
+     * @param  \Proximax\Model\TransactionPayload $payload Transaction payload (required)
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      * @return array of object, HTTP status code, HTTP response headers (array of strings)
      */
@@ -427,7 +427,7 @@ class TransactionRoutesApi
      *
      * Creates partial transaction
      *
-     * @param  \NEM\Model\TransactionPayload $payload Transaction payload (required)
+     * @param  \Proximax\Model\TransactionPayload $payload Transaction payload (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
@@ -447,7 +447,7 @@ class TransactionRoutesApi
      *
      * Creates partial transaction
      *
-     * @param  \NEM\Model\TransactionPayload $payload Transaction payload (required)
+     * @param  \Proximax\Model\TransactionPayload $payload Transaction payload (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
@@ -497,7 +497,7 @@ class TransactionRoutesApi
     /**
      * Create request for operation 'announcePartialTransaction'
      *
-     * @param  \NEM\Model\TransactionPayload $payload Transaction payload (required)
+     * @param  \Proximax\Model\TransactionPayload $payload Transaction payload (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
@@ -594,9 +594,9 @@ class TransactionRoutesApi
      *
      * Creates new transaction
      *
-     * @param  \NEM\Model\TransactionPayload $payload Transaction payload (required)
+     * @param  \Proximax\Model\TransactionPayload $payload Transaction payload (required)
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      * @return object
      */
@@ -611,9 +611,9 @@ class TransactionRoutesApi
      *
      * Creates new transaction
      *
-     * @param  \NEM\Model\TransactionPayload $payload Transaction payload (required)
+     * @param  \Proximax\Model\TransactionPayload $payload Transaction payload (required)
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      * @return array of object, HTTP status code, HTTP response headers (array of strings)
      */
@@ -687,7 +687,7 @@ class TransactionRoutesApi
      *
      * Creates new transaction
      *
-     * @param  \NEM\Model\TransactionPayload $payload Transaction payload (required)
+     * @param  \Proximax\Model\TransactionPayload $payload Transaction payload (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
@@ -707,7 +707,7 @@ class TransactionRoutesApi
      *
      * Creates new transaction
      *
-     * @param  \NEM\Model\TransactionPayload $payload Transaction payload (required)
+     * @param  \Proximax\Model\TransactionPayload $payload Transaction payload (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
@@ -757,7 +757,7 @@ class TransactionRoutesApi
     /**
      * Create request for operation 'announceTransaction'
      *
-     * @param  \NEM\Model\TransactionPayload $payload Transaction payload (required)
+     * @param  \Proximax\Model\TransactionPayload $payload Transaction payload (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
@@ -856,7 +856,7 @@ class TransactionRoutesApi
      *
      * @param  string $transactionId Transaction id or hash (required)
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      * @return object
      */
@@ -873,7 +873,7 @@ class TransactionRoutesApi
      *
      * @param  string $transactionId Transaction id or hash (required)
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      * @return array of object, HTTP status code, HTTP response headers (array of strings)
      */
@@ -1119,9 +1119,9 @@ class TransactionRoutesApi
      *
      * @param  string $hash Transaction hash (required)
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return \NEM\Model\TransactionStatusDTO
+     * @return \Proximax\Model\TransactionStatusDTO
      */
     public function getTransactionStatus($hash)
     {
@@ -1136,13 +1136,13 @@ class TransactionRoutesApi
      *
      * @param  string $hash Transaction hash (required)
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return array of \NEM\Model\TransactionStatusDTO, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Proximax\Model\TransactionStatusDTO, HTTP status code, HTTP response headers (array of strings)
      */
     public function getTransactionStatusWithHttpInfo($hash)
     {
-        $returnType = '\NEM\Model\TransactionStatusDTO';
+        $returnType = '\Proximax\Model\TransactionStatusDTO';
         $request = $this->getTransactionStatusRequest($hash);
 
         try {
@@ -1195,7 +1195,7 @@ class TransactionRoutesApi
                 case 200:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\NEM\Model\TransactionStatusDTO',
+                        '\Proximax\Model\TransactionStatusDTO',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -1237,7 +1237,7 @@ class TransactionRoutesApi
      */
     public function getTransactionStatusAsyncWithHttpInfo($hash)
     {
-        $returnType = '\NEM\Model\TransactionStatusDTO';
+        $returnType = '\Proximax\Model\TransactionStatusDTO';
         $request = $this->getTransactionStatusRequest($hash);
 
         return $this->client
@@ -1380,9 +1380,9 @@ class TransactionRoutesApi
      *
      * Get transactions information
      *
-     * @param  \NEM\Model\TransactionIds $transactionIds Array of transaction ids or hashes (required)
+     * @param  \Proximax\Model\TransactionIds $transactionIds Array of transaction ids or hashes (required)
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      * @return object[]
      */
@@ -1397,9 +1397,9 @@ class TransactionRoutesApi
      *
      * Get transactions information
      *
-     * @param  \NEM\Model\TransactionIds $transactionIds Array of transaction ids or hashes (required)
+     * @param  \Proximax\Model\TransactionIds $transactionIds Array of transaction ids or hashes (required)
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      * @return array of object[], HTTP status code, HTTP response headers (array of strings)
      */
@@ -1473,7 +1473,7 @@ class TransactionRoutesApi
      *
      * Get transactions information
      *
-     * @param  \NEM\Model\TransactionIds $transactionIds Array of transaction ids or hashes (required)
+     * @param  \Proximax\Model\TransactionIds $transactionIds Array of transaction ids or hashes (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
@@ -1493,7 +1493,7 @@ class TransactionRoutesApi
      *
      * Get transactions information
      *
-     * @param  \NEM\Model\TransactionIds $transactionIds Array of transaction ids or hashes (required)
+     * @param  \Proximax\Model\TransactionIds $transactionIds Array of transaction ids or hashes (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
@@ -1543,7 +1543,7 @@ class TransactionRoutesApi
     /**
      * Create request for operation 'getTransactions'
      *
-     * @param  \NEM\Model\TransactionIds $transactionIds Array of transaction ids or hashes (required)
+     * @param  \Proximax\Model\TransactionIds $transactionIds Array of transaction ids or hashes (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
@@ -1638,11 +1638,11 @@ class TransactionRoutesApi
      *
      * Get transactions information
      *
-     * @param  \NEM\Model\TransactionHashes $transactionHashes Array of transaction ids or hashes (required)
+     * @param  \Proximax\Model\TransactionHashes $transactionHashes Array of transaction ids or hashes (required)
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return \NEM\Model\TransactionStatusDTO[]
+     * @return \Proximax\Model\TransactionStatusDTO[]
      */
     public function getTransactionsStatuses($transactionHashes)
     {
@@ -1655,15 +1655,15 @@ class TransactionRoutesApi
      *
      * Get transactions information
      *
-     * @param  \NEM\Model\TransactionHashes $transactionHashes Array of transaction ids or hashes (required)
+     * @param  \Proximax\Model\TransactionHashes $transactionHashes Array of transaction ids or hashes (required)
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return array of \NEM\Model\TransactionStatusDTO[], HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Proximax\Model\TransactionStatusDTO[], HTTP status code, HTTP response headers (array of strings)
      */
     public function getTransactionsStatusesWithHttpInfo($transactionHashes)
     {
-        $returnType = '\NEM\Model\TransactionStatusDTO[]';
+        $returnType = '\Proximax\Model\TransactionStatusDTO[]';
         $request = $this->getTransactionsStatusesRequest($transactionHashes);
 
         try {
@@ -1716,7 +1716,7 @@ class TransactionRoutesApi
                 case 200:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\NEM\Model\TransactionStatusDTO[]',
+                        '\Proximax\Model\TransactionStatusDTO[]',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -1731,7 +1731,7 @@ class TransactionRoutesApi
      *
      * Get transactions information
      *
-     * @param  \NEM\Model\TransactionHashes $transactionHashes Array of transaction ids or hashes (required)
+     * @param  \Proximax\Model\TransactionHashes $transactionHashes Array of transaction ids or hashes (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
@@ -1751,14 +1751,14 @@ class TransactionRoutesApi
      *
      * Get transactions information
      *
-     * @param  \NEM\Model\TransactionHashes $transactionHashes Array of transaction ids or hashes (required)
+     * @param  \Proximax\Model\TransactionHashes $transactionHashes Array of transaction ids or hashes (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
     public function getTransactionsStatusesAsyncWithHttpInfo($transactionHashes)
     {
-        $returnType = '\NEM\Model\TransactionStatusDTO[]';
+        $returnType = '\Proximax\Model\TransactionStatusDTO[]';
         $request = $this->getTransactionsStatusesRequest($transactionHashes);
 
         return $this->client
@@ -1801,7 +1801,7 @@ class TransactionRoutesApi
     /**
      * Create request for operation 'getTransactionsStatuses'
      *
-     * @param  \NEM\Model\TransactionHashes $transactionHashes Array of transaction ids or hashes (required)
+     * @param  \Proximax\Model\TransactionHashes $transactionHashes Array of transaction ids or hashes (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request

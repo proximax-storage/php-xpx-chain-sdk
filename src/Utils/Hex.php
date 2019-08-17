@@ -13,13 +13,13 @@
  * 
  */
 
-namespace NEM\Utils;
+namespace Proximax\Utils;
 
 /**
  * Hex Class Doc Comment
  *
  * @category Class
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -116,18 +116,18 @@ class Hex{
         for ($i = 1; $i < count($src)/2 + 1; $i++) {
             $a = $this->fromHexChar($src[$i*2-1]);
             if ($a == -1) {
-                return "Error: Invalid Byte Error 1";
+                throw new \Exception("Error: Invalid Byte Error 1");
             }
             $b = $this->fromHexChar($src[$i*2]);
             if ($b == -1) {
-                return "Error: Invalid Byte Error 2";
+                throw new \Exception("Error: Invalid Byte Error 2");
             }
             $src[$i] = ($a << 4) | $b;
         }
         if (count($src)%2 == 1) {
             // Check for invalid char before reporting bad length,
             // since the invalid char (if present) is an earlier problem.
-            return "Error: Error Lenght";
+            throw new \Exception("Error: Error Lenght");
         }
         return array_slice($src,0,$i-1);
     }

@@ -13,7 +13,7 @@
  * 
  */
 
-namespace NEM\API;
+namespace Proximax\API;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
@@ -21,16 +21,16 @@ use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\RequestOptions;
-use NEM\ApiException;
-use NEM\ApiClient;
-use NEM\HeaderSelector;
-use NEM\ObjectSerializer;
+use Proximax\ApiException;
+use Proximax\ApiClient;
+use Proximax\HeaderSelector;
+use Proximax\ObjectSerializer;
 
 /**
  * NamespaceRoutesApi Class Doc Comment
  *
  * @category Class
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -76,9 +76,9 @@ class NamespaceRoutesApi
      *
      * @param  string $namespaceId The namespace id for which information should be retreived (required)
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return \NEM\Model\NamespaceInfoDTO
+     * @return \Proximax\Model\NamespaceInfoDTO
      */
     public function getNamespace($namespaceId)
     {
@@ -93,13 +93,13 @@ class NamespaceRoutesApi
      *
      * @param  string $namespaceId The namespace id for which information should be retreived (required)
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return array of \NEM\Model\NamespaceInfoDTO, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Proximax\Model\NamespaceInfoDTO, HTTP status code, HTTP response headers (array of strings)
      */
     public function getNamespaceWithHttpInfo($namespaceId)
     {
-        $returnType = '\NEM\Model\NamespaceInfoDTO';
+        $returnType = '\Proximax\Model\NamespaceInfoDTO';
         $request = $this->getNamespaceRequest($namespaceId);
 
         try {
@@ -151,7 +151,7 @@ class NamespaceRoutesApi
                 case 200:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\NEM\Model\NamespaceInfoDTO',
+                        '\Proximax\Model\NamespaceInfoDTO',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -193,7 +193,7 @@ class NamespaceRoutesApi
      */
     public function getNamespaceAsyncWithHttpInfo($namespaceId)
     {
-        $returnType = '\NEM\Model\NamespaceInfoDTO';
+        $returnType = '\Proximax\Model\NamespaceInfoDTO';
         $request = $this->getNamespaceRequest($namespaceId);
 
         return $this->client
@@ -340,9 +340,9 @@ class NamespaceRoutesApi
      * @param  int $pageSize The numbers of namespace to return (optional)
      * @param  string $id Id last namespace id to apply pagination (optional)
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return \NEM\Model\NamespaceInfoDTO[]
+     * @return \Proximax\Model\NamespaceInfoDTO[]
      */
     public function getNamespacesFromAccount($publicKey, $pageSize = null, $id = null)
     {
@@ -359,13 +359,13 @@ class NamespaceRoutesApi
      * @param  int $pageSize The numbers of namespace to return (optional)
      * @param  string $id Id last namespace id to apply pagination (optional)
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return array of \NEM\Model\NamespaceInfoDTO[], HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Proximax\Model\NamespaceInfoDTO[], HTTP status code, HTTP response headers (array of strings)
      */
     public function getNamespacesFromAccountWithHttpInfo($publicKey, $pageSize = null, $id = null)
     {
-        $returnType = '\NEM\Model\NamespaceInfoDTO[]';
+        $returnType = '\Proximax\Model\NamespaceInfoDTO[]';
         $request = $this->getNamespacesFromAccountRequest($publicKey, $pageSize, $id);
 
         try {
@@ -417,7 +417,7 @@ class NamespaceRoutesApi
                 case 200:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\NEM\Model\NamespaceInfoDTO[]',
+                        '\Proximax\Model\NamespaceInfoDTO[]',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -463,7 +463,7 @@ class NamespaceRoutesApi
      */
     public function getNamespacesFromAccountAsyncWithHttpInfo($publicKey, $pageSize = null, $id = null)
     {
-        $returnType = '\NEM\Model\NamespaceInfoDTO[]';
+        $returnType = '\Proximax\Model\NamespaceInfoDTO[]';
         $request = $this->getNamespacesFromAccountRequest($publicKey, $pageSize, $id);
 
         return $this->client
@@ -616,13 +616,13 @@ class NamespaceRoutesApi
      *
      * Get namespaces information
      *
-     * @param  \NEM\Model\PublicKeys $publicKeys Accounts public key array (required)
+     * @param  \Proximax\Model\PublicKeys $publicKeys Accounts public key array (required)
      * @param  int $pageSize The numbers of namespace to return (optional)
      * @param  string $id Id last namespace id to apply pagination (optional)
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return \NEM\Model\NamespaceInfoDTO[]
+     * @return \Proximax\Model\NamespaceInfoDTO[]
      */
     public function getNamespacesFromAccounts($publicKeys, $pageSize = null, $id = null)
     {
@@ -635,17 +635,17 @@ class NamespaceRoutesApi
      *
      * Get namespaces information
      *
-     * @param  \NEM\Model\PublicKeys $publicKeys Accounts public key array (required)
+     * @param  \Proximax\Model\PublicKeys $publicKeys Accounts public key array (required)
      * @param  int $pageSize The numbers of namespace to return (optional)
      * @param  string $id Id last namespace id to apply pagination (optional)
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return array of \NEM\Model\NamespaceInfoDTO[], HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Proximax\Model\NamespaceInfoDTO[], HTTP status code, HTTP response headers (array of strings)
      */
     public function getNamespacesFromAccountsWithHttpInfo($publicKeys, $pageSize = null, $id = null)
     {
-        $returnType = '\NEM\Model\NamespaceInfoDTO[]';
+        $returnType = '\Proximax\Model\NamespaceInfoDTO[]';
         $request = $this->getNamespacesFromAccountsRequest($publicKeys, $pageSize, $id);
 
         try {
@@ -697,7 +697,7 @@ class NamespaceRoutesApi
                 case 200:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\NEM\Model\NamespaceInfoDTO[]',
+                        '\Proximax\Model\NamespaceInfoDTO[]',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -712,7 +712,7 @@ class NamespaceRoutesApi
      *
      * Get namespaces information
      *
-     * @param  \NEM\Model\PublicKeys $publicKeys Accounts public key array (required)
+     * @param  \Proximax\Model\PublicKeys $publicKeys Accounts public key array (required)
      * @param  int $pageSize The numbers of namespace to return (optional)
      * @param  string $id Id last namespace id to apply pagination (optional)
      *
@@ -734,7 +734,7 @@ class NamespaceRoutesApi
      *
      * Get namespaces information
      *
-     * @param  \NEM\Model\PublicKeys $publicKeys Accounts public key array (required)
+     * @param  \Proximax\Model\PublicKeys $publicKeys Accounts public key array (required)
      * @param  int $pageSize The numbers of namespace to return (optional)
      * @param  string $id Id last namespace id to apply pagination (optional)
      *
@@ -743,7 +743,7 @@ class NamespaceRoutesApi
      */
     public function getNamespacesFromAccountsAsyncWithHttpInfo($publicKeys, $pageSize = null, $id = null)
     {
-        $returnType = '\NEM\Model\NamespaceInfoDTO[]';
+        $returnType = '\Proximax\Model\NamespaceInfoDTO[]';
         $request = $this->getNamespacesFromAccountsRequest($publicKeys, $pageSize, $id);
 
         return $this->client
@@ -786,7 +786,7 @@ class NamespaceRoutesApi
     /**
      * Create request for operation 'getNamespacesFromAccounts'
      *
-     * @param  \NEM\Model\PublicKeys $publicKeys Accounts public key array (required)
+     * @param  \Proximax\Model\PublicKeys $publicKeys Accounts public key array (required)
      * @param  int $pageSize The numbers of namespace to return (optional)
      * @param  string $id Id last namespace id to apply pagination (optional)
      *
@@ -891,11 +891,11 @@ class NamespaceRoutesApi
      *
      * Get readable names for a set of namespaces
      *
-     * @param  \NEM\Model\NamespaceIds $namespaceIds Array of namespaceIds (required)
+     * @param  \Proximax\Model\NamespaceIds $namespaceIds Array of namespaceIds (required)
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return \NEM\Model\NamespaceNameDTO[]
+     * @return \Proximax\Model\NamespaceNameDTO[]
      */
     public function getNamespacesNames($namespaceIds)
     {
@@ -908,15 +908,15 @@ class NamespaceRoutesApi
      *
      * Get readable names for a set of namespaces
      *
-     * @param  \NEM\Model\NamespaceIds $namespaceIds Array of namespaceIds (required)
+     * @param  \Proximax\Model\NamespaceIds $namespaceIds Array of namespaceIds (required)
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return array of \NEM\Model\NamespaceNameDTO[], HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Proximax\Model\NamespaceNameDTO[], HTTP status code, HTTP response headers (array of strings)
      */
     public function getNamespacesNamesWithHttpInfo($namespaceIds)
     {
-        $returnType = '\NEM\Model\NamespaceNameDTO[]';
+        $returnType = '\Proximax\Model\NamespaceNameDTO[]';
         $request = $this->getNamespacesNamesRequest($namespaceIds);
 
         try {
@@ -968,7 +968,7 @@ class NamespaceRoutesApi
                 case 200:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\NEM\Model\NamespaceNameDTO[]',
+                        '\Proximax\Model\NamespaceNameDTO[]',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -983,7 +983,7 @@ class NamespaceRoutesApi
      *
      * Get readable names for a set of namespaces
      *
-     * @param  \NEM\Model\NamespaceIds $namespaceIds Array of namespaceIds (required)
+     * @param  \Proximax\Model\NamespaceIds $namespaceIds Array of namespaceIds (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
@@ -1003,14 +1003,14 @@ class NamespaceRoutesApi
      *
      * Get readable names for a set of namespaces
      *
-     * @param  \NEM\Model\NamespaceIds $namespaceIds Array of namespaceIds (required)
+     * @param  \Proximax\Model\NamespaceIds $namespaceIds Array of namespaceIds (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
     public function getNamespacesNamesAsyncWithHttpInfo($namespaceIds)
     {
-        $returnType = '\NEM\Model\NamespaceNameDTO[]';
+        $returnType = '\Proximax\Model\NamespaceNameDTO[]';
         $request = $this->getNamespacesNamesRequest($namespaceIds);
 
         return $this->client
@@ -1053,7 +1053,7 @@ class NamespaceRoutesApi
     /**
      * Create request for operation 'getNamespacesNames'
      *
-     * @param  \NEM\Model\NamespaceIds $namespaceIds Array of namespaceIds (required)
+     * @param  \Proximax\Model\NamespaceIds $namespaceIds Array of namespaceIds (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request

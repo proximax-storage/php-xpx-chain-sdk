@@ -13,9 +13,9 @@
  * 
  */
 
-namespace NEM\Core;
+namespace Proximax\Core;
 
-use NEM\Contracts\Serializable;
+use Proximax\Contracts\Serializable;
 use InvalidArgumentException;
 use RuntimeException;
 
@@ -23,7 +23,7 @@ use RuntimeException;
  * Encoder class Doc Comment
  *
  * @category class
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */

@@ -13,15 +13,15 @@
  * 
  */
 
-namespace NEM\Core;
+namespace Proximax\Core;
 
-use NEM\Core\Buffer;
+use Proximax\Core\Buffer;
 
 /**
  * Ripemd160Hasher class Doc Comment
  *
  * @category class
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -30,7 +30,7 @@ class Ripemd160Hasher
     /**
      * Non-Incremental RIPEMD160 Hash implementation.
      * 
-     * @param   string|\NEM\Core\Buffer $data           The data that needs to be hashed.
+     * @param   string|\Proximax\Core\Buffer $data           The data that needs to be hashed.
      * @param   boolean                 $raw_output     Whether to return raw data or a Hexadecimal hash.
      * @return  string
      */

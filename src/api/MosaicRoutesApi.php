@@ -13,7 +13,7 @@
  * 
  */
 
-namespace NEM\API;
+namespace Proximax\API;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
@@ -21,16 +21,16 @@ use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\RequestOptions;
-use NEM\ApiException;
-use NEM\ApiClient;
-use NEM\HeaderSelector;
-use NEM\ObjectSerializer;
+use Proximax\ApiException;
+use Proximax\ApiClient;
+use Proximax\HeaderSelector;
+use Proximax\ObjectSerializer;
 
 /**
  * MosaicRoutesApi Class Doc Comment
  *
  * @category Class
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -76,9 +76,9 @@ class MosaicRoutesApi
      *
      * @param  string $mosaicId The mosaic id for which information should be retreived (required)
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return \NEM\Model\MosaicInfoDTO
+     * @return \Proximax\Model\MosaicInfoDTO
      */
     public function getMosaic($mosaicId)
     {
@@ -93,13 +93,13 @@ class MosaicRoutesApi
      *
      * @param  string $mosaicId The mosaic id for which information should be retreived (required)
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return array of \NEM\Model\MosaicInfoDTO, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Proximax\Model\MosaicInfoDTO, HTTP status code, HTTP response headers (array of strings)
      */
     public function getMosaicWithHttpInfo($mosaicId)
     {
-        $returnType = '\NEM\Model\MosaicInfoDTO';
+        $returnType = '\Proximax\Model\MosaicInfoDTO';
         $request = $this->getMosaicRequest($mosaicId);
 
         try {
@@ -152,7 +152,7 @@ class MosaicRoutesApi
                 case 200:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\NEM\Model\MosaicInfoDTO',
+                        '\Proximax\Model\MosaicInfoDTO',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -194,7 +194,7 @@ class MosaicRoutesApi
      */
     public function getMosaicAsyncWithHttpInfo($mosaicId)
     {
-        $returnType = '\NEM\Model\MosaicInfoDTO';
+        $returnType = '\Proximax\Model\MosaicInfoDTO';
         $request = $this->getMosaicRequest($mosaicId);
 
         return $this->client
@@ -337,11 +337,11 @@ class MosaicRoutesApi
      *
      * Get information for a set of mosaics
      *
-     * @param  \NEM\Model\MosaicIds $mosaicIds Array of mosaicIds (required)
+     * @param  \Proximax\Model\MosaicIds $mosaicIds Array of mosaicIds (required)
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return \NEM\Model\MosaicInfoDTO[]
+     * @return \Proximax\Model\MosaicInfoDTO[]
      */
     public function getMosaics($mosaicIds)
     {
@@ -354,15 +354,15 @@ class MosaicRoutesApi
      *
      * Get information for a set of mosaics
      *
-     * @param  \NEM\Model\MosaicIds $mosaicIds Array of mosaicIds (required)
+     * @param  \Proximax\Model\MosaicIds $mosaicIds Array of mosaicIds (required)
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return array of \NEM\Model\MosaicInfoDTO[], HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Proximax\Model\MosaicInfoDTO[], HTTP status code, HTTP response headers (array of strings)
      */
     public function getMosaicsWithHttpInfo($mosaicIds)
     {
-        $returnType = '\NEM\Model\MosaicInfoDTO[]';
+        $returnType = '\Proximax\Model\MosaicInfoDTO[]';
         $request = $this->getMosaicsRequest($mosaicIds);
 
         try {
@@ -415,7 +415,7 @@ class MosaicRoutesApi
                 case 200:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\NEM\Model\MosaicInfoDTO[]',
+                        '\Proximax\Model\MosaicInfoDTO[]',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -430,7 +430,7 @@ class MosaicRoutesApi
      *
      * Get information for a set of mosaics
      *
-     * @param  \NEM\Model\MosaicIds $mosaicIds Array of mosaicIds (required)
+     * @param  \Proximax\Model\MosaicIds $mosaicIds Array of mosaicIds (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
@@ -450,14 +450,14 @@ class MosaicRoutesApi
      *
      * Get information for a set of mosaics
      *
-     * @param  \NEM\Model\MosaicIds $mosaicIds Array of mosaicIds (required)
+     * @param  \Proximax\Model\MosaicIds $mosaicIds Array of mosaicIds (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
     public function getMosaicsAsyncWithHttpInfo($mosaicIds)
     {
-        $returnType = '\NEM\Model\MosaicInfoDTO[]';
+        $returnType = '\Proximax\Model\MosaicInfoDTO[]';
         $request = $this->getMosaicsRequest($mosaicIds);
 
         return $this->client
@@ -500,7 +500,7 @@ class MosaicRoutesApi
     /**
      * Create request for operation 'getMosaics'
      *
-     * @param  \NEM\Model\MosaicIds $mosaicIds Array of mosaicIds (required)
+     * @param  \Proximax\Model\MosaicIds $mosaicIds Array of mosaicIds (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
@@ -599,9 +599,9 @@ class MosaicRoutesApi
      * @param  int $pageSize The numbers of mosaics to return (optional)
      * @param  string $id Id last mosaic id to apply pagination (optional)
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return \NEM\Model\MosaicInfoDTO[]
+     * @return \Proximax\Model\MosaicInfoDTO[]
      */
     public function getMosaicsFromNamespace($namespaceId, $pageSize = null, $id = null)
     {
@@ -618,13 +618,13 @@ class MosaicRoutesApi
      * @param  int $pageSize The numbers of mosaics to return (optional)
      * @param  string $id Id last mosaic id to apply pagination (optional)
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return array of \NEM\Model\MosaicInfoDTO[], HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Proximax\Model\MosaicInfoDTO[], HTTP status code, HTTP response headers (array of strings)
      */
     public function getMosaicsFromNamespaceWithHttpInfo($namespaceId, $pageSize = null, $id = null)
     {
-        $returnType = '\NEM\Model\MosaicInfoDTO[]';
+        $returnType = '\Proximax\Model\MosaicInfoDTO[]';
         $request = $this->getMosaicsFromNamespaceRequest($namespaceId, $pageSize, $id);
 
         try {
@@ -676,7 +676,7 @@ class MosaicRoutesApi
                 case 200:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\NEM\Model\MosaicInfoDTO[]',
+                        '\Proximax\Model\MosaicInfoDTO[]',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -722,7 +722,7 @@ class MosaicRoutesApi
      */
     public function getMosaicsFromNamespaceAsyncWithHttpInfo($namespaceId, $pageSize = null, $id = null)
     {
-        $returnType = '\NEM\Model\MosaicInfoDTO[]';
+        $returnType = '\Proximax\Model\MosaicInfoDTO[]';
         $request = $this->getMosaicsFromNamespaceRequest($namespaceId, $pageSize, $id);
 
         return $this->client
@@ -875,11 +875,11 @@ class MosaicRoutesApi
      *
      * Get readable names for a set of mosaics
      *
-     * @param  \NEM\Model\MosaicIds $mosaicIds Array of mosaicIds (required)
+     * @param  \Proximax\Model\MosaicIds $mosaicIds Array of mosaicIds (required)
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return \NEM\Model\MosaicNameDTO[]
+     * @return \Proximax\Model\MosaicNameDTO[]
      */
     public function getMosaicsName($mosaicIds)
     {
@@ -892,15 +892,15 @@ class MosaicRoutesApi
      *
      * Get readable names for a set of mosaics
      *
-     * @param  \NEM\Model\MosaicIds $mosaicIds Array of mosaicIds (required)
+     * @param  \Proximax\Model\MosaicIds $mosaicIds Array of mosaicIds (required)
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return array of \NEM\Model\MosaicNameDTO[], HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Proximax\Model\MosaicNameDTO[], HTTP status code, HTTP response headers (array of strings)
      */
     public function getMosaicsNameWithHttpInfo($mosaicIds)
     {
-        $returnType = '\NEM\Model\MosaicNameDTO[]';
+        $returnType = '\Proximax\Model\MosaicNameDTO[]';
         $request = $this->getMosaicsNameRequest($mosaicIds);
 
         try {
@@ -952,7 +952,7 @@ class MosaicRoutesApi
                 case 200:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\NEM\Model\MosaicNameDTO[]',
+                        '\Proximax\Model\MosaicNameDTO[]',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -967,7 +967,7 @@ class MosaicRoutesApi
      *
      * Get readable names for a set of mosaics
      *
-     * @param  \NEM\Model\MosaicIds $mosaicIds Array of mosaicIds (required)
+     * @param  \Proximax\Model\MosaicIds $mosaicIds Array of mosaicIds (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
@@ -987,14 +987,14 @@ class MosaicRoutesApi
      *
      * Get readable names for a set of mosaics
      *
-     * @param  \NEM\Model\MosaicIds $mosaicIds Array of mosaicIds (required)
+     * @param  \Proximax\Model\MosaicIds $mosaicIds Array of mosaicIds (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
     public function getMosaicsNameAsyncWithHttpInfo($mosaicIds)
     {
-        $returnType = '\NEM\Model\MosaicNameDTO[]';
+        $returnType = '\Proximax\Model\MosaicNameDTO[]';
         $request = $this->getMosaicsNameRequest($mosaicIds);
 
         return $this->client
@@ -1037,7 +1037,7 @@ class MosaicRoutesApi
     /**
      * Create request for operation 'getMosaicsName'
      *
-     * @param  \NEM\Model\MosaicIds $mosaicIds Array of mosaicIds (required)
+     * @param  \Proximax\Model\MosaicIds $mosaicIds Array of mosaicIds (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request

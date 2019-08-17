@@ -13,7 +13,7 @@
  * 
  */
 
-namespace NEM\API;
+namespace Proximax\API;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
@@ -21,16 +21,16 @@ use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\RequestOptions;
-use NEM\ApiException;
-use NEM\ApiClient;
-use NEM\HeaderSelector;
-use NEM\ObjectSerializer;
+use Proximax\ApiException;
+use Proximax\ApiClient;
+use Proximax\HeaderSelector;
+use Proximax\ObjectSerializer;
 
 /**
  * NetworkRoutesApi Class Doc Comment
  *
  * @category Class
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -75,9 +75,9 @@ class NetworkRoutesApi
      * Get the current network type of the chain
      *
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return \NEM\Model\NetworkTypeDTO
+     * @return \Proximax\Model\NetworkTypeDTO
      */
     public function getNetworkType()
     {
@@ -91,13 +91,13 @@ class NetworkRoutesApi
      * Get the current network type of the chain
      *
      *
-     * @throws \NEM\ApiException on non-2xx response
+     * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return array of \NEM\Model\NetworkTypeDTO, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Proximax\Model\NetworkTypeDTO, HTTP status code, HTTP response headers (array of strings)
      */
     public function getNetworkTypeWithHttpInfo()
     {
-        $returnType = '\NEM\Model\NetworkTypeDTO';
+        $returnType = '\Proximax\Model\NetworkTypeDTO';
         $request = $this->getNetworkTypeRequest();
 
         try {
@@ -150,7 +150,7 @@ class NetworkRoutesApi
                 case 200:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\NEM\Model\NetworkTypeDTO',
+                        '\Proximax\Model\NetworkTypeDTO',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -190,7 +190,7 @@ class NetworkRoutesApi
      */
     public function getNetworkTypeAsyncWithHttpInfo()
     {
-        $returnType = '\NEM\Model\NetworkTypeDTO';
+        $returnType = '\Proximax\Model\NetworkTypeDTO';
         $request = $this->getNetworkTypeRequest();
 
         return $this->client

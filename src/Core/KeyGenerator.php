@@ -13,19 +13,19 @@
  * 
  */
 
-namespace NEM\Core;
+namespace Proximax\Core;
 
-use NEM\Contract\KeyPair as KeyPairContract;
-use NEM\Core\Buffer;
-use NEM\Core\Encoder;
-use NEM\Core\Encryption;
+use Proximax\Contract\KeyPair as KeyPairContract;
+use Proximax\Core\Buffer;
+use Proximax\Core\Encoder;
+use Proximax\Core\Encryption;
 use \ParagonIE_Sodium_Core_Ed25519;
 
 /**
  * KeyGenerator class Doc Comment
  *
  * @category class
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -37,8 +37,8 @@ class KeyGenerator
      * This method uses Keccak 64 bytes (512 bits) hashing on
      * the provided `keyPair`'s secret key.
      *
-     * @param   \NEM\Core\KeyPair   $keyPair    The initialized key pair from which to derive the public key.
-     * @return  \NEM\Core\Buffer
+     * @param   \Proximax\Core\KeyPair   $keyPair    The initialized key pair from which to derive the public key.
+     * @return  \Proximax\Core\Buffer
      */
     public function derivePublicKey(KeyPair $keyPair)
     {
