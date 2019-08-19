@@ -1,6 +1,6 @@
 {
     "name": "proximax/php-xpx-chain-sdk",
-    "description": "Composer Package for PHP, Wrapper to use the Proximax blockchain REST API and SDK with NIS compatibility.",
+    "description": "Composer Package for PHP, Wrapper to use the ProximaX Sirius-Chain REST API and SDK.",
     "keywords": ["proximax", "cryptocurrency", "api", "sdk", "restful", "proximax-php", "php-proximax"],
     "license": "MIT",
     "authors": [
