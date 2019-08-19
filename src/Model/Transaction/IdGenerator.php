@@ -13,16 +13,17 @@
  * 
  */
 
-namespace NEM\Model\Transaction;
-use NEM\Core\Sha3Hasher;
-use NEM\Utils\Hex;
-use NEM\Utils\Utils;
-use NEM\Model\NamespaceId;
+namespace Proximax\Model\Transaction;
+use Proximax\Core\Sha3Hasher;
+use Proximax\Utils\Hex;
+use Proximax\Utils\Utils;
+use Proximax\Model\NamespaceId;
+use Proximax\Model\MosaicId;
 /**
  * IdGenerator class Doc Comment
  *
  * @category class
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -56,8 +57,7 @@ class IdGenerator{
         $b = (new Utils)->ReverseByteArray($b);
 
         $str = implode(array_map("chr", $b));
-        // var_dump($str);
-        // var_dump($namespace);
+        
         $hash = sha3Hasher::hash(256,($str . $namespace));
     
         $des = (new Hex)->DecodeString($hash);
@@ -67,9 +67,16 @@ class IdGenerator{
         $arr = array($p1,$p2);
         $namespaceId = new NamespaceId($arr);
 
-        // var_dump("p1 vs p2");
-        // var_dump($p1);
-        // var_dump($p2);
         return $namespaceId;
+    }
+
+    public static function generateMosaicId($nonce,$publicKey){
+        $pKey_array = (new Hex)->DecodeString($publicKey);
+        $tmp = (new Utils)->ReverseByteArray($nonce->getNonce());
+        $str = implode(array_map("chr", array_merge($tmp,$pKey_array)));
+        $hash = sha3Hasher::hash(256,$str);
+        $hashBytes = (new Hex)->DecodeString($hash);
+        $res = ((new Utils)->uint64LittleEndian($hashBytes) & (-((1 << 63) + 1)));
+        return new MosaicId(dechex($res));
     }
 }

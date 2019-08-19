@@ -13,12 +13,12 @@
  * 
  */
 
-namespace NEM\Core;
+namespace Proximax\Core;
 
-use NEM\Core\KeyPair;
-use NEM\Core\Buffer;
-use NEM\Core\Encryption;
-use NEM\Errors\NISInvalidSignatureContent;
+use Proximax\Core\KeyPair;
+use Proximax\Core\Buffer;
+use Proximax\Core\Encryption;
+use Proximax\Errors\NISInvalidSignatureContent;
 use \ParagonIE_Sodium_Compat;
 use \ParagonIE_Sodium_Core_Ed25519;
 USE \SodiumException;
@@ -27,7 +27,7 @@ USE \SodiumException;
  * Signature class Doc Comment
  *
  * @category class
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -37,14 +37,14 @@ class Signature
     /**
      * Public Key of the Signer in Hexadecimal Format (32 bytes).
      * 
-     * @var \NEM\Core\Buffer
+     * @var \Proximax\Core\Buffer
      */
     protected $signer;
 
     /**
      * Generated Signature in Hexadecimal Format (64 bytes)
      * 
-     * @var \NEM\Core\Buffer
+     * @var \Proximax\Core\Buffer
      */
     protected $signature;
 
@@ -63,11 +63,11 @@ class Signature
      * This method creates a Signature of said `data` with the
      * given `keyPair` KeyPair object.
      *
-     * @param   \NEM\Core\KeyPair          $keyPair      The KeyPair object with which you want to sign `data`.
-     * @param   string|\NEM\Core\Buffer    $data         The data that needs to be signed.
+     * @param   \Proximax\Core\KeyPair          $keyPair      The KeyPair object with which you want to sign `data`.
+     * @param   string|\Proximax\Core\Buffer    $data         The data that needs to be signed.
      * @param   null|string                $algorithm    The hash algorithm that you wish to use for signature creation.
-     * @return  \NEM\Core\Signature
-     * @throws  \NEM\Errors\NISInvalidSignatureContent      On invalid `data` argument. Should be a \NEM\Core\Buffer or a string.
+     * @return  \Proximax\Core\Signature
+     * @throws  \Proximax\Errors\NISInvalidSignatureContent      On invalid `data` argument. Should be a \Proximax\Core\Buffer or a string.
      */
     static public function create(KeyPair $kp, $data, $algorithm = 'sha3-512')
     {
@@ -78,15 +78,15 @@ class Signature
     /**
      * Signature object constructor.
      *
-     * @param   \NEM\Core\KeyPair          $keyPair      The KeyPair object with which you want to sign `data`.
-     * @param   string|\NEM\Core\Buffer    $data         The data that needs to be signed.
+     * @param   \Proximax\Core\KeyPair          $keyPair      The KeyPair object with which you want to sign `data`.
+     * @param   string|\Proximax\Core\Buffer    $data         The data that needs to be signed.
      * @param   null|string                $algorithm    The hash algorithm that you wish to use for signature creation.
      * @return  void
-     * @throws  \NEM\Errors\NISInvalidSignatureContent      On invalid `data` argument. Should be a \NEM\Core\Buffer or a string.
+     * @throws  \Proximax\Errors\NISInvalidSignatureContent      On invalid `data` argument. Should be a \Proximax\Core\Buffer or a string.
      */
     public function __construct(KeyPair $kp, $data, $algorithm = 'sha3-512')
     {
-        // wrap data in internal \NEM\Core\Buffer class
+        // wrap data in internal \Proximax\Core\Buffer class
         $this->prepareData($data);
 
         $this->algorithm = $algorithm ?: "sha3-512";
@@ -97,7 +97,7 @@ class Signature
     /**
      * Getter for the `signer` property.
      * 
-     * @return \NEM\Core\Buffer
+     * @return \Proximax\Core\Buffer
      */
     public function getSigner()
     {
@@ -107,7 +107,7 @@ class Signature
     /**
      * Getter for the `signature` property.
      * 
-     * @return \NEM\Core\Buffer
+     * @return \Proximax\Core\Buffer
      */
     public function getSignature()
     {
@@ -118,9 +118,9 @@ class Signature
      * This method will prepare the given data and populate the
      * `data` property with a prepared and correctly sized Buffer.
      * 
-     * @param   string|\NEM\Core\Buffer    $data         The data that needs to be signed.
-     * @return  \NEM\Core\Signature
-     * @throws  \NEM\Errors\NISInvalidSignatureContent      On invalid `data` argument. Should be a \NEM\Core\Buffer or a string.
+     * @param   string|\Proximax\Core\Buffer    $data         The data that needs to be signed.
+     * @return  \Proximax\Core\Signature
+     * @throws  \Proximax\Errors\NISInvalidSignatureContent      On invalid `data` argument. Should be a \Proximax\Core\Buffer or a string.
      */
     protected function prepareData($data) 
     {
@@ -135,7 +135,7 @@ class Signature
             $this->data = Buffer::fromUInt8($data);
         }
         else {
-            throw new NISInvalidSignatureContent("Invalid content provided for \\NEM\\Core\\Signature object.");
+            throw new NISInvalidSignatureContent("Invalid content provided for \\Proximax\\Core\\Signature object.");
         }
 
         return $this;

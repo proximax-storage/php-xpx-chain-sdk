@@ -13,13 +13,13 @@
  * 
  */
 
-namespace NEM\Contracts;
+namespace Proximax\Contracts;
 
 /**
  * Service interface Doc Comment
  *
  * @category interface
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -29,7 +29,7 @@ interface Service
      * Setter for the `endpoint` property.
      *
      * @param   string  $endpoint
-     * @return  \NEM\Infrastructure\Abstract
+     * @return  \Proximax\Infrastructure\Abstract
      */
     public function setBaseUrl($endpoint);
 

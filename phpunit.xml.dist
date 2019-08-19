@@ -16,7 +16,7 @@
          verbose="true"
 >
     <testsuites>
-        <testsuite name="NEM2 SDK PHP Crypto Test Suite">
+        <testsuite name="ProximaX Sirius-Chain SDK PHP Crypto Test Suite">
             <directory suffix="Test.php">./tests/Crypto</directory>
         </testsuite>
     </testsuites>

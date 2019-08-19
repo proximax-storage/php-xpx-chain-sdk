@@ -13,24 +13,24 @@
  * 
  */
 
-namespace NEM\Core;
+namespace Proximax\Core;
 
-use NEM\Contracts\KeyPair as KeyPairContract;
-use NEM\Core\Buffer;
-use NEM\Core\Signature;
-use NEM\Core\Encryption;
-use NEM\Errors\NISInvalidPrivateKeySize;    
-use NEM\Errors\NISInvalidPrivateKeyContent;
-use NEM\Errors\NISInvalidPublicKeySize;
-use NEM\Errors\NISInvalidPublicKeyContent;
-use NEM\Errors\NISInvalidSignatureContent;
+use Proximax\Contracts\KeyPair as KeyPairContract;
+use Proximax\Core\Buffer;
+use Proximax\Core\Signature;
+use Proximax\Core\Encryption;
+use Proximax\Errors\NISInvalidPrivateKeySize;    
+use Proximax\Errors\NISInvalidPrivateKeyContent;
+use Proximax\Errors\NISInvalidPublicKeySize;
+use Proximax\Errors\NISInvalidPublicKeyContent;
+use Proximax\Errors\NISInvalidSignatureContent;
 use \ParagonIE_Sodium_Core_Ed25519;
 
 /**
  * KeyPair class Doc Comment
  *
  * @category class
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -40,7 +40,7 @@ class KeyPair
     /**
      * The Key Generator instance.
      * 
-     * @var \NEM\Core\KeyGenerator
+     * @var \Proximax\Core\KeyGenerator
      */
     protected $keygen;
 
@@ -65,12 +65,6 @@ class KeyPair
      */
     protected $secretKey;
 
-    /**
-     * The address derived of the public key.
-     *
-     * @var \NEM\Models\Address
-     */
-    protected $address;
 
     /**
      * This method creates a KeyPair out of a private key.
@@ -78,11 +72,11 @@ class KeyPair
      * The `privateKey` argument must be 64 bytes long or 66 bytes
      * long 
      *
-     * @param   null|string|\NEM\Core\Buffer|\NEM\Core\KeyPair   $privateKey      The private key in hexadecimal format (or in Buffer).
-     * @param   null|string|\NEM\Core\Buffer                     $publicKey       The public key in hexadecimal format (or in Buffer).
-     * @return  \NEM\Core\KeyPair
-     * @throws  \NEM\Errors\NISInvalidPrivateKeySize       On string key size with wrong length. (strictly 64 or 66 characters)
-     * @throws  \NEM\Errors\NISInvalidPrivateKeyContent    On string key invalid content. (non hexadecimal characters)
+     * @param   null|string|\Proximax\Core\Buffer|\Proximax\Core\KeyPair   $privateKey      The private key in hexadecimal format (or in Buffer).
+     * @param   null|string|\Proximax\Core\Buffer                     $publicKey       The public key in hexadecimal format (or in Buffer).
+     * @return  \Proximax\Core\KeyPair
+     * @throws  \Proximax\Errors\NISInvalidPrivateKeySize       On string key size with wrong length. (strictly 64 or 66 characters)
+     * @throws  \Proximax\Errors\NISInvalidPrivateKeyContent    On string key invalid content. (non hexadecimal characters)
      */
     static public function create($privateKey = null, $publicKey = null)
     {
@@ -93,8 +87,8 @@ class KeyPair
     /**
      * KeyPair object constructor.
      *
-     * @param   null|string|\NEM\Core\Buffer|\NEM\Core\KeyPair   $privateKey      The private key in hexadecimal format (or in Buffer).
-     * @param   null|string|\NEM\Core\Buffer                     $publicKey       The public key in hexadecimal format (or in Buffer).
+     * @param   null|string|\Proximax\Core\Buffer|\Proximax\Core\KeyPair   $privateKey      The private key in hexadecimal format (or in Buffer).
+     * @param   null|string|\Proximax\Core\Buffer                     $publicKey       The public key in hexadecimal format (or in Buffer).
      * @return  void
      */
     public function __construct($privateKey = null, $publicKey = null)
@@ -110,8 +104,6 @@ class KeyPair
             // use key generator for public key derivation
             $this->publicKey = $this->keygen->derivePublicKey($this);
         }
-
-        $this->address = \NEM\Model\Address::fromPublicKey($this->publicKey);
     }
 
     /**
@@ -121,7 +113,7 @@ class KeyPair
      * Binary data should and will only be used internally.
      *
      * @param   string|integer                  Which encoding to use (One of: "hex", "uint8", "int32")
-     * @return  \NEM\Core\Buffer|string|array   Returns either of Buffer, string hexadecimal representation, or UInt8 or Int32 array.
+     * @return  \Proximax\Core\Buffer|string|array   Returns either of Buffer, string hexadecimal representation, or UInt8 or Int32 array.
      */
     public function getPublicKey($enc = null)
     {
@@ -135,7 +127,7 @@ class KeyPair
      * Binary data should and will only be used internally.
      *
      * @param   string|integer                  Which encoding to use (One of: "hex", "uint8", "int32")
-     * @return  \NEM\Core\Buffer|string|array   Returns either of Buffer, string hexadecimal representation, or UInt8 or Int32 array.
+     * @return  \Proximax\Core\Buffer|string|array   Returns either of Buffer, string hexadecimal representation, or UInt8 or Int32 array.
      */
     public function getPrivateKey($enc = null)
     {
@@ -146,12 +138,12 @@ class KeyPair
      * This method should return the *reversed Hexadecimal representation*
      * of the object's private key.
      *
-     * Reversed hexadecimal notation happens on binary data, the \NEM\Core\Buffer
+     * Reversed hexadecimal notation happens on binary data, the \Proximax\Core\Buffer
      * class represents the given hexadecimal payload in binary form and flips
      * the bytes of the buffer.
      *
      * @param   string|integer      $enc        Which encoding to use (One of: "hex", "uint8", "int32")
-     * @return  \NEM\Core\Buffer|string|array   Returns either of Buffer, string hexadecimal representation, or UInt8 or Int32 array.
+     * @return  \Proximax\Core\Buffer|string|array   Returns either of Buffer, string hexadecimal representation, or UInt8 or Int32 array.
      */
     public function getSecretKey($enc = null)
     {
@@ -160,15 +152,15 @@ class KeyPair
 
     /**
      * This method should return the *base32 encoded representation* of the
-     * NEM Address.
+     * Proximax Address.
      *
      * @param   string|integer  $networkId        A network ID OR a network name. (default mainnet)
      * @param   boolean         $prettyFormat     Boolean whether address should be prettified or not.
      * @return  string
      */
-    public function getAddress($networkId = 168, $prettyFormat = false)
+    public function getAddress($networkId, $prettyFormat = false)
     {
-        $address = \NEM\Model\Address::fromPublicKey($this->getPublicKey(), $networkId);
+        $address = \Proximax\Model\Address::fromPublicKey($this->getPublicKey(), $networkId);
         if ($prettyFormat) {
             return $address->toPretty();
         }
@@ -182,10 +174,10 @@ class KeyPair
      * 
      * You can also specify the `enc` parameter to be "hex", "uint8" or "int32".
      * 
-     * @param   null|array|string|\NEM\Core\Buffer   $data        The data that needs to be signed.
+     * @param   null|array|string|\Proximax\Core\Buffer   $data        The data that needs to be signed.
      * @param   string                               $algorithm   The hash algorithm used for signature creation.
      * @param   string|integer                       $enc         Which encoding to return (One of: "hex", "uint8", "int32")
-     * @return  \NEM\Core\Buffer|string|array   Returns either of Buffer, string hexadecimal representation, or UInt8 or Int32 array.
+     * @return  \Proximax\Core\Buffer|string|array   Returns either of Buffer, string hexadecimal representation, or UInt8 or Int32 array.
      */
     public function sign($data, $algorithm = "sha3-512", $enc = null)
     {
@@ -200,11 +192,10 @@ class KeyPair
             $data = Buffer::fromUInt8($data)->getBinary();
         }
         elseif (!is_string($data)) {
-            throw new NISInvalidSignatureContent("Invalid data argument passed in \\NEM\\Core\\KeyPair::sign().");
+            throw new NISInvalidSignatureContent("Invalid data argument passed in \\Proximax\\Core\\KeyPair::sign().");
         }
 
         $buf = new Buffer($data);
-        //var_dump($buf);
         $sig = new Signature($this, $buf, $algorithm);
         return $this->encodeKey($sig->getSignature(), $enc);
     }
@@ -218,10 +209,10 @@ class KeyPair
      * public key.
      *
      * @internal
-     * @param   null|string|\NEM\Core\Buffer|\NEM\Core\KeyPair   $privateKey      The private key in hexadecimal format (or in Buffer).
-     * @return  \NEM\Core\KeyPair
-     * @throws  \NEM\Errors\NISInvalidPrivateKeySize       On string key size with wrong length. (strictly 64 or 66 characters)
-     * @throws  \NEM\Errors\NISInvalidPrivateKeyContent    On string key invalid content. (non hexadecimal characters)
+     * @param   null|string|\Proximax\Core\Buffer|\Proximax\Core\KeyPair   $privateKey      The private key in hexadecimal format (or in Buffer).
+     * @return  \Proximax\Core\KeyPair
+     * @throws  \Proximax\Errors\NISInvalidPrivateKeySize       On string key size with wrong length. (strictly 64 or 66 characters)
+     * @throws  \Proximax\Errors\NISInvalidPrivateKeyContent    On string key invalid content. (non hexadecimal characters)
      */
     protected function preparePrivateKey($privateKey = null)
     {
@@ -256,7 +247,7 @@ class KeyPair
         }
         elseif ($privateKey !== null) {
             // `privateKey` could not be interpreted.
-            throw new RuntimeException("Invalid Private key for KeyPair creation. Please use hexadecimal notation (64|66 characters string) or the \\NEM\\Core\\Buffer class.");
+            throw new RuntimeException("Invalid Private key for KeyPair creation. Please use hexadecimal notation (64|66 characters string) or the \\Proximax\\Core\\Buffer class.");
         }
 
         // secret key is the byte-level-reversed representation of the private key.
@@ -273,10 +264,10 @@ class KeyPair
      * hexadecimal or binary representation.
      *
      * @internal
-     * @param   null|string|\NEM\Core\Buffer   $publicKey           The public key in hexadecimal format (or in Buffer).
-     * @return  \NEM\Core\KeyPair
-     * @throws  \NEM\Errors\NISInvalidPublicKeySize       On string key size with wrong length. (strictly 64 characters)
-     * @throws  \NEM\Errors\NISInvalidPublicKeyContent    On string key invalid content. (non hexadecimal characters)
+     * @param   null|string|\Proximax\Core\Buffer   $publicKey           The public key in hexadecimal format (or in Buffer).
+     * @return  \Proximax\Core\KeyPair
+     * @throws  \Proximax\Errors\NISInvalidPublicKeySize       On string key size with wrong length. (strictly 64 characters)
+     * @throws  \Proximax\Errors\NISInvalidPublicKeyContent    On string key invalid content. (non hexadecimal characters)
      */
     protected function preparePublicKey($publicKey = null)
     {
@@ -300,7 +291,7 @@ class KeyPair
         }
         elseif ($publicKey !== null) {
             // `publicKey` could not be interpreted.
-            throw new RuntimeException("Invalid Private key for KeyPair creation. Please use hexadecimal notation (64|66 characters string) or the \\NEM\\Core\\Buffer class.");
+            throw new RuntimeException("Invalid Private key for KeyPair creation. Please use hexadecimal notation (64|66 characters string) or the \\Proximax\\Core\\Buffer class.");
         }
 
 	    return $this->publicKey;
@@ -310,9 +301,9 @@ class KeyPair
      * This method encodes a given `key` to the given `enc` codec or 
      * returns the Buffer itself if no encoding was specified.
      *
-     * @param   \NEM\Core\Buffer    $key        The Key object (Buffer) that needs to be encoded. 
+     * @param   \Proximax\Core\Buffer    $key        The Key object (Buffer) that needs to be encoded. 
      * @param   string|integer      $enc        Which encoding to use (One of: "hex", "uint8", "int32")
-     * @return  \NEM\Core\Buffer|string|array   Returns either of Buffer, string hexadecimal representation, or UInt8 or Int32 array.
+     * @return  \Proximax\Core\Buffer|string|array   Returns either of Buffer, string hexadecimal representation, or UInt8 or Int32 array.
      */
     protected function encodeKey(Buffer $key, $enc = null)
     {

@@ -13,7 +13,7 @@
  * 
  */
 
-namespace NEM\Errors;
+namespace Proximax\Errors;
 
 use RuntimeException;
 
@@ -21,7 +21,7 @@ use RuntimeException;
  * HasherInvalidContent class Doc Comment
  *
  * @category class
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */

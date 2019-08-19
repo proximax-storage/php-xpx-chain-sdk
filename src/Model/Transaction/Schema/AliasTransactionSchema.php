@@ -13,17 +13,17 @@
  * 
  */
 
-namespace NEM\Model\Transaction\Schema;
-use NEM\Model\Transaction\Attribute\ScalarAttribute;
-use NEM\Model\Transaction\Attribute\ArrayAttribute;
-use NEM\Model\Transaction\Attribute\TableArrayAttribute;
-use NEM\Model\Transaction\Constants;
+namespace Proximax\Model\Transaction\Schema;
+use Proximax\Model\Transaction\Attribute\ScalarAttribute;
+use Proximax\Model\Transaction\Attribute\ArrayAttribute;
+use Proximax\Model\Transaction\Attribute\TableArrayAttribute;
+use Proximax\Model\Transaction\Constants;
 
 /**
  * AliasTransactionSchema class Doc Comment
  *
  * @category class
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */

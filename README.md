@@ -33,7 +33,7 @@ For more examples, go to our [wiki](https://github.com/proximax-storage/php-xpx-
 
 ## Acknowledgement
 
-This library is a fork of nem-php-sdk which was also contributed by ProximaX Limited to NEM Foundation. 
+This library is a fork of Proximax-php-sdk which was also contributed by ProximaX Limited to Proximax Foundation. 
 
 ## [Contribution](CONTRIBUTING.md)
 

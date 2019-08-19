@@ -13,20 +13,20 @@
  * 
  */
 
-namespace NEM\Model;
+namespace Proximax\Model;
 
 /**
  * MultisigCosignatoryModification class Doc Comment
  *
  * @category class
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
 class MultisigCosignatoryModification{
-    private $type;
+    private $type; //MultisigCosignatoryModificationType
 
-    private $publicAccount;
+    private $publicAccount; //PublicAccount
 
     public function __construct($type, $publicAccount){
         $this->type = $type;

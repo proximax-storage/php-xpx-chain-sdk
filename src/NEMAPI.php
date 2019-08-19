@@ -13,20 +13,20 @@
  * 
  */
 
-namespace NEM;
+namespace Proximax;
 
 use RuntimeException;
 use InvalidArgumentException;
 
 /**
- * NEMAPI Class Doc Comment
+ * ProximaxAPI Class Doc Comment
  *
  * @category Class
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
-class NEMAPI
+class ProximaxAPI
 {
     /**
      * The Laravel/Lumen IoC container
@@ -43,18 +43,18 @@ class NEMAPI
      *
      * @var string
      */
-    protected $handlerClass = "\NEM\Handlers\GuzzleRequestHandler";
+    protected $handlerClass = "\Proximax\Handlers\GuzzleRequestHandler";
 
     /**
      * The request handler use to send API calls over
      * HTTP/JSON to NIS or NCC endpoints.
      *
-     * @var \NEM\Contracts\RequestHandler
+     * @var \Proximax\Contracts\RequestHandler
      */
     protected $requestHandler;
 
     /**
-     * Constructor for a new NEMBlockchain\API instance.
+     * Constructor for a new ProximaxBlockchain\API instance.
      *
      * This will initialize the Laravel/Lumen IoC.
      *
@@ -67,12 +67,12 @@ class NEMAPI
     }
 
     /**
-     * This method allows to set the NEMAPI configuration
+     * This method allows to set the ProximaxAPI configuration
      * through an array rather than using the Laravel
      * and Lumen Config contracts.
      *
      * @param  array $options
-     * @return \NEM\API
+     * @return \Proximax\API
      * @throws InvalidArgumentException on invalid option names.
      */
     public function setOptions(array $options)
@@ -80,7 +80,7 @@ class NEMAPI
         foreach ($options as $option => $config) {
             if (! (bool) preg_match("/^[0-9A-Za-z_]+$/", $option))
                 // invalid option format
-                throw new InvalidArgumentException("Invalid option name provided to evias\\NEMBlockchain\\NEMAPI@setOptions: " . var_export($option, true));
+                throw new InvalidArgumentException("Invalid option name provided to evias\\ProximaxBlockchain\\ProximaxAPI@setOptions: " . var_export($option, true));
 
             $upper  = str_replace(" ", "", ucwords(str_replace("_", " ", $option)));
             $setter = "set" . $upper;
@@ -120,12 +120,12 @@ class NEMAPI
 
             if (empty($proxyCall[1]) || empty($proxyCall[1][0]))
                 // invalid method name
-                throw new BadMethodCallException("Method '" . $method . "' is not defined in evias\\NEMBlockchain\\API and could not forwarded.");
+                throw new BadMethodCallException("Method '" . $method . "' is not defined in evias\\ProximaxBlockchain\\API and could not forwarded.");
 
             $realMethod = $proxyCall[1][0];
             if (! method_exists($this->getRequestHandler(), $realMethod))
                 // after remove of "JSON" in the name, the method still doesn't exist
-                throw new BadMethodCallException("Method '" . $realMethod . "' is not defined in evias\\NEMBlockchain\\Handlers\\" . get_class($this->getRequestHandler()) . " and could not be forwarded.");
+                throw new BadMethodCallException("Method '" . $realMethod . "' is not defined in evias\\ProximaxBlockchain\\Handlers\\" . get_class($this->getRequestHandler()) . " and could not be forwarded.");
 
             // valid forwarding applied (took the "JSON" part away)
             // get response from request handler and return JSON body.
@@ -133,7 +133,7 @@ class NEMAPI
             return (string) $response->getBody();
         }
 
-        throw new BadMethodCallException("Method '" . $method . "' is not defined in evias\\NEMBlockchain\\API.");
+        throw new BadMethodCallException("Method '" . $method . "' is not defined in evias\\ProximaxBlockchain\\API.");
     }
 
     /**
@@ -166,7 +166,7 @@ class NEMAPI
      * HTTP handler object.
      *
      * @param  string $class
-     * @return \NEM\NEMAPI
+     * @return \Proximax\ProximaxAPI
      */
     public function setHandlerClass($class)
     {
@@ -185,7 +185,7 @@ class NEMAPI
     }
 
     /**
-     * Set the RequestHandler to use as this NEMAPI
+     * Set the RequestHandler to use as this ProximaxAPI
      * instance's request handler.
      *
      * @param RequestHandler $handler [description]
@@ -200,7 +200,7 @@ class NEMAPI
      * The getRequestHandler method creates an instance of the
      * `handlerClass` and returns it.
      *
-     * @return \NEM\Contracts\RequestHandler
+     * @return \Proximax\Contracts\RequestHandler
      */
     public function getRequestHandler()
     {

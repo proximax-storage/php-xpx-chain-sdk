@@ -13,15 +13,15 @@
  * 
  */
 
-namespace NEM\Model;
-use NEM\Utils\Utils;
-use NEM\Model\MosaicMetaDTO;
-use NEM\Model\MosaicDefinitionDTO;
+namespace Proximax\Model;
+use Proximax\Utils\Utils;
+use Proximax\Model\MosaicMetaDTO;
+use Proximax\Model\MosaicDefinitionDTO;
 /**
  * MosaicInfoDTO class Doc Comment
  *
  * @category class
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */

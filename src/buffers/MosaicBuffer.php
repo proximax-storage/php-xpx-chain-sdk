@@ -111,7 +111,7 @@ class MosaicBuffer extends Table
     {
         $builder->startVector(4, count($data), 4);
         for ($i = count($data) - 1; $i >= 0; $i--) {
-            $builder->addUint($data[$i]);
+            $builder->putUint($data[$i]);
         }
         return $builder->endVector();
     }
@@ -145,7 +145,7 @@ class MosaicBuffer extends Table
     {
         $builder->startVector(4, count($data), 4);
         for ($i = count($data) - 1; $i >= 0; $i--) {
-            $builder->addUint($data[$i]);
+            $builder->putUint($data[$i]);
         }
         return $builder->endVector();
     }

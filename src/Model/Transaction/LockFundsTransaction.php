@@ -13,32 +13,32 @@
  * 
  */
 
-namespace NEM\Model\Transaction;
+namespace Proximax\Model\Transaction;
 
-use NEM\Model\TransactionType;
-use NEM\Model\Deadline;
-use NEM\Model\TransactionVersion;
-use NEM\Model\TransactionInfo;
-use NEM\Model\PublicAccount;
-use NEM\Utils\Hex;
-use NEM\Infrastructure\Network;
-use NEM\Model\Transaction\Schema\LockFundsTransactionSchema;
+use Proximax\Model\TransactionType;
+use Proximax\Model\Deadline;
+use Proximax\Model\TransactionVersion;
+use Proximax\Model\TransactionInfo;
+use Proximax\Model\PublicAccount;
+use Proximax\Utils\Hex;
+use Proximax\Infrastructure\Network;
+use Proximax\Model\Transaction\Schema\LockFundsTransactionSchema;
 use \Google\FlatBuffers\FlatbufferBuilder;
 use \Catapult\Buffers\MessageBuffer;
 use \Catapult\Buffers\MosaicBuffer;
 use \Catapult\Buffers\LockFundsTransactionBuffer;
-use NEM\Utils\Utils;
-use NEM\Model\AbstractTransaction;
+use Proximax\Utils\Utils;
+use Proximax\Model\AbstractTransaction;
 
 /**
  * LockFundsTransaction class Doc Comment
  *
  * @category class
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
-class LockFundsTransaction extends \NEM\Model\Transaction{
+class LockFundsTransaction extends \Proximax\Model\Transaction{
 
     private $mosaic;
 

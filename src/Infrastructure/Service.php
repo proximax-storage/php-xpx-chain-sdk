@@ -13,18 +13,18 @@
  * 
  */
 
-namespace NEM\Infrastructure;
+namespace Proximax\Infrastructure;
 
 use Illuminate\Support\Str;
 
-use NEM\NEMAPI;
-use NEM\Contracts\Service as ServiceContract;
+use Proximax\ProximaxAPI;
+use Proximax\Contracts\Service as ServiceContract;
 
 /**
  * Service class Doc Comment
  *
  * @category class
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -32,9 +32,9 @@ class Service
     implements ServiceContract
 {
     /**
-     * The NEM API wrapper instance.
+     * The Proximax API wrapper instance.
      *
-     * @var \NEM\NEMAPI
+     * @var \Proximax\ProximaxAPI
      */
     protected $api;
 
@@ -50,16 +50,16 @@ class Service
      *
      * @return void
      */
-    public function __construct(NEMAPI $api = null) 
+    public function __construct(ProximaxAPI $api = null) 
     {
-        $this->api = $api ?: new NEMAPI([]);
+        $this->api = $api ?: new ProximaxAPI([]);
     }
 
     /**
      * Setter for the `baseUrl` property.
      *
      * @param   string  $baseUrl
-     * @return  \NEM\Infrastructure\Abstract
+     * @return  \Proximax\Infrastructure\Abstract
      */
     public function setBaseUrl($baseUrl)
     {
@@ -107,7 +107,7 @@ class Service
      *
      * @param  string   $name           The model name you would like to create.
      * @param  array    $arguments     The model's attribute values.
-     * @return \NEM\Contract\DataTransferObject
+     * @return \Proximax\Contract\DataTransferObject
      */
     public function __call($name, array $arguments)
     {
@@ -119,14 +119,14 @@ class Service
         $parts = [];
         if ((bool) preg_match("/^create([A-Za-z0-9\_]+)(Model|Collection)/", $name, $parts)) {
             // valid createX(Model|Collection)() call.
-            // @see \NEM\Models namespace classes
+            // @see \Proximax\Models namespace classes
             $objectClass = $parts[1];
             $returnType  = $parts[2]; // Model or Collection
 
             if ("Base" === $objectClass)
                 $objectClass = "Model"; // "Base" objects are generic models.
 
-            $class   = "\\NEM\\Models\\Mutators\\" . Str::studly($returnType) . "Mutator"; // ModelMutator or CollectionMutator
+            $class   = "\\Proximax\\Models\\Mutators\\" . Str::studly($returnType) . "Mutator"; // ModelMutator or CollectionMutator
             $mutator = new $class();
             $attribs = !empty($arguments) ? $arguments[0] : [];
             return $mutator->mutate(lcfirst($objectClass), $attribs);

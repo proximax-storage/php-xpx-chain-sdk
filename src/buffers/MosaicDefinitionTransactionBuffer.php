@@ -96,12 +96,12 @@ class MosaicDefinitionTransactionBuffer extends Table
     }
 
     /**
-     * @return ushort
+     * @return uint
      */
     public function getVersion()
     {
         $o = $this->__offset(10);
-        return $o != 0 ? $this->bb->getUshort($o + $this->bb_pos) : 0;
+        return $o != 0 ? $this->bb->getUint($o + $this->bb_pos) : 0;
     }
 
     /**
@@ -117,7 +117,7 @@ class MosaicDefinitionTransactionBuffer extends Table
      * @param int offset
      * @return uint
      */
-    public function getFee($j)
+    public function getMaxFee($j)
     {
         $o = $this->__offset(14);
         return $o != 0 ? $this->bb->getUint($this->__vector($o) + $j * 4) : 0;
@@ -126,7 +126,7 @@ class MosaicDefinitionTransactionBuffer extends Table
     /**
      * @return int
      */
-    public function getFeeLength()
+    public function getMaxFeeLength()
     {
         $o = $this->__offset(14);
         return $o != 0 ? $this->__vector_len($o) : 0;
@@ -152,22 +152,12 @@ class MosaicDefinitionTransactionBuffer extends Table
     }
 
     /**
-     * @param int offset
      * @return uint
      */
-    public function getParentId($j)
+    public function getMosaicNonce()
     {
         $o = $this->__offset(18);
-        return $o != 0 ? $this->bb->getUint($this->__vector($o) + $j * 4) : 0;
-    }
-
-    /**
-     * @return int
-     */
-    public function getParentIdLength()
-    {
-        $o = $this->__offset(18);
-        return $o != 0 ? $this->__vector_len($o) : 0;
+        return $o != 0 ? $this->bb->getUint($o + $this->bb_pos) : 0;
     }
 
     /**
@@ -192,7 +182,7 @@ class MosaicDefinitionTransactionBuffer extends Table
     /**
      * @return byte
      */
-    public function getMosaicNameLength()
+    public function getNumOptionalProperties()
     {
         $o = $this->__offset(22);
         return $o != 0 ? $this->bb->getByte($o + $this->bb_pos) : 0;
@@ -201,7 +191,7 @@ class MosaicDefinitionTransactionBuffer extends Table
     /**
      * @return byte
      */
-    public function getNumOptionalProperties()
+    public function getFlags()
     {
         $o = $this->__offset(24);
         return $o != 0 ? $this->bb->getByte($o + $this->bb_pos) : 0;
@@ -210,52 +200,28 @@ class MosaicDefinitionTransactionBuffer extends Table
     /**
      * @return byte
      */
-    public function getFlags()
+    public function getDivisibility()
     {
         $o = $this->__offset(26);
         return $o != 0 ? $this->bb->getByte($o + $this->bb_pos) : 0;
     }
 
     /**
-     * @return byte
+     * @returnVectorOffset
      */
-    public function getDivisibility()
+    public function getOptionalProperties($j)
     {
         $o = $this->__offset(28);
-        return $o != 0 ? $this->bb->getByte($o + $this->bb_pos) : 0;
-    }
-
-    public function getMosaicName()
-    {
-        $o = $this->__offset(30);
-        return $o != 0 ? $this->__string($o + $this->bb_pos) : null;
-    }
-
-    /**
-     * @return byte
-     */
-    public function getIndicateDuration()
-    {
-        $o = $this->__offset(32);
-        return $o != 0 ? $this->bb->getByte($o + $this->bb_pos) : 0;
-    }
-
-    /**
-     * @param int offset
-     * @return uint
-     */
-    public function getDuration($j)
-    {
-        $o = $this->__offset(34);
-        return $o != 0 ? $this->bb->getUint($this->__vector($o) + $j * 4) : 0;
+        $obj = new MosaicProperty();
+        return $o != 0 ? $obj->init($this->__indirect($this->__vector($o) + $j * 4), $this->bb) : null;
     }
 
     /**
      * @return int
      */
-    public function getDurationLength()
+    public function getOptionalPropertiesLength()
     {
-        $o = $this->__offset(34);
+        $o = $this->__offset(28);
         return $o != 0 ? $this->__vector_len($o) : 0;
     }
 
@@ -265,32 +231,29 @@ class MosaicDefinitionTransactionBuffer extends Table
      */
     public static function startMosaicDefinitionTransactionBuffer(FlatBufferBuilder $builder)
     {
-        $builder->StartObject(16);
+        $builder->StartObject(13);
     }
 
     /**
      * @param FlatBufferBuilder $builder
      * @return MosaicDefinitionTransactionBuffer
      */
-    public static function createMosaicDefinitionTransactionBuffer(FlatBufferBuilder $builder, $size, $signature, $signer, $version, $type, $fee, $deadline, $parentId, $mosaicId, $mosaicNameLength, $numOptionalProperties, $flags, $divisibility, $mosaicName, $indicateDuration, $duration)
+    public static function createMosaicDefinitionTransactionBuffer(FlatBufferBuilder $builder, $size, $signature, $signer, $version, $type, $maxFee, $deadline, $mosaicNonce, $mosaicId, $numOptionalProperties, $flags, $divisibility, $optionalProperties)
     {
-        $builder->startObject(16);
+        $builder->startObject(13);
         self::addSize($builder, $size);
         self::addSignature($builder, $signature);
         self::addSigner($builder, $signer);
         self::addVersion($builder, $version);
         self::addType($builder, $type);
-        self::addFee($builder, $fee);
+        self::addMaxFee($builder, $maxFee);
         self::addDeadline($builder, $deadline);
-        self::addParentId($builder, $parentId);
+        self::addMosaicNonce($builder, $mosaicNonce);
         self::addMosaicId($builder, $mosaicId);
-        self::addMosaicNameLength($builder, $mosaicNameLength);
         self::addNumOptionalProperties($builder, $numOptionalProperties);
         self::addFlags($builder, $flags);
         self::addDivisibility($builder, $divisibility);
-        self::addMosaicName($builder, $mosaicName);
-        self::addIndicateDuration($builder, $indicateDuration);
-        self::addDuration($builder, $duration);
+        self::addOptionalProperties($builder, $optionalProperties);
         $o = $builder->endObject();
         return $o;
     }
@@ -324,7 +287,7 @@ class MosaicDefinitionTransactionBuffer extends Table
     {
         $builder->startVector(1, count($data), 1);
         for ($i = count($data) - 1; $i >= 0; $i--) {
-            $builder->addByte($data[$i]);
+            $builder->putByte($data[$i]);
         }
         return $builder->endVector();
     }
@@ -358,7 +321,7 @@ class MosaicDefinitionTransactionBuffer extends Table
     {
         $builder->startVector(1, count($data), 1);
         for ($i = count($data) - 1; $i >= 0; $i--) {
-            $builder->addByte($data[$i]);
+            $builder->putByte($data[$i]);
         }
         return $builder->endVector();
     }
@@ -375,12 +338,12 @@ class MosaicDefinitionTransactionBuffer extends Table
 
     /**
      * @param FlatBufferBuilder $builder
-     * @param ushort
+     * @param uint
      * @return void
      */
     public static function addVersion(FlatBufferBuilder $builder, $version)
     {
-        $builder->addUshortX(3, $version, 0);
+        $builder->addUintX(3, $version, 0);
     }
 
     /**
@@ -398,9 +361,9 @@ class MosaicDefinitionTransactionBuffer extends Table
      * @param VectorOffset
      * @return void
      */
-    public static function addFee(FlatBufferBuilder $builder, $fee)
+    public static function addMaxFee(FlatBufferBuilder $builder, $maxFee)
     {
-        $builder->addOffsetX(5, $fee, 0);
+        $builder->addOffsetX(5, $maxFee, 0);
     }
 
     /**
@@ -408,11 +371,11 @@ class MosaicDefinitionTransactionBuffer extends Table
      * @param array offset array
      * @return int vector offset
      */
-    public static function createFeeVector(FlatBufferBuilder $builder, array $data)
+    public static function createMaxFeeVector(FlatBufferBuilder $builder, array $data)
     {
         $builder->startVector(4, count($data), 4);
         for ($i = count($data) - 1; $i >= 0; $i--) {
-            $builder->addUint($data[$i]);
+            $builder->putUint($data[$i]);
         }
         return $builder->endVector();
     }
@@ -422,7 +385,7 @@ class MosaicDefinitionTransactionBuffer extends Table
      * @param int $numElems
      * @return void
      */
-    public static function startFeeVector(FlatBufferBuilder $builder, $numElems)
+    public static function startMaxFeeVector(FlatBufferBuilder $builder, $numElems)
     {
         $builder->startVector(4, $numElems, 4);
     }
@@ -446,7 +409,7 @@ class MosaicDefinitionTransactionBuffer extends Table
     {
         $builder->startVector(4, count($data), 4);
         for ($i = count($data) - 1; $i >= 0; $i--) {
-            $builder->addUint($data[$i]);
+            $builder->putUint($data[$i]);
         }
         return $builder->endVector();
     }
@@ -463,36 +426,12 @@ class MosaicDefinitionTransactionBuffer extends Table
 
     /**
      * @param FlatBufferBuilder $builder
-     * @param VectorOffset
+     * @param uint
      * @return void
      */
-    public static function addParentId(FlatBufferBuilder $builder, $parentId)
+    public static function addMosaicNonce(FlatBufferBuilder $builder, $mosaicNonce)
     {
-        $builder->addOffsetX(7, $parentId, 0);
-    }
-
-    /**
-     * @param FlatBufferBuilder $builder
-     * @param array offset array
-     * @return int vector offset
-     */
-    public static function createParentIdVector(FlatBufferBuilder $builder, array $data)
-    {
-        $builder->startVector(4, count($data), 4);
-        for ($i = count($data) - 1; $i >= 0; $i--) {
-            $builder->addUint($data[$i]);
-        }
-        return $builder->endVector();
-    }
-
-    /**
-     * @param FlatBufferBuilder $builder
-     * @param int $numElems
-     * @return void
-     */
-    public static function startParentIdVector(FlatBufferBuilder $builder, $numElems)
-    {
-        $builder->startVector(4, $numElems, 4);
+        $builder->addUintX(7, $mosaicNonce, 0);
     }
 
     /**
@@ -514,7 +453,7 @@ class MosaicDefinitionTransactionBuffer extends Table
     {
         $builder->startVector(4, count($data), 4);
         for ($i = count($data) - 1; $i >= 0; $i--) {
-            $builder->addUint($data[$i]);
+            $builder->putUint($data[$i]);
         }
         return $builder->endVector();
     }
@@ -534,19 +473,9 @@ class MosaicDefinitionTransactionBuffer extends Table
      * @param byte
      * @return void
      */
-    public static function addMosaicNameLength(FlatBufferBuilder $builder, $mosaicNameLength)
-    {
-        $builder->addByteX(9, $mosaicNameLength, 0);
-    }
-
-    /**
-     * @param FlatBufferBuilder $builder
-     * @param byte
-     * @return void
-     */
     public static function addNumOptionalProperties(FlatBufferBuilder $builder, $numOptionalProperties)
     {
-        $builder->addByteX(10, $numOptionalProperties, 0);
+        $builder->addByteX(9, $numOptionalProperties, 0);
     }
 
     /**
@@ -556,7 +485,7 @@ class MosaicDefinitionTransactionBuffer extends Table
      */
     public static function addFlags(FlatBufferBuilder $builder, $flags)
     {
-        $builder->addByteX(11, $flags, 0);
+        $builder->addByteX(10, $flags, 0);
     }
 
     /**
@@ -566,27 +495,7 @@ class MosaicDefinitionTransactionBuffer extends Table
      */
     public static function addDivisibility(FlatBufferBuilder $builder, $divisibility)
     {
-        $builder->addByteX(12, $divisibility, 0);
-    }
-
-    /**
-     * @param FlatBufferBuilder $builder
-     * @param StringOffset
-     * @return void
-     */
-    public static function addMosaicName(FlatBufferBuilder $builder, $mosaicName)
-    {
-        $builder->addOffsetX(13, $mosaicName, 0);
-    }
-
-    /**
-     * @param FlatBufferBuilder $builder
-     * @param byte
-     * @return void
-     */
-    public static function addIndicateDuration(FlatBufferBuilder $builder, $indicateDuration)
-    {
-        $builder->addByteX(14, $indicateDuration, 0);
+        $builder->addByteX(11, $divisibility, 0);
     }
 
     /**
@@ -594,9 +503,9 @@ class MosaicDefinitionTransactionBuffer extends Table
      * @param VectorOffset
      * @return void
      */
-    public static function addDuration(FlatBufferBuilder $builder, $duration)
+    public static function addOptionalProperties(FlatBufferBuilder $builder, $optionalProperties)
     {
-        $builder->addOffsetX(15, $duration, 0);
+        $builder->addOffsetX(12, $optionalProperties, 0);
     }
 
     /**
@@ -604,11 +513,11 @@ class MosaicDefinitionTransactionBuffer extends Table
      * @param array offset array
      * @return int vector offset
      */
-    public static function createDurationVector(FlatBufferBuilder $builder, array $data)
+    public static function createOptionalPropertiesVector(FlatBufferBuilder $builder, array $data)
     {
         $builder->startVector(4, count($data), 4);
         for ($i = count($data) - 1; $i >= 0; $i--) {
-            $builder->addUint($data[$i]);
+            $builder->putOffset($data[$i]);
         }
         return $builder->endVector();
     }
@@ -618,7 +527,7 @@ class MosaicDefinitionTransactionBuffer extends Table
      * @param int $numElems
      * @return void
      */
-    public static function startDurationVector(FlatBufferBuilder $builder, $numElems)
+    public static function startOptionalPropertiesVector(FlatBufferBuilder $builder, $numElems)
     {
         $builder->startVector(4, $numElems, 4);
     }

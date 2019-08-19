@@ -1,9 +1,9 @@
 <?php
     require "vendor/autoload.php";
 
-    use NEM\Model\Config;
-    use NEM\Infrastructure\Network;
-    use NEM\Sdk\Blockchain;
+    use Proximax\Model\Config;
+    use Proximax\Infrastructure\Network;
+    use Proximax\Sdk\Blockchain;
 
     $config = new Config;
     $network = new Network;

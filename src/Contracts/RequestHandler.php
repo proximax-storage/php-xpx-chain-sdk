@@ -13,13 +13,13 @@
  * 
  */
 
-namespace NEM\Contracts;
+namespace Proximax\Contracts;
 
 /**
  * RequestHandler interface Doc Comment
  *
  * @category interface
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -31,7 +31,7 @@ interface RequestHandler
      * Base URL at the URI `/endpoint` using the GuzzleHttp
      * client.
      *
-     * @see  \NEM\Contracts\RequestHandler
+     * @see  \Proximax\Contracts\RequestHandler
      * @param  string $uri
      * @param  string $bodyJSON
      * @param  array  $options

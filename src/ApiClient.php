@@ -13,7 +13,7 @@
  * 
  */
 
-namespace NEM;
+namespace Proximax;
 
 /**
 * @module ApiClient
@@ -383,7 +383,7 @@ class ApiClient
      */
     public static function toDebugReport()
     {
-        $report  = 'PHP SDK (NEM) Debug Report:' . PHP_EOL;
+        $report  = 'PHP SDK (Proximax) Debug Report:' . PHP_EOL;
         $report .= '    OS: ' . php_uname() . PHP_EOL;
         $report .= '    PHP Version: ' . PHP_VERSION . PHP_EOL;
         $report .= '    OpenAPI Spec Version: 1.0.0' . PHP_EOL;

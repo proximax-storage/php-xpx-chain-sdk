@@ -1,8 +1,8 @@
 <?php
     require "vendor/autoload.php";
-    use NEM\Model\Config;
-    use NEM\Sdk\Account;
-    use NEM\Infrastructure\Network;
+    use Proximax\Model\Config;
+    use Proximax\Sdk\Account;
+    use Proximax\Infrastructure\Network;
 
     $config = new Config;
     $network = new Network;
@@ -17,8 +17,8 @@
     if ($netType){
         $config = $config->NewConfig($baseUrl,$netType,$wsReconnectionTimeout);
     }
-    $add1 = \NEM\Model\Address::fromPublicKey($pKey1,$netType);
-    $add2 = \NEM\Model\Address::fromPublicKey($pKey2,$netType);
+    $add1 = \Proximax\Model\Address::fromPublicKey($pKey1,$netType);
+    $add2 = \Proximax\Model\Address::fromPublicKey($pKey2,$netType);
 
     $arr = array($add1->address,$add2->address);
     $Account = new Account;

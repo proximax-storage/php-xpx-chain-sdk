@@ -1,15 +1,15 @@
 <?php
     require "vendor/autoload.php";
 
-    use NEM\Model\Transaction\AliasTransaction;
-    use NEM\Model\AliasActionType;
-    use NEM\Model\Deadline;
-    use NEM\Model\Account;
-    use NEM\Sdk\Transaction;
-    use NEM\Model\Config;
-    use NEM\Infrastructure\Network;
-    use NEM\Utils\Utils;
-    use NEM\Model\Address;
+    use Proximax\Model\Transaction\AliasTransaction;
+    use Proximax\Model\AliasActionType;
+    use Proximax\Model\Deadline;
+    use Proximax\Model\Account;
+    use Proximax\Sdk\Transaction;
+    use Proximax\Model\Config;
+    use Proximax\Infrastructure\Network;
+    use Proximax\Utils\Utils;
+    use Proximax\Model\Address;
 
     $config = new Config;
     $network = new Network;

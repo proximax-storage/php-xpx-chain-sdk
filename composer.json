@@ -1,7 +1,7 @@
 {
     "name": "proximax/php-xpx-chain-sdk",
-    "description": "Composer Package for PHP, Wrapper to use the NEM blockchain REST API and SDK with NIS compatibility.",
-    "keywords": ["nem", "cryptocurrency", "api", "sdk", "restful", "nem-php", "php-nem"],
+    "description": "Composer Package for PHP, Wrapper to use the ProximaX Sirius-Chain REST API and SDK.",
+    "keywords": ["proximax", "cryptocurrency", "api", "sdk", "restful", "proximax-php", "php-proximax"],
     "license": "MIT",
     "authors": [
         {
@@ -30,15 +30,15 @@
     },
     "autoload": {
         "psr-4": {
-            "NEM\\": "src/",
-            "NEM\\API\\": "src/api/",
+            "Proximax\\": "src/",
+            "Proximax\\API\\": "src/api/",
             "Catapult\\Buffers\\": "src/buffers/",
             "Google\\FlatBuffers\\": "php"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "NEM\\Tests\\": "tests/"
+            "Proximax\\Tests\\": "tests/"
         }
     },
     "config": {

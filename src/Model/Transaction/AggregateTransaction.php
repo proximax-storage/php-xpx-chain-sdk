@@ -13,31 +13,31 @@
  * 
  */
 
-namespace NEM\Model\Transaction;
+namespace Proximax\Model\Transaction;
 
-use NEM\Model\TransactionType;
-use NEM\Model\Deadline;
-use NEM\Model\TransactionVersion;
-use NEM\Model\TransactionInfo;
-use NEM\Model\PublicAccount;
-use NEM\Infrastructure\Network;
-use NEM\Model\Transaction\Schema\AggregateTransactionSchema;
+use Proximax\Model\TransactionType;
+use Proximax\Model\Deadline;
+use Proximax\Model\TransactionVersion;
+use Proximax\Model\TransactionInfo;
+use Proximax\Model\PublicAccount;
+use Proximax\Infrastructure\Network;
+use Proximax\Model\Transaction\Schema\AggregateTransactionSchema;
 use \Google\FlatBuffers\FlatbufferBuilder;
 use \Catapult\Buffers\MessageBuffer;
 use \Catapult\Buffers\MosaicBuffer;
 use \Catapult\Buffers\AggregateTransactionBuffer;
-use NEM\Utils\Utils;
-use NEM\Model\AbstractTransaction;
+use Proximax\Utils\Utils;
+use Proximax\Model\AbstractTransaction;
 
 /**
  * AggregateTransaction class Doc Comment
  *
  * @category class
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
-class AggregateTransaction extends \NEM\Model\Transaction{
+class AggregateTransaction extends \Proximax\Model\Transaction{
 
     private $innerTransactions;
      
@@ -94,7 +94,7 @@ class AggregateTransaction extends \NEM\Model\Transaction{
         $signatureVector = AggregateTransactionBuffer::createSignatureVector($builder, (new Utils)->createArrayZero(64));
         $signerVector = AggregateTransactionBuffer::createSignerVector($builder, (new Utils)->createArrayZero(32));
         $deadlineVector = AggregateTransactionBuffer::createDeadlineVector($builder, $deadline->getTimeArray());
-        $feeVector = AggregateTransactionBuffer::createFeeVector($builder, $maxFee);
+        $feeVector = AggregateTransactionBuffer::createMaxFeeVector($builder, $maxFee);
         $transactionsVector = AggregateTransactionBuffer::createTransactionsVector($builder, $transactionsBytes);
 
         
@@ -104,7 +104,7 @@ class AggregateTransaction extends \NEM\Model\Transaction{
         AggregateTransactionBuffer::addSigner($builder, $signerVector);
         AggregateTransactionBuffer::addVersion($builder, $v);
         AggregateTransactionBuffer::addType($builder, $type);
-        AggregateTransactionBuffer::addFee($builder, $feeVector);
+        AggregateTransactionBuffer::addMaxFee($builder, $feeVector);
         AggregateTransactionBuffer::addDeadline($builder, $deadlineVector);
 
         AggregateTransactionBuffer::addTransactionsSize($builder, count($transactionsBytes));

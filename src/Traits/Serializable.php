@@ -13,31 +13,31 @@
  * 
  */
 
-namespace NEM\Traits;
+namespace Proximax\Traits;
 
-use NEM\Core\Serializer;
+use Proximax\Core\Serializer;
 
 /**
  * Serializable trait Doc Comment
  *
  * @category trait
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
 trait Serializable
 {
     /**
-     * Instance of the NEM serializer
+     * Instance of the Proximax serializer
      *
-     * @var \NEM\Core\Serializer
+     * @var \Proximax\Core\Serializer
      */
     private $serializer;
 
     /**
      * Getter for the `serializer` property.
      * 
-     * @return \NEM\Core\Serializer
+     * @return \Proximax\Core\Serializer
      */
     public function getSerializer()
     {
@@ -51,8 +51,8 @@ trait Serializable
     /**
      * Getter for the `serializer` property.
      * 
-     * @param  \NEM\Core\Serializer
-     * @return \NEM\Traits\Serializable
+     * @param  \Proximax\Core\Serializer
+     * @return \Proximax\Traits\Serializable
      */
     public function setSerializer(Serializer $serializer)
     {

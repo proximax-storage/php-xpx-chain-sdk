@@ -13,14 +13,14 @@
  * 
  */
 
-namespace NEM\Model;
-use NEM\Utils\Utils;
+namespace Proximax\Model;
+use Proximax\Utils\Utils;
 
 /**
  * BlockMetaDTO class Doc Comment
  *
  * @category class
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */

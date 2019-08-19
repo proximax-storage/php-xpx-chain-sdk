@@ -13,13 +13,13 @@
  * 
  */
 
-namespace NEM\Infrastructure;
+namespace Proximax\Infrastructure;
 
 /**
  * Account class Doc Comment
  *
  * @category class
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -37,7 +37,7 @@ class Account
      * Let NIS generate an account KeyPair.
      * 
      * WARNING: This method can only be used on a locally running
-     *          NIS. It is preferred to use the \NEM\Core\KeyPair
+     *          NIS. It is preferred to use the \Proximax\Core\KeyPair
      *          class to create accounts on your machine rather than
      *          let NIS create an account for you.
      *
@@ -56,11 +56,11 @@ class Account
     }
 
     /**
-     * Gets an [AccountMetaDataPair](https://bob.nem.ninja/docs/#accountMetaDataPair) for an account
+     * Gets an [AccountMetaDataPair](https://bob.Proximax.ninja/docs/#accountMetaDataPair) for an account
      * by its Base32 address representation (T-, N-, M- prefixed addresses).
      *
      * @param   string  $address    Base32 representation of the account address (T-, N-, M- prefixed addresses).
-     * @return  object              Instance with keys from [AccountMetaDataPair](https://bob.nem.ninja/docs/#accountMetaDataPair) objects.
+     * @return  object              Instance with keys from [AccountMetaDataPair](https://bob.Proximax.ninja/docs/#accountMetaDataPair) objects.
      */
     public function getFromAddress($address)
     {
@@ -73,11 +73,11 @@ class Account
     }
 
     /**
-     * Gets an [AccountMetaDataPair](https://bob.nem.ninja/docs/#accountMetaDataPair) for an account
+     * Gets an [AccountMetaDataPair](https://bob.Proximax.ninja/docs/#accountMetaDataPair) for an account
      * by its public key hexadecimal representation.
      *
      * @param   string  $publicKey  Hexadecimal representation of the Public Key
-     * @return  object              Instance with keys from [AccountMetaDataPair](https://bob.nem.ninja/docs/#accountMetaDataPair) objects.
+     * @return  object              Instance with keys from [AccountMetaDataPair](https://bob.Proximax.ninja/docs/#accountMetaDataPair) objects.
      */
     public function getFromPublicKey($publicKey)
     {
@@ -90,12 +90,12 @@ class Account
     }
 
     /**
-     * Given a delegate (formerly known as remote) account's address, gets the [AccountMetaDataPair](https://bob.nem.ninja/docs/#accountMetaDataPair) for the account for
+     * Given a delegate (formerly known as remote) account's address, gets the [AccountMetaDataPair](https://bob.Proximax.ninja/docs/#accountMetaDataPair) for the account for
      * which the given account is the delegate account. If the given account address is not a delegate account for any
-     * account, the request returns the [AccountMetaDataPair](https://bob.nem.ninja/docs/#accountMetaDataPair) for the given address.
+     * account, the request returns the [AccountMetaDataPair](https://bob.Proximax.ninja/docs/#accountMetaDataPair) for the given address.
      *
      * @param   string  $address    Base32 representation of the account address (T-, N-, M- prefixed addresses).
-     * @return  object              Instance with keys from [AccountMetaDataPair](https://bob.nem.ninja/docs/#accountMetaDataPair) objects.
+     * @return  object              Instance with keys from [AccountMetaDataPair](https://bob.Proximax.ninja/docs/#accountMetaDataPair) objects.
      */
     public function getFromDelegatedAddress($address)
     {
@@ -111,7 +111,7 @@ class Account
      * Retrieve the original account data by providing the public key of the delegate account.
      *
      * @param   string  $publicKey  Hexadecimal representation of the Public Key
-     * @return  object              Instance with keys from [AccountMetaDataPair](https://bob.nem.ninja/docs/#accountMetaDataPair) objects.
+     * @return  object              Instance with keys from [AccountMetaDataPair](https://bob.Proximax.ninja/docs/#accountMetaDataPair) objects.
      */
     public function getFromDelegatedPublicKey($publicKey) 
     {
@@ -124,10 +124,10 @@ class Account
     }
 
     /**
-     * Gets the [AccountMetaData](https://bob.nem.ninja/docs/#accountMetaData) from an account.
+     * Gets the [AccountMetaData](https://bob.Proximax.ninja/docs/#accountMetaData) from an account.
      *
      * @param   string  $address    Base32 representation of the account address (T-, N-, M- prefixed addresses).
-     * @return  object              Instance with keys from [AccountMetaData](https://bob.nem.ninja/docs/#accountMetaData) objects.
+     * @return  object              Instance with keys from [AccountMetaData](https://bob.Proximax.ninja/docs/#accountMetaData) objects.
      */
     public function status($address)
     {
@@ -148,7 +148,7 @@ class Account
      * @param   string  $address    Base32 representation of the account address (T-, N-, M- prefixed addresses).
      * @param   string  $hash       (Optional) The 256 bit sha3 hash of the transaction up to which transactions are returned.
      * @param   integer $id         (Optional) The transaction id up to which transactions are returned. This parameter will prevail over the hash parameter.
-     * @return array                Array of object with keys from [TransactionMetaDataPair](https://bob.nem.ninja/docs/#transactionMetaDataPair) objects.
+     * @return array                Array of object with keys from [TransactionMetaDataPair](https://bob.Proximax.ninja/docs/#transactionMetaDataPair) objects.
      */
     public function incomingTransactions($address, $hash = null, $id = null) 
     {
@@ -176,7 +176,7 @@ class Account
      * @param   string  $address    Base32 representation of the account address (T-, N-, M- prefixed addresses).
      * @param   string  $hash       (Optional) The 256 bit sha3 hash of the transaction up to which transactions are returned.
      * @param   integer $id         (Optional) The transaction id up to which transactions are returned. This parameter will prevail over the hash parameter.
-     * @return array                Array of object with keys from [TransactionMetaDataPair](https://bob.nem.ninja/docs/#transactionMetaDataPair) objects.
+     * @return array                Array of object with keys from [TransactionMetaDataPair](https://bob.Proximax.ninja/docs/#transactionMetaDataPair) objects.
      */
     public function outgoingTransactions($address, $hash = null, $id = null) 
     {
@@ -204,7 +204,7 @@ class Account
      * @param   string  $address    Base32 representation of the account address (T-, N-, M- prefixed addresses).
      * @param   string  $hash       (Optional) The 256 bit sha3 hash of the transaction up to which transactions are returned.
      * @param   integer $id         (Optional) The transaction id up to which transactions are returned. This parameter will prevail over the hash parameter.
-     * @return array                Array of object with keys from [TransactionMetaDataPair](https://bob.nem.ninja/docs/#transactionMetaDataPair) objects.
+     * @return array                Array of object with keys from [TransactionMetaDataPair](https://bob.Proximax.ninja/docs/#transactionMetaDataPair) objects.
      */
     public function allTransactions($address, $hash = null, $id = null)
     {
@@ -230,7 +230,7 @@ class Account
      *
      * @param   string  $address    Base32 representation of the account address (T-, N-, M- prefixed addresses).
      * @param   string  $hash       (Optional) The 256 bit sha3 hash of the transaction up to which transactions are returned.
-     * @return array                Array of object with keys from [TransactionMetaDataPair](https://bob.nem.ninja/docs/#transactionMetaDataPair) objects.
+     * @return array                Array of object with keys from [TransactionMetaDataPair](https://bob.Proximax.ninja/docs/#transactionMetaDataPair) objects.
      */
     public function unconfirmedTransactions($address, $hash = null)
     {
@@ -252,7 +252,7 @@ class Account
      *
      * @param   string  $address    The address of the account.
      * @param   string  %hash       The 256 bit sha3 hash of the block up to which harvested blocks are returned.
-     * @return  object              Instance with keys from [HarvestInfo](https://bob.nem.ninja/docs/#harvestInfo) objects.
+     * @return  object              Instance with keys from [HarvestInfo](https://bob.Proximax.ninja/docs/#harvestInfo) objects.
      */
     public function getHarvestInfo($address, $hash = null) 
     {
@@ -273,7 +273,7 @@ class Account
      * Gets an array of account importance view model objects.
      *
      * @param   string  $address    The address of the account.
-     * @return  array               Array of object with keys from [AccountImportanceViewModl](https://bob.nem.ninja/docs/#accountImportanceViewModel) objects.
+     * @return  array               Array of object with keys from [AccountImportanceViewModl](https://bob.Proximax.ninja/docs/#accountImportanceViewModel) objects.
      */
     public function getAccountImportances($address) 
     {
@@ -294,7 +294,7 @@ class Account
      * @param   null|string     $parent     The (optional) parent namespace id.
      * @param   null|integer    $id         The (optional) namespace database id up to which namespaces are returned.
      * @param   null|integer    $pageSize   The (optional) number of namespaces to be returned.
-     * @return  array                       Array of object with keys from [NamespaceMetaDataPair](https://bob.nem.ninja/docs/#namespaceMetaDataPair) objects.
+     * @return  array                       Array of object with keys from [NamespaceMetaDataPair](https://bob.Proximax.ninja/docs/#namespaceMetaDataPair) objects.
      */
     public function getOwnedNamespaces($address, $parent = null, $id = null, $pageSize = null)
     {
@@ -325,7 +325,7 @@ class Account
      * @param   string          $address    The address of the account.
      * @param   null|string     $parent     The (optional) parent namespace id.
      * @param   null|integer    $id         The (optional) mosaic definition database id up to which mosaic definitions are returned.
-     * @return  array                       Array of object with keys from [MosaicDefinitionMetaDataPair](https://bob.nem.ninja/docs/#mosaicDefinitionMetaDataPair) objects.
+     * @return  array                       Array of object with keys from [MosaicDefinitionMetaDataPair](https://bob.Proximax.ninja/docs/#mosaicDefinitionMetaDataPair) objects.
      */
     public function getCreatedMosaics($address, $parent = null, $id = null) 
     {
@@ -349,7 +349,7 @@ class Account
      * Gets an array of mosaic objects for a given account address.
      *
      * @param   string          $address    The address of the account.
-     * @return  array                       Array of object with keys from [MosaicDefinitionMetaDataPair](https://bob.nem.ninja/docs/#mosaicDefinitionMetaDataPair) objects.
+     * @return  array                       Array of object with keys from [MosaicDefinitionMetaDataPair](https://bob.Proximax.ninja/docs/#mosaicDefinitionMetaDataPair) objects.
      */
     public function getOwnedMosaics($address) 
     {
@@ -372,7 +372,7 @@ class Account
      * @param   integer         $increment      The value by which the height is incremented between each data point. The value must be
      *                                          greater than 0. NIS can supply up to 1000 data points with one request. Requesting more
      *                                          than 1000 data points results in an error.
-     * @return  array                           Array of object with keys from [Mosaic](https://bob.nem.ninja/docs/#mosaics) objects.
+     * @return  array                           Array of object with keys from [Mosaic](https://bob.Proximax.ninja/docs/#mosaics) objects.
      */
     public function getHistoricalAccountData($address, $startHeight = null, $endHeight = null, $increment = null)
     {

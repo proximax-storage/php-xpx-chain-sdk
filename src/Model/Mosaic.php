@@ -13,16 +13,16 @@
  * 
  */
 
-namespace NEM\Model;
+namespace Proximax\Model;
 
-use NEM\Utils\Utils;
-use NEM\Model\NamespaceId;
+use Proximax\Utils\Utils;
+use Proximax\Model\NamespaceId;
 
 /**
  * Mosaic class Doc Comment
  *
  * @category class
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -32,7 +32,7 @@ class Mosaic{
 
     public $amount;//big Int
 
-    public function __construct(string $id = null,int $amount = null){
+    public function __construct($id = null,int $amount = null){
         $utils = new Utils;
         if ($id === null || $id == "xpx"){
             $this->id = array(481110499,231112638); //xpx id

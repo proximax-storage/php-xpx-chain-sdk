@@ -13,12 +13,12 @@
  * 
  */
 
-namespace NEM\Model\Mutators;
+namespace Proximax\Model\Mutators;
 
 use Illuminate\Support\Str;
-use NEM\Model\Mutators\ModelMutator;
-use NEM\Model\ModelCollection;
-use NEM\Contracts\DataTransferObject;
+use Proximax\Model\Mutators\ModelMutator;
+use Proximax\Model\ModelCollection;
+use Proximax\Contracts\DataTransferObject;
 
 use BadMethodCallException;
 
@@ -26,7 +26,7 @@ use BadMethodCallException;
  * CollectionMutator class Doc Comment
  *
  * @category class
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -35,7 +35,7 @@ class CollectionMutator
     /**
      * Collect several items into a Collection of Models.
      *
-     * The \NEM\Models\ModelMutator will be used internally to craft singular
+     * The \Proximax\Models\ModelMutator will be used internally to craft singular
      * model objects for each item you pass to this method.
      *
      * @internal
@@ -46,10 +46,10 @@ class CollectionMutator
     public function mutate($name, $items)
     {
         // snake_case to camelCase
-        $modelClass = "\\NEM\\Model\\" . Str::studly($name);
+        $modelClass = "\\Proximax\\Model\\" . Str::studly($name);
 
         if (!class_exists($modelClass)) {
-            throw new BadMethodCallException("Model class '" . $modelClass . "' could not be found in \\NEM\\Model namespace.");
+            throw new BadMethodCallException("Model class '" . $modelClass . "' could not be found in \\Proximax\\Model namespace.");
         }
 
         if ($items instanceof ModelCollection)

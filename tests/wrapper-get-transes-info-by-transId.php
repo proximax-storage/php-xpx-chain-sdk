@@ -1,8 +1,8 @@
 <?php
     require "vendor/autoload.php";
-    use NEM\Model\Config;
-    use NEM\Sdk\Transaction;
-    use NEM\Infrastructure\Network;
+    use Proximax\Model\Config;
+    use Proximax\Sdk\Transaction;
+    use Proximax\Infrastructure\Network;
 
     $config = new Config;
     $network = new Network;

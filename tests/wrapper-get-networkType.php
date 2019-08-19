@@ -1,9 +1,9 @@
 <?php
     require "vendor/autoload.php";
 
-    use NEM\Model\Config;
-    use NEM\Infrastructure\Network;
-    use NEM\Sdk\Network as NetworkSdk;
+    use Proximax\Model\Config;
+    use Proximax\Infrastructure\Network;
+    use Proximax\Sdk\Network as NetworkSdk;
 
     $config = new Config;
     $network = new Network;

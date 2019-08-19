@@ -13,18 +13,18 @@
  * 
  */
 
-namespace NEM\Infrastructure;
+namespace Proximax\Infrastructure;
 
-use NEM\Model\Transaction as TxModel;
-use NEM\Core\KeyPair;
-use NEM\Core\Buffer;
-use NEM\Core\Serializer;
+use Proximax\Model\Transaction as TxModel;
+use Proximax\Core\KeyPair;
+use Proximax\Core\Buffer;
+use Proximax\Core\Serializer;
 
 /**
  * Transaction class Doc Comment
  *
  * @category class
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -48,8 +48,8 @@ class Transaction extends Service
      * in case a `kp` keypair is provided, we will sign the transaction
      * locally so we can use `/transaction/announce` directly.
      * 
-     * @param   \NEM\Models\Transaction     $transaction
-     * @param   null|\NEM\Core\KeyPair      $kp
+     * @param   \Proximax\Models\Transaction     $transaction
+     * @param   null|\Proximax\Core\KeyPair      $kp
      * @return  string
      */
     public function getAnnouncePath(TxModel $transaction, KeyPair $kp = null)
@@ -68,9 +68,9 @@ class Transaction extends Service
      *           instanciated keypairs are detected and to make sure that
      *           Client Signatures are always created when possible.
      * 
-     * @param   \NEM\Models\Transaction     $transaction
-     * @param   null|\NEM\Core\KeyPair      $kp
-     * @return  null|\NEM\Core\Buffer
+     * @param   \Proximax\Models\Transaction     $transaction
+     * @param   null|\Proximax\Core\KeyPair      $kp
+     * @return  null|\Proximax\Core\Buffer
      */
     public function signTransaction(TxModel $transaction, KeyPair $kp = null)
     {
@@ -99,8 +99,8 @@ class Transaction extends Service
      * It is *not* recommended to send `privateKey` data over any network,
      * even local.
      * 
-     * @param   \NEM\Models\Transaction     $transaction
-     * @return  \NEM\Models\Model
+     * @param   \Proximax\Models\Transaction     $transaction
+     * @return  \Proximax\Models\Model
      */
     public function announce(TxModel $transaction, KeyPair $kp = null)
     {

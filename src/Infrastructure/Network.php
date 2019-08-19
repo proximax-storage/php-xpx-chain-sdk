@@ -13,17 +13,17 @@
  * 
  */
 
-namespace NEM\Infrastructure;
+namespace Proximax\Infrastructure;
 
-use NEM\Models\Address;
-use NEM\Errors\NISInvalidAddressFormat;
-use NEM\Errors\NISInvalidNetworkId;
+use Proximax\Models\Address;
+use Proximax\Errors\NISInvalidAddressFormat;
+use Proximax\Errors\NISInvalidNetworkId;
 
 /**
  * Network class Doc Comment
  *
  * @category class
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -72,8 +72,8 @@ class Network
     /**
      * Load a NetworkInfo object from an `address`.
      *
-     * @param   string|\NEM\Models\Address  $address
-     * @return  \NEM\Models\Model
+     * @param   string|\Proximax\Models\Address  $address
+     * @return  \Proximax\Models\Model
      * @throws  \InvalidArgumentException     On invalid address format or unrecognized address first character.
      */
     static public function fromAddress($address)

@@ -1,19 +1,19 @@
 <?php
     require "vendor/autoload.php";
 
-    use NEM\Model\Deadline;
-    use NEM\Model\Account;
-    use NEM\Sdk\Transaction;
-    use NEM\Model\Config;
-    use NEM\Infrastructure\Network;
-    use NEM\Model\MultisigCosignatoryModification;
-    use NEM\Model\MultisigCosignatoryModificationType;
-    use NEM\Model\Transaction\ModifyMultisigAccountTransaction;
-    use NEM\Model\Transaction\AggregateTransaction;
-    use NEM\Model\Transaction\LockFundsTransaction;
-    use NEM\Model\Transaction\CosignatureTransaction;
-    use NEM\Model\Mosaic;
-    use NEM\Utils\Utils;
+    use Proximax\Model\Deadline;
+    use Proximax\Model\Account;
+    use Proximax\Sdk\Transaction;
+    use Proximax\Model\Config;
+    use Proximax\Infrastructure\Network;
+    use Proximax\Model\MultisigCosignatoryModification;
+    use Proximax\Model\MultisigCosignatoryModificationType;
+    use Proximax\Model\Transaction\ModifyMultisigAccountTransaction;
+    use Proximax\Model\Transaction\AggregateTransaction;
+    use Proximax\Model\Transaction\LockFundsTransaction;
+    use Proximax\Model\Transaction\CosignatureTransaction;
+    use Proximax\Model\Mosaic;
+    use Proximax\Utils\Utils;
 
     $config = new Config;
     $network = new Network;

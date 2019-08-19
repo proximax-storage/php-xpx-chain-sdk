@@ -1,10 +1,10 @@
 <?php
     require "vendor/autoload.php";
 
-    use NEM\Sdk\Mosaic;
-    use NEM\Model\Config;
-    use NEM\Infrastructure\Network;
-    use NEM\Infrastructure\Mosaic as MosaicDefine;
+    use Proximax\Sdk\Mosaic;
+    use Proximax\Model\Config;
+    use Proximax\Infrastructure\Network;
+    use Proximax\Infrastructure\Mosaic as MosaicDefine;
 
     $config = new Config;
     $network = new Network;

@@ -13,20 +13,20 @@
  * 
  */
 
-namespace NEM\Sdk;
-use NEM\API\BlockchainRoutesApi;
-use NEM\ApiClient;
-use NEM\Model\HeightDTO;
-use NEM\Infrastructure\TransactionMapping;
-use NEM\Model\Account;
-use NEM\Model\BlockInfoDTO;
-use NEM\Model\BlockchainStorageInfo;
+namespace Proximax\Sdk;
+use Proximax\API\BlockchainRoutesApi;
+use Proximax\ApiClient;
+use Proximax\Model\HeightDTO;
+use Proximax\Infrastructure\TransactionMapping;
+use Proximax\Model\Account;
+use Proximax\Model\BlockInfoDTO;
+use Proximax\Model\BlockchainStorageInfo;
 
 /**
  * Blockchain class Doc Comment
  *
  * @category class
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */

@@ -13,30 +13,30 @@
  * 
  */
 
-namespace NEM\Model\Transaction;
+namespace Proximax\Model\Transaction;
 
-use NEM\Model\TransactionType;
-use NEM\Model\Deadline;
-use NEM\Model\TransactionVersion;
-use NEM\Model\TransactionInfo;
-use NEM\Model\PublicAccount;
-use NEM\Infrastructure\Network;
-use NEM\Model\Transaction\Schema\RegisterNamespaceTransactionSchema;
+use Proximax\Model\TransactionType;
+use Proximax\Model\Deadline;
+use Proximax\Model\TransactionVersion;
+use Proximax\Model\TransactionInfo;
+use Proximax\Model\PublicAccount;
+use Proximax\Infrastructure\Network;
+use Proximax\Model\Transaction\Schema\RegisterNamespaceTransactionSchema;
 use \Google\FlatBuffers\FlatbufferBuilder;
 use \Catapult\Buffers\RegisterNamespaceTransactionBuffer;
-use NEM\Utils\Utils;
-use NEM\Model\AbstractTransaction;
-use NEM\Model\NamespaceType;
-use NEM\Model\Transaction\IdGenerator;
+use Proximax\Utils\Utils;
+use Proximax\Model\AbstractTransaction;
+use Proximax\Model\NamespaceType;
+use Proximax\Model\Transaction\IdGenerator;
 /**
  * RegisterNamespaceTransaction class Doc Comment
  *
  * @category class
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
-class RegisterNamespaceTransaction extends \NEM\Model\Transaction{
+class RegisterNamespaceTransaction extends \Proximax\Model\Transaction{
 
     private $namespaceName;
 
@@ -114,7 +114,6 @@ class RegisterNamespaceTransaction extends \NEM\Model\Transaction{
         $namespaceType = $this->namespaceType;
         $namespaceName = $this->namespaceName;
         $parentId = $this->parentId;
-        var_dump($namespaceId);
 
         $builder = new FlatbufferBuilder(1);
 
@@ -123,7 +122,7 @@ class RegisterNamespaceTransaction extends \NEM\Model\Transaction{
         $signatureVector = RegisterNamespaceTransactionBuffer::createSignatureVector($builder, (new Utils)->createArrayZero(64));
         $signerVector = RegisterNamespaceTransactionBuffer::createSignerVector($builder, (new Utils)->createArrayZero(32));
         $deadlineVector = RegisterNamespaceTransactionBuffer::createDeadlineVector($builder, $deadline->getTimeArray());
-        $feeVector = RegisterNamespaceTransactionBuffer::createFeeVector($builder, $maxFee);
+        $feeVector = RegisterNamespaceTransactionBuffer::createMaxFeeVector($builder, $maxFee);
         $namespaceIdVector = RegisterNamespaceTransactionBuffer::createNamespaceIdVector($builder, $namespaceId->getId());
         if ($namespaceType == NamespaceType::ROOT){
             $durationParentIdVector = RegisterNamespaceTransactionBuffer::createDurationParentIdVector($builder, $duration);
@@ -143,7 +142,7 @@ class RegisterNamespaceTransaction extends \NEM\Model\Transaction{
         RegisterNamespaceTransactionBuffer::addSigner($builder, $signerVector);
         RegisterNamespaceTransactionBuffer::addVersion($builder, $v);
         RegisterNamespaceTransactionBuffer::addType($builder, $type);
-        RegisterNamespaceTransactionBuffer::addFee($builder, $feeVector);
+        RegisterNamespaceTransactionBuffer::addMaxFee($builder, $feeVector);
         RegisterNamespaceTransactionBuffer::addDeadline($builder, $deadlineVector);
         
         RegisterNamespaceTransactionBuffer::addNamespaceType($builder, $namespaceType);
@@ -156,7 +155,6 @@ class RegisterNamespaceTransaction extends \NEM\Model\Transaction{
         
         $builder->finish($codedTransaction);
         $RegisterNamespaceTransactionSchema = new RegisterNamespaceTransactionSchema;
-        //var_dump($builder->sizedByteArray());
         $tmp = unpack("C*",$builder->sizedByteArray());
         $builder_byte = array_slice($tmp,0,count($tmp));
         $output = $RegisterNamespaceTransactionSchema->serialize($builder_byte);

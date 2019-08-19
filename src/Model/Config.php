@@ -13,7 +13,7 @@
  * 
  */
 
-namespace NEM\Model;
+namespace Proximax\Model;
 
 $defaultRepConfig = array(
     "minInteractions" => 10,
@@ -24,7 +24,7 @@ $defaultRepConfig = array(
  * Config class Doc Comment
  *
  * @category class
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */

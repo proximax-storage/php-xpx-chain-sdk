@@ -13,15 +13,15 @@
  * 
  */
 
-namespace NEM\Core;
+namespace Proximax\Core;
 
-use NEM\Core\Buffer;
+use Proximax\Core\Buffer;
 
 /**
  * Sha3Hasher class Doc Comment
  *
  * @category class
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -46,7 +46,7 @@ class Sha3Hasher
      * Non-Incremental SHA3 Hash implementation.
      * 
      * @param   null|string|integer     $algorithm      The hashing algorithm or Hash Bit Length.
-     * @param   string|\NEM\Core\Buffer $data           The data that needs to be hashed.
+     * @param   string|\Proximax\Core\Buffer $data           The data that needs to be hashed.
      * @param   boolean                 $raw_output     Whether to return raw data or a Hexadecimal hash.
      * @return  string
      */

@@ -13,16 +13,16 @@
  * 
  */
 
-namespace NEM\Sdk;
-use NEM\API\NetworkRoutesApi;
-use NEM\ApiClient;
-use NEM\Infrastructure\Network as networkInf;
+namespace Proximax\Sdk;
+use Proximax\API\NetworkRoutesApi;
+use Proximax\ApiClient;
+use Proximax\Infrastructure\Network as networkInf;
 
 /**
  * Network class Doc Comment
  *
  * @category class
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */

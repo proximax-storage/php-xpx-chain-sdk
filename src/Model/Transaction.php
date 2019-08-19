@@ -13,20 +13,20 @@
  * 
  */
 
-namespace NEM\Model;
+namespace Proximax\Model;
 
-use NEM\Model\TransactionType;
-use NEM\Model\Transaction\Transfer;
-use NEM\Model\Transaction\Signature;
-use NEM\Model\Account;
-use NEM\Model\Message;
-use NEM\Utils\Hex;
-use NEM\Utils\Utils;
+use Proximax\Model\TransactionType;
+use Proximax\Model\Transaction\Transfer;
+use Proximax\Model\Transaction\Signature;
+use Proximax\Model\Account;
+use Proximax\Model\Message;
+use Proximax\Utils\Hex;
+use Proximax\Utils\Utils;
 /**
  * Transaction class Doc Comment
  *
  * @category class
- * @package  NEM
+ * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -40,7 +40,7 @@ class Transaction{
     private $abstractTransaction; //AbstractTransaction
 
     public function createTransactionHash(array $payloadBytes,array $generationHashBytes){
-        $hex = new \NEM\Utils\Hex;
+        $hex = new \Proximax\Utils\Hex;
         //$b = $hex->DecodeString($p);
         $p1 = array_slice($payloadBytes,4,32);
         $p2 = array_slice($payloadBytes,68,32);
@@ -49,7 +49,7 @@ class Transaction{
 
         $sb = array_merge($p1,$p2,$p3,$p4);
 
-        $sha3Hasher = new \NEM\Core\Sha3Hasher;
+        $sha3Hasher = new \Proximax\Core\Sha3Hasher;
 
 
         $r = $sha3Hasher->hash("sha3-256",implode(array_map("chr", $sb)));
