@@ -32,12 +32,9 @@ class Mosaic{
 
     public $amount;//big Int
 
-    public function __construct($id = null,int $amount = null){
+    public function __construct($id,$amount = null){
         $utils = new Utils;
-        if ($id === null || $id == "xpx"){
-            $this->id = array(481110499,231112638); //xpx id
-        }
-        else if (is_string($id)){
+        if (is_string($id)){
             $this->id = $utils->fromBigInt(hexdec($id));
         }
         else if (is_array($id)){

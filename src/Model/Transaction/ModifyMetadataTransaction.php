@@ -170,7 +170,7 @@ class ModifyMetadataTransaction extends \Proximax\Model\Transaction{
             $modificationOffsets[$i] = MetadataModificationBuffer::endMetadataModificationBuffer($builder);
         }
         
-        $v = ($networkType << 8) + $version;
+        $v = ($networkType << 24) + $version;
 
         // Create Vectors
         $signatureVector = ModifyMetadataTransactionBuffer::createSignatureVector($builder, (new Utils)->createArrayZero(64));
@@ -182,7 +182,7 @@ class ModifyMetadataTransaction extends \Proximax\Model\Transaction{
         $modificationsOffset = ModifyMetadataTransactionBuffer::createModificationsVector($builder, $modificationOffsets);
 
         // add size of stuff with constant size and size of metadata id
-        $totalSize += 120 + count($metadataIdBytes) + 1;
+        $totalSize += self::HEADER_SIZE + count($metadataIdBytes) + 1;
 
         ModifyMetadataTransactionBuffer::startModifyMetadataTransactionBuffer($builder);
         ModifyMetadataTransactionBuffer::addSize($builder, $totalSize);

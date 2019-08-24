@@ -13,25 +13,25 @@
  * 
  */
 
-namespace Proximax\Infrastructure;
-
-use Proximax\ProximaxSDK;
+namespace Proximax\Model;
 
 /**
- * Block class Doc Comment
+ * MerkleProofInfo class Doc Comment
  *
  * @category class
  * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
-class Block {
+class MerkleProofInfo{
 
-	public $ProximaxSDK;
+    private $merklePath; //array MerklePathItem
 
-	public function __construct( ProximaxSDK $ProximaxSDK ) {
-		$this->ProximaxSDK = $ProximaxSDK;
-	}
+    public function __construct($merklePath){
+        $this->merklePath = $merklePath;
+    }
 
-
+    public function getMerklePath(){
+        return $this->merklePath;
+    }
 }

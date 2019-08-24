@@ -14,7 +14,8 @@
  */
 
 namespace Proximax\Model;
-
+use Proximax\Model\Transaction\IdGenerator;
+use Proximax\Utils\Utils;
 
 /**
  * NamespaceId Class Doc Comment
@@ -25,36 +26,33 @@ namespace Proximax\Model;
  * @link     https://github.com/swagger-api/swagger-codegen
  */
 class NamespaceId{
+
     private $id; //bigInt
 
-    private $string;
+    private $fullName;
 
     public function __construct($id){
-        $this->id = $id;
-
-        $str1 = dechex($id[0]);
-        if (strlen($str1) < 8){
-            for ($i=0;$i<8-strlen($str1);$i++){
-                $str1 = "0" . $str1;
-            }
+        if (is_array($id)){
+            $this->id = $id;
+            $this->fullName = null;
         }
-        $str2 = dechex($id[1]);
-        if (strlen($str2) < 8){
-            for ($i=0;$i<8-strlen($str2);$i++){
-                $str2 = "0" . $str2;
-            }
+        else if (is_string($id)){
+            $this->fullName = $id;
+            $this->id = IdGenerator::NewNamespaceIdFromName($id);
         }
-        $this->string = strtoupper($str2 . $str1);
     }
 
     public function getId(){
         return $this->id;
     }
 
-    public function getString(){
-        return $this->string;
+    public function getFullName(){
+        return $this->fullName;
     }
 
+    public function getString(){
+        return (new Utils)->bigIntToHexString($this->getId());
+    }
 }
 
 

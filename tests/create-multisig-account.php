@@ -12,13 +12,13 @@
     use Proximax\Model\Transaction\AggregateTransaction;
     use Proximax\Model\Transaction\LockFundsTransaction;
     use Proximax\Model\Transaction\CosignatureTransaction;
-    use Proximax\Model\Mosaic;
+    use Proximax\Model\NetworkCurrencyMosaic;
     use Proximax\Utils\Utils;
 
     $config = new Config;
     $network = new Network;
   
-    $baseUrl = "http://192.168.0.105:3000";
+    $baseUrl = "http://192.168.0.107:3000";
     $wsReconnectionTimeout = 5000;
     $networkType = Network::getIdfromName("MijinTest");
     if ($networkType){
@@ -73,13 +73,12 @@
     );
     $aggregateBoundedTransaction->createBonded();
 
-    $signedAggregateBoundedTransaction = $multisigAccount->sign($aggregateBoundedTransaction,$generationHash);
+    $signedAggregateBoundedTransaction = $cosignerOneAccount->sign($aggregateBoundedTransaction,$generationHash);
 
-    $mosaic = new Mosaic("xpx",10000000); //deposit mosaic
-    $duration = (new Utils)->fromBigInt(100);
+    $duration = (new Utils)->fromBigInt(1000);
     $lockFundsTrx = new LockFundsTransaction(
         new Deadline(1),
-        $mosaic,
+        new NetworkCurrencyMosaic(10000000), //deposit mosaic
         $duration,
         $signedAggregateBoundedTransaction,
         $networkType
@@ -88,17 +87,19 @@
     $signedTransaction = $cosignerOneAccount->sign($lockFundsTrx,$generationHash);
     $transaction = new Transaction;
     $transaction->AnnounceTransaction($config, $signedTransaction);
+    var_dump($signedTransaction);
     sleep(30);// 30 seconds
 
 
     $transaction = new Transaction;
     $transaction->AnnounceAggregateBondedTransaction($config, $signedAggregateBoundedTransaction);
+    var_dump($signedAggregateBoundedTransaction);
     sleep(30);// 30 seconds
 
 
     $signatureOneCosignatureTransaction = new CosignatureTransaction($aggregateBoundedTransaction);
     $signatureOneCosignatureTransaction->setHash($signedAggregateBoundedTransaction->getHash());
-    $signedSignatureOneCosignatureTransaction = $cosignerOneAccount->signCosignatureTransaction($signatureOneCosignatureTransaction);
+    $signedSignatureOneCosignatureTransaction = $multisigAccount->signCosignatureTransaction($signatureOneCosignatureTransaction);
     $transaction = new Transaction;
     $transaction->AnnounceAggregateBondedCosignatureTransaction($config, $signedSignatureOneCosignatureTransaction);
     sleep(30);// 30 seconds

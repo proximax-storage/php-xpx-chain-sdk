@@ -1,6 +1,7 @@
 <?php
     require "vendor/autoload.php";
 
+    use Proximax\Model\Transaction\SecretLockTransaction;
     use Proximax\Model\Transaction\SecretProofTransaction;
     use Proximax\Model\Deadline;
     use Proximax\Model\Account;
@@ -13,8 +14,7 @@
     use Proximax\Model\MultisigCosignatoryModificationType;
     use Proximax\Utils\Utils;
     use Proximax\Model\HashType;
-    use Proximax\Model\Mosaic;
-    use Proximax\Core\Sha3Hasher;
+    use Proximax\Model\NetworkCurrencyMosaic;
 
     $config = new Config;
     $network = new Network;
@@ -27,27 +27,46 @@
     }
 
     $alicePrivateKey = "760B7E531925FAB015349C12093943E86FBFBE5CB831F14447ED190EC10F6B1B";
-    $bobPublicKey = "803BD90020E0BB5F0B03AC75C86056A4D4AB5940F2A3A520694D8E7FF217E961";
+    $bobPrivateKey = "B55478C892A6476760C5E77E443FE411F2D62B0F42496FC12EDB37F3306F8D69";
     
     $aliceAccount = (new Account)->newAccountFromPrivateKey($alicePrivateKey,$networkType);
-    $bobAccount = (new Account)->newAccountFromPublicKey($bobPublicKey,$networkType);
+    $bobAccount = (new Account)->newAccountFromPrivateKey($bobPrivateKey,$networkType);
 
     $generationHash = "7B631D803F912B00DC0CBED3014BBD17A302BA50B99D233B9C2D9533B842ABDF";
 
-    $proof = "760B7E531925FAB015349C12093943E86FBFBE5CB831F14447ED190EC10F6B1B";
-    $secret = Sha3Hasher::hash(256,"ThisIsProof");
+    $seed = random_bytes(20);
+    $proof = bin2hex($seed);
+    $secret = HashType::hash($seed,HashType::HASH_256);
+    var_dump($proof);
+    var_dump($secret);
 
-    $secretProof = new SecretProofTransaction(
+    $secretLock = new SecretLockTransaction(
         new Deadline(1),
-        HashType::SHA3_256,
+        new NetworkCurrencyMosaic(10),
+        (new Utils)->fromBigInt(100),
+        HashType::HASH_256,
         $secret,
-        $proof,
-        $bobAccount->getAddress(),
+        $bobAccount->getPublicAccount()->getAddress(),
         $networkType
     );
     
-    $signed = $aliceAccount->sign($secretProof,$generationHash);
-    var_dump($signed);
+    $signedLock = $aliceAccount->sign($secretLock,$generationHash);
     $transaction = new Transaction;
-    //$transaction->AnnounceTransaction($config, $signed);
+    $transaction->AnnounceTransaction($config, $signedLock);
+    var_dump($signedLock);
+    sleep(30);
+
+    $secretProof = new SecretProofTransaction(
+        new Deadline(1),
+        HashType::HASH_256,
+        $secret,
+        $proof,
+        $bobAccount->getPublicAccount()->getAddress(),
+        $networkType
+    );
+    
+    $signedProof = $bobAccount->sign($secretProof,$generationHash);
+    $transaction = new Transaction;
+    $transaction->AnnounceTransaction($config, $signedProof);
+    var_dump($signedProof);
 ?>

@@ -141,7 +141,6 @@ class MosaicRoutesApi
             }
 
             return [
-                //ObjectSerializer::deserialize($content, $returnType, []),
                 $content,
                 $response->getStatusCode(),
                 $response->getHeaders()
@@ -404,7 +403,6 @@ class MosaicRoutesApi
             }
 
             return [
-                //ObjectSerializer::deserialize($content, $returnType, []),
                 $content,
                 $response->getStatusCode(),
                 $response->getHeaders()

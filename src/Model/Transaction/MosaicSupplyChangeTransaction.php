@@ -82,7 +82,7 @@ class MosaicSupplyChangeTransaction extends \Proximax\Model\Transaction{
 
         $builder = new FlatbufferBuilder(1);
         
-        $v = ($networkType << 8) + $version;
+        $v = ($networkType << 24) + $version;
 
         // Create Vectors
         $signatureVector = MosaicSupplyChangeTransactionBuffer::createSignatureVector($builder, (new Utils)->createArrayZero(64));
@@ -93,7 +93,8 @@ class MosaicSupplyChangeTransaction extends \Proximax\Model\Transaction{
         $mosaicIdVector = MosaicSupplyChangeTransactionBuffer::createMosaicIdVector($builder,$mosaicId->getId());
         $deltaVector = MosaicSupplyChangeTransactionBuffer::createDeltaVector($builder,$delta);
 
-        $size = 137;
+        // header, mosaic id, supply type, delta
+        $size = self::HEADER_SIZE + 8 + 1 + 8;
 
         MosaicSupplyChangeTransactionBuffer::startMosaicSupplyChangeTransactionBuffer($builder);
         MosaicSupplyChangeTransactionBuffer::addSize($builder, $size);

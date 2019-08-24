@@ -32,16 +32,12 @@ use Proximax\Utils\Utils;
  */
 class Transaction{
 
-    /**
-     * object
-     * 
-     * included fields type, networkType, version, deadline, fee, signature, signer, transactionInfo
-     */
+    const HEADER_SIZE = 122;
+
     private $abstractTransaction; //AbstractTransaction
 
     public function createTransactionHash(array $payloadBytes,array $generationHashBytes){
         $hex = new \Proximax\Utils\Hex;
-        //$b = $hex->DecodeString($p);
         $p1 = array_slice($payloadBytes,4,32);
         $p2 = array_slice($payloadBytes,68,32);
         $p3 = array_slice($generationHashBytes,0,32);
@@ -50,7 +46,6 @@ class Transaction{
         $sb = array_merge($p1,$p2,$p3,$p4);
 
         $sha3Hasher = new \Proximax\Core\Sha3Hasher;
-
 
         $r = $sha3Hasher->hash("sha3-256",implode(array_map("chr", $sb)));
 
@@ -76,14 +71,14 @@ class Transaction{
         $bytes = $this->generateBytes();
         $resultBytes = array();
 
-        $p2 = array_slice($signerBytes,0,32); // Copy signer
-        $p3 = array_slice($bytes,100,4);// Copy type and version
-        $p4 = array_slice($bytes,100 + 2 + 2 + 16, count($bytes) - 120);// Copy following data
-
         $utils = new Utils;
-        
-        $size = $utils->intToArray(count($bytes) - 64 - 16);
+        // we will be removing header (122) and adding size (4), signer (32), version (4), trans type(2)
+        $size = $utils->intToArray(count($bytes) - 122 + 4 + 32 + 4 + 2);
         $p1 = $utils->ReverseByteArray($size);
+
+        $p2 = array_slice($signerBytes,0,32); // Copy signer
+        $p3 = array_slice($bytes,100,6);// Copy type and version
+        $p4 = array_slice($bytes,122, count($bytes) - 122);// Copy following data
 
         $resultBytes = array_merge($p1,$p2,$p3,$p4);
         return $resultBytes;

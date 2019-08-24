@@ -13,30 +13,32 @@
  * 
  */
 
-namespace Proximax\Infrastructure;
-
-use Proximax\ProximaxSDK;
+namespace Proximax\Model;
 
 /**
- * Node class Doc Comment
+ * MerklePathItem class Doc Comment
  *
  * @category class
  * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
-class Node {
+class MerklePathItem{
 
-	public $ProximaxSDK;
-	public $endpoint = '/node/';
+    private $position; //int
 
-	public function __construct( ProximaxSDK $ProximaxSDK ) {
-		$this->ProximaxSDK = $ProximaxSDK;
-	}
+    private $hash; //string
 
-	public function info() {
-		return json_decode( $this->ProximaxSDK->api->getJSON( $this->endpoint . 'info', "" ) );
-	}
+    public function __construct($position, $hash){
+        $this->position = $position;
+        $this->hash = $hash;
+    }
 
+    public function getPosition(){
+        return $this->position;
+    }
 
+    public function getHash(){
+        return $this->hash;
+    }
 }

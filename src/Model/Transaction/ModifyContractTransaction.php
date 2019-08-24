@@ -97,7 +97,7 @@ class ModifyContractTransaction extends \Proximax\Model\Transaction{
         // serialize content hash to byte array
         $contentHashBytes = (new Utils)->HexDecodeStringOdd($contentHash);
 
-        $v = ($networkType << 8) + $version;
+        $v = ($networkType << 24) + $version;
 
         // Create Vectors
         $signatureVector = ModifyContractTransactionBuffer::createSignatureVector($builder, (new Utils)->createArrayZero(64));
@@ -112,7 +112,7 @@ class ModifyContractTransaction extends \Proximax\Model\Transaction{
         $verifiersOffset = ModifyContractTransactionBuffer::createVerifiersVector($builder, $verifiersBuffer);
 
         // standard fields + duration delta + hash length + 3 modification lengths + 33 bytes per every modification (1 byte mod type + 32 bytes public key)
-        $totalSize = 120 + 8 + count($contentHashBytes) + 3 + 33 * (count($customersBuffer) + count($executorsBuffer) + count($verifiersBuffer));
+        $totalSize = self::HEADER_SIZE + 8 + count($contentHashBytes) + 3 + 33 * (count($customersBuffer) + count($executorsBuffer) + count($verifiersBuffer));
 
         ModifyContractTransactionBuffer::startModifyContractTransactionBuffer($builder);
         ModifyContractTransactionBuffer::addSize($builder, $totalSize);

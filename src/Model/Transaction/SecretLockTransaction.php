@@ -89,7 +89,7 @@ class SecretLockTransaction extends \Proximax\Model\Transaction{
 
         $builder = new FlatbufferBuilder(1);
 
-        $v = ($networkType << 8) + $version;
+        $v = ($networkType << 24) + $version;
         // Create Vectors
         $signatureVector = SecretLockTransactionBuffer::createSignatureVector($builder, (new Utils)->createArrayZero(64));
         $signerVector = SecretLockTransactionBuffer::createSignerVector($builder, (new Utils)->createArrayZero(32));
@@ -105,8 +105,8 @@ class SecretLockTransaction extends \Proximax\Model\Transaction{
         $address = (new Utils)->stringToByteArray($tmp);
         $recipientVector = SecretLockTransactionBuffer::createRecipientVector($builder, $address);
         
-        // total size of transaction
-        $size = 202;
+        // header + mosaicID, amount, duration, hash algo, secret, recipient
+        $size = self::HEADER_SIZE + 8 + 8 + 8 + 1 + 32 + 25;
 
         SecretLockTransactionBuffer::startSecretLockTransactionBuffer($builder);
         SecretLockTransactionBuffer::addSize($builder, $size);

@@ -141,7 +141,6 @@ class TransactionRoutesApi
             }
 
             return [
-                //ObjectSerializer::deserialize($content, $returnType, []),
                 $content,
                 $response->getStatusCode(),
                 $response->getHeaders()
@@ -401,7 +400,6 @@ class TransactionRoutesApi
             }
 
             return [
-                //ObjectSerializer::deserialize($content, $returnType, []),
                 $content,
                 $response->getStatusCode(),
                 $response->getHeaders()
@@ -661,7 +659,6 @@ class TransactionRoutesApi
             }
 
             return [
-                //ObjectSerializer::deserialize($content, $returnType, []),
                 $content,
                 $response->getStatusCode(),
                 $response->getHeaders()
@@ -921,7 +918,6 @@ class TransactionRoutesApi
             }
 
             return [
-                //ObjectSerializer::deserialize($content, $returnType, []),
                 $content,
                 $response->getStatusCode(),
                 $response->getHeaders()
@@ -1184,7 +1180,6 @@ class TransactionRoutesApi
             }
 
             return [
-                //ObjectSerializer::deserialize($content, $returnType, []),
                 $content,
                 $response->getStatusCode(),
                 $response->getHeaders()
@@ -1447,7 +1442,6 @@ class TransactionRoutesApi
             }
 
             return [
-                //ObjectSerializer::deserialize($content, $returnType, []),
                 $content,
                 $response->getStatusCode(),
                 $response->getHeaders()
@@ -1705,7 +1699,6 @@ class TransactionRoutesApi
             }
 
             return [
-                //ObjectSerializer::deserialize($content, $returnType, []),
                 $content,
                 $response->getStatusCode(),
                 $response->getHeaders()

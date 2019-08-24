@@ -13,24 +13,32 @@
  * 
  */
 
-namespace Proximax\Infrastructure;
-
-use Proximax\ProximaxSDK;
+namespace Proximax\Model;
 
 /**
- * Namespaces class Doc Comment
+ * MerkleProofInfoDTO class Doc Comment
  *
  * @category class
  * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
-class Namespaces {
+class MerkleProofInfoDTO{
 
-	public $ProximaxSDK;
+    private $payload; //MerkleProofInfo
 
-	public function __construct( ProximaxSDK $ProximaxSDK ) {
-		$this->ProximaxSDK = $ProximaxSDK;
-	}
+    private $type; //String
 
+    public function __construct($dataArray){
+        $this->payload = $data["payload"];
+        $this->type = $data["type"];
+    }
+
+    public function getPayload(){
+        return $this->payload;
+    }
+
+    public function getType(){
+        return $this->type;
+    }
 }

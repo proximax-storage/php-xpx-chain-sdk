@@ -2,7 +2,7 @@
     require "vendor/autoload.php";
 
     use Proximax\Model\Deadline;
-    use Proximax\Model\Mosaic;
+    use Proximax\Model\NetworkCurrencyMosaic;
     use Proximax\Model\Account;
     use Proximax\Sdk\Transaction;
     use Proximax\Model\Config;
@@ -18,7 +18,7 @@
     $config = new Config;
     $network = new Network;
   
-    $baseUrl = "http://192.168.0.105:3000";
+    $baseUrl = "http://192.168.0.107:3000";
     $wsReconnectionTimeout = 5000;
     $networkType = Network::getIdfromName("MijinTest");
     if ($networkType){
@@ -68,11 +68,10 @@
     $aggregateBoundedTransaction->createBonded();
     $signedAggregateBoundedTransaction = $cosignerOneAccount->sign($aggregateBoundedTransaction,$generationHash);
 
-    $mosaic = new Mosaic("xpx",10000000); //deposit mosaic
     $duration = (new Utils)->fromBigInt(100);
     $lockFundsTrx = new LockFundsTransaction(
         new Deadline(1),
-        $mosaic,
+        new NetworkCurrencyMosaic(10000000),
         $duration,
         $signedAggregateBoundedTransaction,
         $networkType
@@ -82,16 +81,12 @@
     $transaction = new Transaction;
     $transaction->AnnounceTransaction($config, $signedTransaction);
     sleep(30);// 30 seconds
-    var_dump("-------------Lockfund---------------");
-    var_dump($signedTransaction);
-    var_dump("-------------End Lockfund---------------");
+
 
     $transaction = new Transaction;
     $transaction->AnnounceAggregateBondedTransaction($config, $signedAggregateBoundedTransaction);
     sleep(30);// 30 seconds
-    var_dump("-------------Aggregate---------------");
-    var_dump($signedAggregateBoundedTransaction);
-    var_dump("-------------End Aggregate---------------");
+
 
     $signatureTwoCosignatureTransaction = new CosignatureTransaction($aggregateBoundedTransaction);
     $signatureTwoCosignatureTransaction->setHash($signedAggregateBoundedTransaction->getHash());

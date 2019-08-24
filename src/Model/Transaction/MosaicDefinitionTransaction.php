@@ -113,7 +113,7 @@ class MosaicDefinitionTransaction extends \Proximax\Model\Transaction{
         }
 
         
-        $v = ($networkType << 8) + $version;
+        $v = ($networkType << 24) + $version;
 
         // Create Vectors
         $signatureVector = MosaicDefinitionTransactionBuffer::createSignatureVector($builder, (new Utils)->createArrayZero(64));
@@ -125,7 +125,7 @@ class MosaicDefinitionTransaction extends \Proximax\Model\Transaction{
         $optionalPropertiesVector = MosaicDefinitionTransactionBuffer::createOptionalPropertiesVector($builder,$optinalPropertiesVector);
 
         // header + nonce + id + numOptProp + flags + divisibility + (id + value)*numOptProp
-        $size = 120 + 4 + 8 + 1 + 1 + 1 + (1 + 8) * count($optinalPropertiesVector);
+        $size = self::HEADER_SIZE + 4 + 8 + 1 + 1 + 1 + (1 + 8) * count($optinalPropertiesVector);
 
         MosaicDefinitionTransactionBuffer::startMosaicDefinitionTransactionBuffer($builder);
         MosaicDefinitionTransactionBuffer::addSize($builder, $size);

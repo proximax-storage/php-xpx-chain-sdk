@@ -130,6 +130,21 @@ class Utils{
         return array($l, $r);
     }
 
+    public function putUint64LittleEndian($int){
+        if ($int == null) {
+            return array(0,0,0,0,0,0,0,0);
+        }
+        $p1 = $int[0] & 0xFF;
+        $p2 = ($int[0] >> 8) & 0xFF;
+        $p3 = ($int[0] >> 16) & 0xFF;
+        $p4 = ($int[0] >> 24) & 0xFF;
+        $p5 = $int[1] & 0xFF;
+        $p6 = ($int[1] >> 8) & 0xFF;
+        $p7 = ($int[1] >> 16) & 0xFF;
+        $p8 = ($int[1] >> 24) & 0xFF;
+        return array($p1, $p2, $p3, $p4, $p5, $p6, $p7, $p8);
+    }
+
     public function uint32LittleEndian($arr){
         return ($arr[3] << 24) | ($arr[2] << 16) | ($arr[1] << 8) | ($arr[0]);
     }
