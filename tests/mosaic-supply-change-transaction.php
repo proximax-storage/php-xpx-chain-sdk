@@ -28,7 +28,7 @@
     $privateKey = "760B7E531925FAB015349C12093943E86FBFBE5CB831F14447ED190EC10F6B1B";
     $account = (new Account)->newAccountFromPrivateKey($privateKey,$networkType);
 
-    $mosaicId = new MosaicId(array(2227523919,1484419338));
+    $mosaicId = new MosaicId(array(2922282680,1964758636));
     $transfer = new MosaicSupplyChangeTransaction(
         new Deadline(1),
         $mosaicId,

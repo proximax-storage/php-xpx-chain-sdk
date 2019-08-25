@@ -97,7 +97,7 @@ class ModifyMultisigAccountTransaction extends \Proximax\Model\Transaction{
         }
         $modificationsVector = ModifyMultisigAccountTransactionBuffer::createModificationsVector($builder, $modificationsBuffers);
         
-        $v = ($networkType << 8) + $version;
+        $v = ($networkType << 24) + $version;
 
         // Create Vectors
         $signatureVector = ModifyMultisigAccountTransactionBuffer::createSignatureVector($builder, (new Utils)->createArrayZero(64));
@@ -105,11 +105,11 @@ class ModifyMultisigAccountTransaction extends \Proximax\Model\Transaction{
         $deadlineVector = ModifyMultisigAccountTransactionBuffer::createDeadlineVector($builder, $deadline->getTimeArray());
         $feeVector = ModifyMultisigAccountTransactionBuffer::createMaxFeeVector($builder, $maxFee);
         
-
-        $fixSize = 123; // replace by the all numbers sum or add a comment explaining this
+        // header, min approval, min removal, mod count, mod (type, pub key) * count
+        $size = self::HEADER_SIZE + 1 + 1 + 1 + (1 + 32) * count($modifications);
 
         ModifyMultisigAccountTransactionBuffer::startModifyMultisigAccountTransactionBuffer($builder);
-        ModifyMultisigAccountTransactionBuffer::addSize($builder, $fixSize + (33 * count($modifications)));
+        ModifyMultisigAccountTransactionBuffer::addSize($builder, $size);
         ModifyMultisigAccountTransactionBuffer::addSignature($builder, $signatureVector);
         ModifyMultisigAccountTransactionBuffer::addSigner($builder, $signerVector);
         ModifyMultisigAccountTransactionBuffer::addVersion($builder, $v);

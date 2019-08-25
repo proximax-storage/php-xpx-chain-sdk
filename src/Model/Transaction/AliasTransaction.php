@@ -29,6 +29,7 @@ use Proximax\Utils\Utils;
 use Proximax\Model\AbstractTransaction;
 use Proximax\Model\Transaction\IdGenerator;
 use Base32\Base32;
+use Proximax\Model\NamespaceId;
 
 /**
  * AliasTransaction class Doc Comment
@@ -62,7 +63,7 @@ class AliasTransaction extends \Proximax\Model\Transaction{
         $abstractTransaction = new AbstractTransaction($transactionInfo,$deadline,$networkType,
                                                     $type,$version,$maxFee,$signature,$signer);
         $this->setAbstractTransaction($abstractTransaction);
-        $this->namespaceId = IdGenerator::NewNamespaceIdFromName($namespace);
+        $this->namespaceId = new NamespaceId(IdGenerator::NewNamespaceIdFromName($namespace));
         $this->address = $address;
         $this->aliasActionType = $aliasActionType;
         $this->mosaicId = array(0,0);
@@ -87,7 +88,7 @@ class AliasTransaction extends \Proximax\Model\Transaction{
         $abstractTransaction = new AbstractTransaction($transactionInfo,$deadline,$networkType,
                                                     $type,$version,$maxFee,$signature,$signer);
         $this->setAbstractTransaction($abstractTransaction);
-        $this->namespaceId = IdGenerator::NewNamespaceIdFromName($namespace);
+        $this->namespaceId = new NamespaceId(IdGenerator::NewNamespaceIdFromName($namespace));
         $this->address = null;
         $this->aliasActionType = $aliasActionType;
         $this->mosaicId = $mosaicId;
@@ -117,7 +118,7 @@ class AliasTransaction extends \Proximax\Model\Transaction{
         else if ($type == hexdec(TransactionType::MOSAIC_ALIAS)){
             $aliasIdBytes = (new Utils)->getBytes($mosaicId->getId());
         }
-        $v = ($networkType << 8) + $version;
+        $v = ($networkType << 24) + $version;
         // Create Vectors
         $signatureVector = AliasTransactionBuffer::createSignatureVector($builder, (new Utils)->createArrayZero(64));
         $signerVector = AliasTransactionBuffer::createSignerVector($builder, (new Utils)->createArrayZero(32));
@@ -127,7 +128,9 @@ class AliasTransaction extends \Proximax\Model\Transaction{
         $namespaceIdVector = AliasTransactionBuffer::createNamespaceIdVector($builder,$namespaceId->getId());
         $aliasIdOffset = AliasTransactionBuffer::createAliasIdVector($builder, $aliasIdBytes);
       
-        $size = 120 + count($aliasIdBytes) + 8 + 1;
+        // header, 2 uint64 and int
+        $size = self::HEADER_SIZE + count($aliasIdBytes) + 8 + 1;
+
         AliasTransactionBuffer::startAliasTransactionBuffer($builder);
         AliasTransactionBuffer::addSize($builder, $size);
         AliasTransactionBuffer::addSignature($builder, $signatureVector);

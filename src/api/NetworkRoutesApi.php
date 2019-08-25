@@ -139,7 +139,6 @@ class NetworkRoutesApi
             }
 
             return [
-                //ObjectSerializer::deserialize($content, $returnType, []),
                 $content,
                 $response->getStatusCode(),
                 $response->getHeaders()

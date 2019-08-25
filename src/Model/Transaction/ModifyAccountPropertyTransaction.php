@@ -127,7 +127,7 @@ class ModifyAccountPropertyTransaction extends \Proximax\Model\Transaction{
             $modificationOffsets[$i] = PropertyModificationBuffer::endPropertyModificationBuffer($builder);
         }
         
-        $v = ($networkType << 8) + $version;
+        $v = ($networkType << 24) + $version;
 
         // Create Vectors
         $signatureVector = AccountPropertiesTransactionBuffer::createSignatureVector($builder, (new Utils)->createArrayZero(64));
@@ -137,7 +137,7 @@ class ModifyAccountPropertyTransaction extends \Proximax\Model\Transaction{
         $modificationsOffset = AccountPropertiesTransactionBuffer::createModificationsVector($builder, $modificationOffsets);
 
         // add size of the header (120) + size of prop type (1) + size of mod count (1)
-        $totalSize += 120 + 1 + 1;
+        $totalSize += self::HEADER_SIZE + 1 + 1;
 
         AccountPropertiesTransactionBuffer::startAccountPropertiesTransactionBuffer($builder);
         AccountPropertiesTransactionBuffer::addSize($builder, $totalSize);

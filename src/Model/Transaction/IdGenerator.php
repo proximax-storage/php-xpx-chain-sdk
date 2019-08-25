@@ -44,30 +44,29 @@ class IdGenerator{
         for ($i=0;$i<count($arr);$i++){
             $parentId = self::generateNamespaceId($arr[$i],$parentId);
             $arr_id[$i] = $parentId;
-            $parentId = $parentId->getString();
         }
         return $arr_id;
     }
 
     public static function generateNamespaceId($namespace, $parentId){
-        $b = (new Utils)->createArrayZero(8);
+        $b = array(0,0);
         if ($parentId != "") {
-            $b = (new Hex)->DecodeString($parentId);
+            $b = $parentId;
         }
-        $b = (new Utils)->ReverseByteArray($b);
-
-        $str = implode(array_map("chr", $b));
+        $tmp = (new Utils)->putUint64LittleEndian($b);
+        
+        $str = implode(array_map("chr", $tmp));
         
         $hash = sha3Hasher::hash(256,($str . $namespace));
     
         $des = (new Hex)->DecodeString($hash);
+        
         $p1 = (new Utils)->uint32LittleEndian(array_slice($des,0,4));
         $p2 = (new Utils)->uint32LittleEndian(array_slice($des,4,4)) | 0x80000000;
 
         $arr = array($p1,$p2);
-        $namespaceId = new NamespaceId($arr);
 
-        return $namespaceId;
+        return $arr;
     }
 
     public static function generateMosaicId($nonce,$publicKey){

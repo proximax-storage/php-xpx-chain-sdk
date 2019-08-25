@@ -2,7 +2,6 @@
     require "vendor/autoload.php";
 
     use Proximax\Model\Deadline;
-    use Proximax\Model\Mosaic;
     use Proximax\Model\Message;
     use Proximax\Model\Account;
     use Proximax\Sdk\Transaction;
@@ -11,11 +10,12 @@
     use Proximax\Model\Transaction\TransferTransaction;
     use Proximax\Model\Transaction\AggregateTransaction;
     use Proximax\Model\Address;
+    use Proximax\Model\NetworkCurrencyMosaic;
 
     $config = new Config;
     $network = new Network;
   
-    $baseUrl = "http://192.168.0.105:3000";
+    $baseUrl = "http://192.168.0.107:3000";
     $wsReconnectionTimeout = 5000;
     $networkType = Network::getIdfromName("MijinTest");
     if ($networkType){
@@ -35,7 +35,7 @@
     $firstTransaction = new TransferTransaction(
         new Deadline(1),
         new Address($address1, $networkType),
-        array(new Mosaic("xpx",10)),
+        array(new NetworkCurrencyMosaic(10)),
         new Message("send mosaic"),
         $networkType
     );
@@ -43,7 +43,7 @@
     $secondTransaction = new TransferTransaction(
         new Deadline(1),
         new Address($address2, $networkType),
-        array(new Mosaic("xpx",10)),
+        array(new NetworkCurrencyMosaic(10)),
         new Message("send mosaic 2"),
         $networkType
     );
@@ -61,5 +61,5 @@
 
     $transaction = new Transaction;
     $transaction->AnnounceTransaction($config, $signedAggregateBoundedTransaction);
-
+    var_dump($signedAggregateBoundedTransaction);
 ?>

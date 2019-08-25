@@ -28,6 +28,8 @@ use Proximax\Utils\Utils;
 use Proximax\Model\AbstractTransaction;
 use Proximax\Model\NamespaceType;
 use Proximax\Model\Transaction\IdGenerator;
+use Proximax\Model\NamespaceId;
+
 /**
  * RegisterNamespaceTransaction class Doc Comment
  *
@@ -47,7 +49,10 @@ class RegisterNamespaceTransaction extends \Proximax\Model\Transaction{
     private $duration;
 
     private $parentId;
-     
+    
+    public function getNamespaceId(){
+        return $this->namespaceId;
+    }
     public function NewRegisterRootNamespaceTransaction($deadline, $namespaceName, $duration, $networkType){
         $version = TransactionVersion::REGISTER_NAMESPACE_VERSION;
         $type = hexdec(TransactionType::REGISTER_NAMESPACE);
@@ -66,7 +71,7 @@ class RegisterNamespaceTransaction extends \Proximax\Model\Transaction{
                                                     $type,$version,$maxFee,$signature,$signer);
         $this->setAbstractTransaction($abstractTransaction);
         $this->namespaceName = $namespaceName;
-        $this->namespaceId = IdGenerator::NewNamespaceIdFromName($namespaceName);
+        $this->namespaceId = new NamespaceId(IdGenerator::NewNamespaceIdFromName($namespaceName));
         $this->namespaceType = NamespaceType::ROOT;
         $this->duration = $duration;
         $this->parentId = array(0,0);
@@ -91,9 +96,9 @@ class RegisterNamespaceTransaction extends \Proximax\Model\Transaction{
         $abstractTransaction = new AbstractTransaction($transactionInfo,$deadline,$networkType,
                                                     $type,$version,$maxFee,$signature,$signer);
         $this->setAbstractTransaction($abstractTransaction);
-        $this->parentId = IdGenerator::NewNamespaceIdFromName($parentName);
+        $this->parentId = new NamespaceId(IdGenerator::NewNamespaceIdFromName($parentName));
         $this->namespaceName = $namespaceName;
-        $this->namespaceId = IdGenerator::generateNamespaceId($namespaceName,$this->parentId->getString());
+        $this->namespaceId = new NamespaceId(IdGenerator::generateNamespaceId($namespaceName,$this->parentId->getId()));
         $this->namespaceType = NamespaceType::SUB;
         $this->duration = 0;
 
@@ -117,7 +122,7 @@ class RegisterNamespaceTransaction extends \Proximax\Model\Transaction{
 
         $builder = new FlatbufferBuilder(1);
 
-        $v = ($networkType << 8) + $version;
+        $v = ($networkType << 24) + $version;
         // Create Vectors
         $signatureVector = RegisterNamespaceTransactionBuffer::createSignatureVector($builder, (new Utils)->createArrayZero(64));
         $signerVector = RegisterNamespaceTransactionBuffer::createSignerVector($builder, (new Utils)->createArrayZero(32));
@@ -132,12 +137,12 @@ class RegisterNamespaceTransaction extends \Proximax\Model\Transaction{
         }
         
 
-        // total size of transaction
-        $size = 138;
+        // header, ns type, duration, ns id, name size, name
+        $size = self::HEADER_SIZE + 1 + 8 + 8 + 1 + strlen($namespaceName);
         $name = $builder->createString($namespaceName);
 
         RegisterNamespaceTransactionBuffer::startRegisterNamespaceTransactionBuffer($builder);
-        RegisterNamespaceTransactionBuffer::addSize($builder, $size + strlen($namespaceName));
+        RegisterNamespaceTransactionBuffer::addSize($builder, $size);
         RegisterNamespaceTransactionBuffer::addSignature($builder, $signatureVector);
         RegisterNamespaceTransactionBuffer::addSigner($builder, $signerVector);
         RegisterNamespaceTransactionBuffer::addVersion($builder, $v);

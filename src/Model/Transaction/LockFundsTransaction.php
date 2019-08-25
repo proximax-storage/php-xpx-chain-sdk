@@ -84,7 +84,7 @@ class LockFundsTransaction extends \Proximax\Model\Transaction{
 
         $builder = new FlatbufferBuilder(1);
         
-        $v = ($networkType << 8) + $version;
+        $v = ($networkType << 24) + $version;
         // Create Vectors
         $signatureVector = LockFundsTransactionBuffer::createSignatureVector($builder, (new Utils)->createArrayZero(64));
         $signerVector = LockFundsTransactionBuffer::createSignerVector($builder, (new Utils)->createArrayZero(32));
@@ -96,9 +96,10 @@ class LockFundsTransaction extends \Proximax\Model\Transaction{
 
         $hashVector = LockFundsTransactionBuffer::createHashVector($builder, (new Hex)->DecodeString($signedTransaction->getHash()));
 
+        $size = self::HEADER_SIZE + 8 + 8 + 8 + 32;
 
         LockFundsTransactionBuffer::startLockFundsTransactionBuffer($builder);
-        LockFundsTransactionBuffer::addSize($builder, 176);
+        LockFundsTransactionBuffer::addSize($builder, $size);
         LockFundsTransactionBuffer::addSignature($builder, $signatureVector);
         LockFundsTransactionBuffer::addSigner($builder, $signerVector);
         LockFundsTransactionBuffer::addVersion($builder, $v);

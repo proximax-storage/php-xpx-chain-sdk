@@ -174,6 +174,48 @@ class Blockchain{
     }
 
     /**
+     *
+     * @param config $config
+     * 
+     * @return StatmentsDTO
+     */
+    public function GetReceiptsByHeight($config,$height){
+        $BlockchainRoutesApi = new BlockchainRoutesApi;
+        $ApiClient = new ApiClient;
+        $url = $config->BaseURL;
+        $ApiClient->setHost($url);
+        $networkType = $config->NetworkType;
+
+        $data = $BlockchainRoutesApi->getReceiptsByHeight($height);
+        $transactions = array();
+        if ($data[1] == 200){ // successfull
+            return new StatmentsDTO($this->StatementsDTO($networkType,$data[0]));
+        }
+        else return null;
+    }
+
+    /**
+     *
+     * @param config $config
+     * 
+     * @return MerkleProofInfoDTO
+     */
+    public function GetMerkleReceiptByHeightAndHash($config,$height,$hash){
+        $BlockchainRoutesApi = new BlockchainRoutesApi;
+        $ApiClient = new ApiClient;
+        $url = $config->BaseURL;
+        $ApiClient->setHost($url);
+        $networkType = $config->NetworkType;
+
+        $data = $BlockchainRoutesApi->getMerkleReceiptByHeightAndHash($height,$hash);
+        $transactions = array();
+        if ($data[1] == 200){ // successfull
+            return new MerkleProofInfoDTO($this->MerkleProofInfoDTO($networkType,$data[0]));
+        }
+        else return null;
+    }
+
+    /**
      * @param int $networkType
      *
      * @param array $data
@@ -221,6 +263,145 @@ class Blockchain{
             'beneficiary' => $beneficiary
         );
         return $blockInfo;
+    }
+
+    /**
+     * @param int $networkType
+     *
+     * @param array $data
+     * 
+     * @return StatementsDTO 
+     */
+    private function StatementsDTO($networkType, $data){
+        $transactionStatements = array();
+        for ($i=0;$i<count($data->transactionStatements);$i++){
+            $transactionStatement = $data->transactionStatements[$i];
+            $height = new UInt64DTO($transactionStatement->height);
+            $sourceDTO = array(
+                "primaryId" => $transactionStatement->source->primaryId,
+                "secondaryId" => $transactionStatement->source->secondaryId
+            );
+            $source = new SourceDTO($sourceDTO);
+            $receipts = array();
+            for ($j=0;$j<count($transactionStatement->receipts);$j++){
+                $receipt = $transactionStatement->receipts[$j];
+                switch ($receipt->type){ //recheck
+                    case 1:
+                        $sender = $receipt->sender;
+                        $recipient = $receipt->recipient;
+                        $mosaicId = $receipt->mosaicId;
+                        $amount = $receipt->amount;
+                        $version = $receipt->version;
+                        $type = $receipt->type;
+                        $receiptDTO = array(
+                            "sender" => $sender,
+                            "recipient" => $recipient,
+                            "mosaicId" => $mosaicId,
+                            "amount" => $amount,
+                            "version" => $version,
+                            "type" => $type,
+                        );
+                        $receipts[$j] = new BalanceTransferReceiptDTO($receiptDTO);
+                        break;
+                    case 2 || 3:
+                        $account = $receipt->account;
+                        $mosaicId = $receipt->mosaicId;
+                        $amount = $receipt->amount;
+                        $version = $receipt->version;
+                        $type = $receipt->type;
+                        $receiptDTO = array(
+                            "account" => $account,
+                            "mosaicId" => $mosaicId,
+                            "amount" => $amount,
+                            "version" => $version,
+                            "type" => $type,
+                        );
+                        $receipts[$j] = new BalanceChangeReceiptDTO($receiptDTO);
+                        break;
+                    case 4:
+                        $artifactId = $receipt->artifactId;
+                        $version = $receipt->version;
+                        $type = $receipt->type;
+                        $receiptDTO = array(
+                            "artifactId" => $artifactId,
+                            "version" => $version,
+                            "type" => $type,
+                        );
+                        $receipts[$j] = new ArtifactExpiryReceiptDTO($receiptDTO);
+                        break;
+                    case 5:
+                        $mosaic = $receipt->mosaic;
+                        $amount = $receipt->amount;
+                        $version = $receipt->version;
+                        $type = $receipt->type;
+                        $receiptDTO = array(
+                            "mosaic" => $mosaic,
+                            "amount" => $amount,
+                            "version" => $version,
+                            "type" => $type,
+                        );
+                        $receipts[$j] = new InflationReceiptDTO($receiptDTO);
+                        break;
+                }
+            }
+            $transactionStatementDTO = array(
+                "height" => $height,
+                "source" => $source,
+                "receipts" => $receipts
+            );
+            $transactionStatements[$i] = new TransactionStatementDTO($transactionStatementDTO);
+        }
+        $addressResolutionStatements = array();
+        for ($i=0;$i<count($data->addressResolutionStatements);$i++){
+            $addressResolutionStatement = $data->addressResolutionStatements[$i];
+            $height = $addressResolutionStatement->height;
+            $unresolved = $addressResolutionStatement->unresolved;
+            $resolutionEntries = array();
+            for ($j=0;$j<count($addressResolutionStatement->resolutionEntries);$j++){
+                $resolutionEntry = $addressResolutionStatement->resolutionEntries[$j];
+                $source = $resolutionEntry->source;
+                $resolved = $resolutionEntry->resolved;
+                $resolutionEntryDTO = array(
+                    "source" => $source,
+                    "resolved" => $resolved
+                );
+                $resolutionEntries[$j] = new ResolutionEntryDTO($resolutionEntryDTO);
+            }
+            $resolutionStatementDTO = array(
+                "height" => $height,
+                "unresolved" => $unresolved,
+                "resolutionEntries" => $resolutionEntries
+            );
+            $addressResolutionStatements = new ResolutionStatementDTO($resolutionStatementDTO);
+        }
+        $mosaicResolutionStatements = array();
+        return $statementsDTO = array(
+            "transactionStatements" => $transactionStatements,
+            "addressResolutionStatements" => $addressResolutionStatements,
+            "mosaicResolutionStatements" => $mosaicResolutionStatements
+        );
+    }
+
+    /**
+     * @param int $networkType
+     *
+     * @param array $data
+     * 
+     * @return MerkleProofInfoDTO 
+     */
+    private function MerkleProofInfoDTO($networkType, $data){
+        $merklePath = array();
+        for ($i=0;$i<count($data->payload->merklePath);$i++){
+            $position = $data->payload->merklePath[$i]->position;
+            $hash = $data->payload->merklePath[$i]->hash;
+            $merklePath[$i] = new MerklePathItem($position, $hash);
+        }
+        $payload = new MerkleProofInfo($merklePath);
+        $type = $data->type;
+        return $merkleProofInfoDTO = array(
+            "payload" => $payload,
+            "type" => $type
+        );
     }
 }
 ?>

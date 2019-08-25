@@ -89,7 +89,7 @@ class AggregateTransaction extends \Proximax\Model\Transaction{
             $transactionsBytes = array_merge($transactionsBytes, $transactionBytes);
         }
 
-        $v = ($networkType << 8) + $version;
+        $v = ($networkType << 24) + $version;
         // Create Vectors
         $signatureVector = AggregateTransactionBuffer::createSignatureVector($builder, (new Utils)->createArrayZero(64));
         $signerVector = AggregateTransactionBuffer::createSignerVector($builder, (new Utils)->createArrayZero(32));
@@ -97,9 +97,11 @@ class AggregateTransaction extends \Proximax\Model\Transaction{
         $feeVector = AggregateTransactionBuffer::createMaxFeeVector($builder, $maxFee);
         $transactionsVector = AggregateTransactionBuffer::createTransactionsVector($builder, $transactionsBytes);
 
-        
+        // expected size = header + transactions bytes count + transactions bytes
+        $size = self::HEADER_SIZE + 4 + count($transactionsBytes);
+
         AggregateTransactionBuffer::startAggregateTransactionBuffer($builder);
-        AggregateTransactionBuffer::addSize($builder, 120 + 4 + count($transactionsBytes));
+        AggregateTransactionBuffer::addSize($builder, $size);
         AggregateTransactionBuffer::addSignature($builder, $signatureVector);
         AggregateTransactionBuffer::addSigner($builder, $signerVector);
         AggregateTransactionBuffer::addVersion($builder, $v);

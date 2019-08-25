@@ -31,12 +31,12 @@ use Proximax\Model\Transaction\Constants;
 class TransferTransactionSchema extends Schema{
     public function __construct() {
         $arr = array(
-            new ScalarAttribute("size",Constants::SIZEOF_INT),
+            new ScalarAttribute("size", Constants::SIZEOF_INT),
             new ArrayAttribute("signature", Constants::SIZEOF_BYTE),
             new ArrayAttribute("signer", Constants::SIZEOF_BYTE),
-            new ScalarAttribute("version", Constants::SIZEOF_SHORT),
+            new ScalarAttribute("version", Constants::SIZEOF_INT),
             new ScalarAttribute("type", Constants::SIZEOF_SHORT),
-            new ArrayAttribute("fee", Constants::SIZEOF_INT),
+            new ArrayAttribute("maxFee", Constants::SIZEOF_INT),
             new ArrayAttribute("deadline", Constants::SIZEOF_INT),
             
             new ArrayAttribute("recipient", Constants::SIZEOF_BYTE),

@@ -110,8 +110,7 @@ class TransferTransaction extends \Proximax\Model\Transaction{
             $recipientBytes = (new Utils)->stringToByteArray(Base32::decode($address->address));
         }
         
-
-        $v = ($networkType << 8) + $version;
+        $v = ($networkType << 24) + $version;
         // Create Vectors
         $signatureVector = TransferTransactionBuffer::createSignatureVector($builder, (new Utils)->createArrayZero(64));
         $signerVector = TransferTransactionBuffer::createSignerVector($builder, (new Utils)->createArrayZero(32));
@@ -124,7 +123,7 @@ class TransferTransaction extends \Proximax\Model\Transaction{
         // total size of transaction
         $size = 
               // header
-              120 + 
+              self::HEADER_SIZE + 
               // recipient is always 25 bytes
               25 + 
               // message size is short

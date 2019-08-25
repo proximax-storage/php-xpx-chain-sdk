@@ -14,7 +14,8 @@
  */
 
 namespace Proximax\Model;
-
+use Proximax\Core\KeccakHasher;
+use Proximax\Utils\Hex;
 /**
  * HashType class Doc Comment
  *
@@ -26,26 +27,45 @@ namespace Proximax\Model;
 class HashType
 {    
     /**
-     * @internal
-     * @var integer
+     *  hashed using SHA3-256
+     *  (Network Native)
      */
     const SHA3_256 = 0;
 
     /**
-     * @internal
-     * @var integer
+     *  hashed using Keccak-256
+     *  (ETH Compat)
      */
     const KECCAK_256 = 1;
 
     /**
-     * @internal
-     * @var integer
+     * hashed twice: first with SHA-256, then with RIPEMD-160, then add 12 bytes of 0s
+     * (BTC Compat)
      */
     const HASH_160 = 2;
 
     /**
-     * @internal
-     * @var integer
+     * Hashed twice with SHA-256
+     * (BTC Compat)
      */
     const HASH_256 = 3;
+
+    public static function hash($data, $algos){
+        switch ($algos){
+            case self::SHA3_256:
+                return hash("sha3-256",$data);
+            case self::KECCAK_256:
+                return KeccakHasher::hash(256,$data);
+            case self::HASH_160:
+                $first = hash("sha256",$data);
+                $first_bytes = (new Hex)->DecodeString($first);
+                $tmp = implode(array_map("chr", $first_bytes));
+                return hash("ripemd160",$tmp) . "000000000000000000000000";
+            case self::HASH_256:
+                $first = hash("sha256",$data);
+                $first_bytes = (new Hex)->DecodeString($first);
+                $tmp = implode(array_map("chr", $first_bytes));
+                return hash("sha256",$tmp);
+        }
+    }
 }

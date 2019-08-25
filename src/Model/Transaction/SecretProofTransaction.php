@@ -88,7 +88,7 @@ class SecretProofTransaction extends \Proximax\Model\Transaction{
         $tmp = Base32::decode($recipient->toClean());
         $recipientBytes = (new Utils)->stringToByteArray($tmp);
         $proofBytes = (new Hex)->DecodeString($proof);
-        $v = ($networkType << 8) + $version;
+        $v = ($networkType << 24) + $version;
         // Create Vectors
         $signatureVector = SecretProofTransactionBuffer::createSignatureVector($builder, (new Utils)->createArrayZero(64));
         $signerVector = SecretProofTransactionBuffer::createSignerVector($builder, (new Utils)->createArrayZero(32));
@@ -100,7 +100,7 @@ class SecretProofTransaction extends \Proximax\Model\Transaction{
         $proofVector = SecretProofTransactionBuffer::createProofVector($builder, $proofBytes);
         // total size of transaction
         $size = 
-            120 + //header
+            self::HEADER_SIZE +
             35 +
             count($recipientBytes) + //recipient
             count($proofBytes);
