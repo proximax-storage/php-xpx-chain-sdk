@@ -8,13 +8,13 @@
     use Proximax\Model\Config;
     use Proximax\Infrastructure\Network;
     use Proximax\Model\AccountPropertyModification;
-    use Proximax\Model\AccountPropertyType;
-    use Proximax\Model\AccountPropertyModificationType;
+    use Proximax\Model\AccountPropertyTypeEnum;
+    use Proximax\Model\AccountPropertiesModificationTypeEnum;
 
     $config = new Config;
     $network = new Network;
   
-    $baseUrl = "http://192.168.0.107:3000";
+    $baseUrl = "http://192.168.1.41:3000";
     $wsReconnectionTimeout = 5000;
     $networkType = Network::getIdfromName("MijinTest");
     if ($networkType){
@@ -31,10 +31,10 @@
 
     $accountProperty = new ModifyAccountPropertyTransaction(
         new Deadline(1),
-        AccountPropertyType::BLOCK_ADDRESS,
+        AccountPropertyTypeEnum::BLOCK_ADDRESS,
         array(
             new AccountPropertyModification(
-                AccountPropertyModificationType::ADD,
+                AccountPropertiesModificationTypeEnum::ADD,
                 $accountBlock->getAddress()
             )
         ),

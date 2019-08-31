@@ -8,18 +8,14 @@
     use Proximax\Sdk\Transaction;
     use Proximax\Model\Config;
     use Proximax\Infrastructure\Network;
-    use Proximax\Model\MetadataModification;
-    use Proximax\Model\MetadataModificationType;
-    use Proximax\Model\MultisigCosignatoryModification;
-    use Proximax\Model\MultisigCosignatoryModificationType;
     use Proximax\Utils\Utils;
-    use Proximax\Model\HashType;
+    use Proximax\Model\HashAlgorithmEnum;
     use Proximax\Model\NetworkCurrencyMosaic;
 
     $config = new Config;
     $network = new Network;
   
-    $baseUrl = "http://192.168.0.107:3000";
+    $baseUrl = "http://192.168.1.41:3000";
     $wsReconnectionTimeout = 5000;
     $networkType = Network::getIdfromName("MijinTest");
     if ($networkType){
@@ -36,7 +32,7 @@
 
     $seed = random_bytes(20);
     $proof = bin2hex($seed);
-    $secret = HashType::hash($seed,HashType::HASH_256);
+    $secret = HashAlgorithmEnum::hash($seed,HashAlgorithmEnum::HASH_256);
     var_dump($proof);
     var_dump($secret);
 
@@ -44,7 +40,7 @@
         new Deadline(1),
         new NetworkCurrencyMosaic(10),
         (new Utils)->fromBigInt(100),
-        HashType::HASH_256,
+        HashAlgorithmEnum::HASH_256,
         $secret,
         $bobAccount->getPublicAccount()->getAddress(),
         $networkType
@@ -58,7 +54,7 @@
 
     $secretProof = new SecretProofTransaction(
         new Deadline(1),
-        HashType::HASH_256,
+        HashAlgorithmEnum::HASH_256,
         $secret,
         $proof,
         $bobAccount->getPublicAccount()->getAddress(),

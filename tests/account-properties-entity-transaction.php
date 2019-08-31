@@ -8,8 +8,8 @@
     use Proximax\Model\Config;
     use Proximax\Infrastructure\Network;
     use Proximax\Model\AccountPropertyModification;
-    use Proximax\Model\AccountPropertyType;
-    use Proximax\Model\AccountPropertyModificationType;
+    use Proximax\Model\AccountPropertyTypeEnum;
+    use Proximax\Model\AccountPropertiesModificationTypeEnum;
     use Proximax\Model\TransactionType;
 
     $config = new Config;
@@ -30,10 +30,10 @@
 
     $accountProperty = new ModifyAccountPropertyTransaction(
         new Deadline(1),
-        AccountPropertyType::BLOCK_TRANSACTION,
+        AccountPropertyTypeEnum::BLOCK_TRANSACTION,
         array(
             new AccountPropertyModification(
-                AccountPropertyModificationType::ADD,
+                AccountPropertiesModificationTypeEnum::ADD,
                 TransactionType::LINK_ACCOUNT
             )
         ),

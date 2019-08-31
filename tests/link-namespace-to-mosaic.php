@@ -2,7 +2,7 @@
     require "vendor/autoload.php";
 
     use Proximax\Model\Transaction\AliasTransaction;
-    use Proximax\Model\AliasActionType;
+    use Proximax\Model\AliasActionEnum;
     use Proximax\Model\Deadline;
     use Proximax\Model\Account;
     use Proximax\Sdk\Transaction;
@@ -15,7 +15,7 @@
     $config = new Config;
     $network = new Network;
   
-    $baseUrl = "http://192.168.0.107:3000";
+    $baseUrl = "http://192.168.1.41:3000";
     $wsReconnectionTimeout = 5000;
     $networkType = Network::getIdfromName("MijinTest");
     if ($networkType){
@@ -25,10 +25,10 @@
     $generationHash = "7B631D803F912B00DC0CBED3014BBD17A302BA50B99D233B9C2D9533B842ABDF";
 
     $namespace = "mynamespace";
-    $mosaicId  = new MosaicId(array(2227523919,1484419338));
+    $mosaicId  = new MosaicId(array(3879309932,567479887));
     $transfer = (new AliasTransaction)->NewMosaicAliasTransaction(
         new Deadline(1),
-        AliasActionType::LINK,
+        AliasActionEnum::LINK,
         $namespace,
         $mosaicId,
         $networkType

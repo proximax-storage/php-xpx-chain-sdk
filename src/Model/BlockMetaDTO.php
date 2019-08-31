@@ -15,6 +15,7 @@
 
 namespace Proximax\Model;
 use Proximax\Utils\Utils;
+use Proximax\Model\UInt64DTO;
 
 /**
  * BlockMetaDTO class Doc Comment
@@ -25,27 +26,43 @@ use Proximax\Utils\Utils;
  * @link     https://github.com/swagger-api/swagger-codegen
  */
 class BlockMetaDTO{
+
     private $hash; //string
 
     private $generationHash;//string
 
-    private $totalFee;//int
+    private $totalFee;//UInt64DTO
 
-    private $numTransactions;//string
+    private $subCacheMerkleRoots; //array hex string
 
-    public function __construct($hash, $generationHash, $totalFee, $numTransactions){
-        $this->hash = $hash;
-        $this->generationHash = $generationHash;
-        $this->totalFee = ($this->totalFee[1] << 32) | $this->totalFee[0];
-        $this->numTransactions = $numTransactions;
+    private $numTransactions;//int
+
+    public function __construct($data){
+        $this->hash = $data["hash"];
+        $this->generationHash = $data["generationHash"];
+        $this->totalFee = new UInt64DTO($data["totalFee"]);
+        $this->subCacheMerkleRoots = $data["subCacheMerkleRoots"];
+        $this->numTransactions = $data["numTransactions"];
     }
 
     public function getHash(){
         return $this->hash;
     }
 
-    public function getBlock(){
-        return $this->block;
+    public function getGenerationHash(){
+        return $this->generationHash;
+    }
+
+    public function getTotalFee(){
+        return $this->totalFee;
+    }
+
+    public function getSubCacheMerkleRoots(){
+        return $this->subCacheMerkleRoots;
+    }
+
+    public function getNumTransactions(){
+        return $this->numTransactions;
     }
 }
 ?>

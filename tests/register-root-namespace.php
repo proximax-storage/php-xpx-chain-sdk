@@ -12,7 +12,7 @@
     $config = new Config;
     $network = new Network;
   
-    $baseUrl = "http://192.168.0.107:3000";
+    $baseUrl = "http://192.168.1.41:3000";
     $wsReconnectionTimeout = 5000;
     $networkType = Network::getIdfromName("MijinTest");
     if ($networkType){

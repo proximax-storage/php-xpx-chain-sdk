@@ -44,7 +44,7 @@ class AliasTransaction extends \Proximax\Model\Transaction{
     private $mosaicId;//mosaic <optional>
     private $address; //address <optional>
     private $namespaceId; //NamespaceId
-    private $aliasActionType; //AliasActionType
+    private $aliasActionType; //AliasActionEnum
      
     public function NewAddressAliasTransaction($deadline, $aliasActionType, $namespace, $address, $networkType){
         $version = TransactionVersion::ADDRESS_ALIAS_VERSION;

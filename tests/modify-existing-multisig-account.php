@@ -8,7 +8,7 @@
     use Proximax\Model\Config;
     use Proximax\Infrastructure\Network;
     use Proximax\Model\MultisigCosignatoryModification;
-    use Proximax\Model\MultisigCosignatoryModificationType;
+    use Proximax\Model\MultisigModificationTypeEnum;
     use Proximax\Model\Transaction\ModifyMultisigAccountTransaction;
     use Proximax\Model\Transaction\AggregateTransaction;
     use Proximax\Model\Transaction\LockFundsTransaction;
@@ -45,7 +45,7 @@
     $deadline = new Deadline(1); //1 is time include blockchain, unit hour
     $multisigCosignatoryModifications = array(
         new MultisigCosignatoryModification(
-            MultisigCosignatoryModificationType::REMOVE,
+            MultisigModificationTypeEnum::REMOVE,
             $cosignerRemoveAccount
         )
     );

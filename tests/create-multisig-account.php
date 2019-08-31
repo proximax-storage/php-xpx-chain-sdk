@@ -7,7 +7,7 @@
     use Proximax\Model\Config;
     use Proximax\Infrastructure\Network;
     use Proximax\Model\MultisigCosignatoryModification;
-    use Proximax\Model\MultisigCosignatoryModificationType;
+    use Proximax\Model\MultisigModificationTypeEnum;
     use Proximax\Model\Transaction\ModifyMultisigAccountTransaction;
     use Proximax\Model\Transaction\AggregateTransaction;
     use Proximax\Model\Transaction\LockFundsTransaction;
@@ -18,7 +18,7 @@
     $config = new Config;
     $network = new Network;
   
-    $baseUrl = "http://192.168.0.107:3000";
+    $baseUrl = "http://192.168.1.41:3000";
     $wsReconnectionTimeout = 5000;
     $networkType = Network::getIdfromName("MijinTest");
     if ($networkType){
@@ -44,15 +44,15 @@
 
     $multisigCosignatoryModifications = array(
         new MultisigCosignatoryModification(
-            MultisigCosignatoryModificationType::ADD,
+            MultisigModificationTypeEnum::ADD,
             $cosignerOneAccount->getPublicAccount()
         ),
         new MultisigCosignatoryModification(
-            MultisigCosignatoryModificationType::ADD,
+            MultisigModificationTypeEnum::ADD,
             $cosignerTwoAccount->getPublicAccount()
         ),
         new MultisigCosignatoryModification(
-            MultisigCosignatoryModificationType::ADD,
+            MultisigModificationTypeEnum::ADD,
             $cosignerThreeAccount->getPublicAccount()
         )
     );

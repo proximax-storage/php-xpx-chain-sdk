@@ -16,25 +16,25 @@
 namespace Proximax\Model;
 
 /**
- * MosaicSupplyType class Doc Comment
+ * AliasActionEnum class Doc Comment
  *
  * @category class
  * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
-class MosaicSupplyType
+class AliasActionEnum
 {    
     /**
      * @internal
      * @var integer
      */
-    const DECREASE = 0;
+    const LINK = 0;
 
     /**
      * @internal
      * @var integer
      */
-    const INCREASE = 1;
+    const UNLINK = 1;
 
 }

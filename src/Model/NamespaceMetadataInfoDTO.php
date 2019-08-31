@@ -16,25 +16,22 @@
 namespace Proximax\Model;
 
 /**
- * NamespaceType class Doc Comment
+ * NamespaceMetadataInfoDTO class Doc Comment
  *
  * @category class
  * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
-class NamespaceType
-{    
-    /**
-     * @internal
-     * @var integer
-     */
-    const ROOT = 0;
+class NamespaceMetadataInfoDTO{
 
-    /**
-     * @internal
-     * @var integer
-     */
-    const SUB = 1;
+    private $metadata;//NamespaceMetadataDTO
 
+    public function __construct($metadata){
+        $this->metadata = $metadata;
+    }
+
+    public function getMetadata(){
+        return $this->metadata;
+    }
 }

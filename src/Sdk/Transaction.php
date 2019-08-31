@@ -14,14 +14,12 @@
  */
 
 namespace Proximax\Sdk;
-use Proximax\Core\KeyPair;
+
 use Proximax\API\TransactionRoutesApi;
 use Proximax\Model\TransactionDTO;
 use Proximax\Model\TransactionStatusDTO;
 use Proximax\ApiClient;
 use Base32\Base32;
-use Proximax\Infrastructure\TransactionMapping;
-use Proximax\Model\HeightDTO;
 use Proximax\Model\MosaicDTO;
 use Proximax\Model\TransactionInfo;
 use Proximax\Model\Address;
@@ -31,10 +29,40 @@ use Proximax\Model\AbstractTransaction;
 use Proximax\Model\Account;
 use Proximax\Model\TransactionType;
 use Proximax\Model\TransferTransactionDTO;
-use Proximax\Model\LockFundsTransactionDTO;
+use Proximax\Model\HashLockTransactionDTO;
 use Proximax\Model\AggregateTransactionDTO;
 use Proximax\Model\CosignatureDTO;
-
+use Proximax\Model\TransactionMetaDTO;
+use Proximax\Model\UInt64DTO;
+use Proximax\Model\MessageDTO;
+use Proximax\Model\MosaicDefinitionTransactionDTO;
+use Proximax\Model\MosaicSupplyChangeTransactionDTO;
+use Proximax\Model\RegisterNamespaceTransactionDTO;
+use Proximax\Model\AddressAliasTransactionDTO;
+use Proximax\Model\MosaicAliasTransactionDTO;
+use Proximax\Model\ModifyMultisigAccountTransactionDTO;
+use Proximax\Model\AccountPropertiesTransactionDTO;
+use Proximax\Model\SecretLockTransactionDTO;
+use Proximax\Model\SecretProofTransactionDTO;
+use Proximax\Model\AccountLinkTransactionDTO;
+use Proximax\Model\EmbeddedTransactionMetaDTO;
+use Proximax\Model\EmbeddedHashLockTransactionDTO;
+use Proximax\Model\EmbeddedTransferTransactionDTO;
+use Proximax\Model\EmbeddedMosaicDefinitionTransactionDTO;
+use Proximax\Model\EmbeddedMosaicSupplyChangeTransactionDTO;
+use Proximax\Model\EmbeddedRegisterNamespaceTransactionDTO;
+use Proximax\Model\EmbeddedAddressAliasTransactionDTO;
+use Proximax\Model\EmbeddedMosaicAliasTransactionDTO;
+use Proximax\Model\EmbeddedModifyMultisigAccountTransactionDTO;
+use Proximax\Model\EmbeddedAccountPropertiesTransactionDTO;
+use Proximax\Model\EmbeddedSecretLockTransactionDTO;
+use Proximax\Model\EmbeddedSecretProofTransactionDTO;
+use Proximax\Model\EmbeddedAccountLinkTransactionDTO;
+use Proximax\Model\CosignatoryModificationDTO;
+use Proximax\Model\AccountPropertiesModificationDTO;
+use Proximax\Model\TransactionInfoDTO;
+use Proximax\Model\EmbeddedTransactionInfoDTO;
+use Proximax\Model\MosaicPropertyDTO;
 /**
  * Transaction class Doc Comment
  *
@@ -51,7 +79,7 @@ class Transaction{
      *
      * @param String $transId
      * 
-     * @return TransactionDTO
+     * @return TransactionInfoDTO
      */
     public function GetTransaction($config, $transId){
         $TransactionRoutesApi = new TransactionRoutesApi;
@@ -148,118 +176,325 @@ class Transaction{
         return $arr_statuses;
     }
 
-/**
+    /**
      * @param int $networkType
      *
      * @param array $data
      * 
-     * @return TransactionDTO
+     * @return TransactionInfoDTO
      */
     public function formatData($networkType, $data){
-        if (isset($data->meta->height)){
-            $Height = $data->meta->height;
-        }
-        else $Height = "";
-        
-        if (isset($data->meta->index)){
-            $Index = $data->meta->index;
-        }
-        else $Index = "";
+        $height = new UInt64DTO($data->meta->height);
+        $hash = $data->meta->hash;
+        $merkleComponentHash = $data->meta->merkleComponentHash;
+        $index = $data->meta->index;
+        $id = $data->meta->id;
+        $transactionMetaDTO = array(
+            "height" => $height,
+            "hash" => $hash,
+            "merkleComponentHash" => $merkleComponentHash,
+            "index" => $index,
+            "id" => $id
+        );
 
-        if (isset($data->meta->id)){
-            $Id = $data->meta->id;
-        }
-        else $Id = "";
+        $meta = new TransactionMetaDTO($transactionMetaDTO);
 
-        if (isset($data->meta->hash)){
-            $Content = $data->meta->hash;
-        }
-        else $Content = "";
-
-        if (isset($data->meta->merkleComponentHash)){
-            $MerkleComponentHash = $data->meta->merkleComponentHash;
-        }
-        else $MerkleComponentHash = "";
-
-        if (isset($data->meta->aggregateHash)){
-            $AggregateHash = $data->meta->aggregateHash;
-        }
-        else $AggregateHash = "";
-
-        if (isset($data->meta->aggregateId)){
-            $AggregateId = $data->meta->aggregateId;
-        }
-        else $AggregateId = "";
-
-        $transMap = new TransactionMapping;
-
-        if (isset($data->transaction->type)){
-            $Type = dechex($data->transaction->type);
-        }
-        else $Type = "";
-        
-        if (isset($data->transaction->version)){
-            $Version = $transMap->ExtractVersion($data->transaction->version);
-        }
-        else $Version = "";
-
-        if (isset($data->transaction->maxFee)){
-            $MaxFee = $transMap->ExtractMaxFee($data->transaction->maxFee);
-        }
-        else $MaxFee = "";
-
-        if (isset($data->transaction->deadline)){
-            $Deadline = $transMap->ExtractDeadline($data->transaction->deadline);
-        }
-        else $Deadline = "";
-        
-        if (isset($data->transaction->signature)){
-            $Signature = $data->transaction->signature;
-        }
-        else $Signature = "";
-        
-        if (isset($data->transaction->signer)){
-            $Address = Address::fromPublicKey($data->transaction->signer,$networkType);
-            $Signer = new PublicAccount($Address,$data->transaction->signer);
-        }
-        else $Signer = "";
-        
-        $TransactionInfo = new TransactionInfo($Height,$Index,$Id,$Content,$MerkleComponentHash,$AggregateHash,$AggregateId);
-
-        $AbstractTransaction = new AbstractTransaction($TransactionInfo,$Deadline,$networkType,$Type,$Version,$MaxFee,$Signature,$Signer);
+        $signature = $data->transaction->signature;
+        $signer = $data->transaction->signer;
+        $version = $data->transaction->version;
+        $type = $data->transaction->type;
+        $maxFee = new UInt64DTO($data->transaction->maxFee);
+        $deadline = new UInt64DTO($data->transaction->deadline);
 
         $transaction = array(
-            'AbstractTransaction' => $AbstractTransaction
+            'signature' => $signature,
+            'signer' => $signer,
+            'version' => $version,
+            'type' => $type,
+            'maxFee' => $maxFee,
+            'deadline' => $deadline
         );
-        
-        switch ($Type){
+        switch (dechex($type)){
             case TransactionType::AGGREGATE_BONDED: //aggregate bonded 
                 $data = $this->formatAggregate($networkType,$data->transaction->cosignatures,$data->transaction->transactions);
-                $transaction["Cosignatures"] = $data->cosignatures;
-                $transaction["Transactions"] = $data->transactions;
-                return new AggregateTransactionDTO($transaction);
+                $transaction["cosignatures"] = $data->cosignatures;
+                $transaction["transactions"] = $data->transactions;
+                $transaction = new AggregateTransactionDTO($transaction);
+                break;
 
             case TransactionType::AGGREGATE_COMPLETED: //aggregate completed
                 $data = $this->formatAggregate($networkType,$data->transaction->cosignatures,$data->transaction->transactions);
-                $transaction["Cosignatures"] = $data->cosignatures;
-                $transaction["Transactions"] = $data->transactions;
-                return new AggregateTransactionDTO($transaction);
+                $transaction["cosignatures"] = $data->cosignatures;
+                $transaction["transactions"] = $data->transactions;
+                $transaction = new AggregateTransactionDTO($transaction);
+                break;
 
             case TransactionType::LOCK: //lock transaction
-                $data = $this->formatLockFunds($data->transaction->duration,$data->transaction->mosaicId,$data->transaction->amount,$data->transaction->hash);
-                $transaction["Duration"] = $data->duration;
-                $transaction["Mosaic"] = $data->mosaic;
-                $transaction["Hash"] = $data->hash;
-                return new LockFundsTransactionDTO($transaction);
+                $data = $this->formatHashLock($data->transaction->duration,$data->transaction->mosaicId,$data->transaction->amount,$data->transaction->hash);
+                $transaction["duration"] = $data->duration;
+                $transaction["mosaic"] = $data->mosaic;
+                $transaction["hash"] = $data->hash;
+                $transaction = new HashLockTransactionDTO($transaction);
+                break;
                 
             case TransactionType::TRANSFER: //transfer transaction
                 $data = $this->formatTransfer($networkType,$data->transaction->mosaics,$data->transaction->recipient,$data->transaction->message);
-                $transaction["Mosaics"] = $data->mosaics;
-                $transaction["Recipient"] = $data->recipient;
-                $transaction["Message"] = $data->message;
-                return new TransferTransactionDTO($transaction);
+                $transaction["mosaics"] = $data->mosaics;
+                $transaction["recipient"] = $data->recipient;
+                $transaction["message"] = $data->message;
+                $transaction = new TransferTransactionDTO($transaction);
+                break;
+
+            case TransactionType::MOSAIC_DEFINITION: //mosaic definition transaction
+                $data = $this->formatMosaicDefinition($data->transaction->mosaicNonce,$data->transaction->mosaicId,$data->transaction->properties);
+                $transaction["mosaicNonce"] = $data->mosaicNonce;
+                $transaction["mosaicId"] = $data->mosaicId;
+                $transaction["properties"] = $data->properties;
+                $transaction = new MosaicDefinitionTransactionDTO($transaction);
+                break;
+
+            case TransactionType::MOSAIC_SUPPLY_CHANGE: //mosaic supply change transaction
+                $data = $this->formatMosaicSupplyChange($data->transaction->mosaicId,$data->transaction->direction,$data->transaction->delta);
+                $transaction["mosaicId"] = $data->mosaicId;
+                $transaction["direction"] = $data->direction;
+                $transaction["delta"] = $data->delta;
+                $transaction = new MosaicSupplyChangeTransactionDTO($transaction);
+                break;
+
+            case TransactionType::REGISTER_NAMESPACE: //register namespace transaction
+                $data = $this->formatRegisterNamespace($data->transaction->namespaceType,$data->transaction->duration,$data->transaction->namespaceId,$data->transaction->name,$data->transaction->parentId);
+                $transaction["namespaceType"] = $data->namespaceType;
+                $transaction["duration"] = $data->duration;
+                $transaction["namespaceId"] = $data->namespaceId;
+                $transaction["name"] = $data->name;
+                $transaction["parentId"] = $data->parentId;
+                $transaction = new RegisterNamespaceTransactionDTO($transaction);
+                break;
+
+            case TransactionType::ADDRESS_ALIAS: //address alias transaction
+                $data = $this->formatAddressAlias($data->transaction->aliasAction,$data->transaction->namespaceId,$data->transaction->address);
+                $transaction["aliasAction"] = $data->aliasAction;
+                $transaction["namespaceId"] = $data->namespaceId;
+                $transaction["address"] = $data->address;
+                $transaction = new AddressAliasTransactionDTO($transaction);
+                break;
+
+            case TransactionType::MOSAIC_ALIAS: //mosaic alias transaction
+                $data = $this->formatMosaicAlias($data->transaction->aliasAction,$data->transaction->namespaceId,$data->transaction->mosaicId);
+                $transaction["aliasAction"] = $data->aliasAction;
+                $transaction["namespaceId"] = $data->namespaceId;
+                $transaction["mosaicId"] = $data->mosaicId;
+                $transaction = new MosaicAliasTransactionDTO($transaction);
+                break;
+
+            case TransactionType::MODIFY_MULTISIG: //modify multisig account transaction
+                $data = $this->formatModifyMultisigAccount($data->transaction->minRemovalDelta,$data->transaction->minApprovalDelta,$data->transaction->modifications);
+                $transaction["minRemovalDelta"] = $data->minRemovalDelta;
+                $transaction["minApprovalDelta"] = $data->minApprovalDelta;
+                $transaction["modifications"] = $data->modifications;
+                $transaction = new ModifyMultisigAccountTransactionDTO($transaction);
+                break;
+
+            case TransactionType::ACCOUNT_PROPERTY_ADDRESS: //account property address transaction
+                $data = $this->formatAccountProperty($data->transaction->propertyType,$data->transaction->modifications);
+                $transaction["propertyType"] = $data->propertyType;
+                $transaction["modifications"] = $data->modifications;
+                $transaction = new AccountPropertiesTransactionDTO($transaction);
+                break;
+            
+            case TransactionType::ACCOUNT_PROPERTY_MOSAIC: //account property mosaic transaction
+                $data = $this->formatAccountProperty($data->transaction->propertyType,$data->transaction->modifications);
+                $transaction["propertyType"] = $data->propertyType;
+                $transaction["modifications"] = $data->modifications;
+                $transaction = new AccountPropertiesTransactionDTO($transaction);
+                break;
+
+            case TransactionType::ACCOUNT_PROPERTY_ENTITY_TYPE: //account property antity type transaction
+                $data = $this->formatAccountProperty($data->transaction->propertyType,$data->transaction->modifications);
+                $transaction["propertyType"] = $data->propertyType;
+                $transaction["modifications"] = $data->modifications;
+                $transaction = new AccountPropertiesTransactionDTO($transaction);
+                break;
+
+            case TransactionType::SECRET_LOCK: //secret lock transaction
+                $data = $this->formatSecretLock($networkType,$data->transaction->duration,$data->transaction->mosaicId,$data->transaction->amount,$data->transaction->hashAlgorithm,$data->transaction->secret,$data->transaction->recipient);
+                $transaction["duration"] = $data->duration;
+                $transaction["mosaicId"] = $data->mosaicId;
+                $transaction["amount"] = $data->amount;
+                $transaction["hashAlgorithm"] = $data->hashAlgorithm;
+                $transaction["secret"] = $data->secret;
+                $transaction["recipient"] = $data->recipient;
+                $transaction = new SecretLockTransactionDTO($transaction);
+                break;
+            
+            case TransactionType::SECRET_PROOF: //secret proof transaction
+                $data = $this->formatSecretProof($networkType,$data->transaction->hashAlgorithm,$data->transaction->secret,$data->transaction->proof,$data->transaction->recipient);
+                $transaction["hashAlgorithm"] = $data->hashAlgorithm;
+                $transaction["secret"] = $data->secret;
+                $transaction["proof"] = $data->proof;
+                $transaction["recipient"] = $data->recipient;
+                $transaction = new SecretProofTransactionDTO($transaction);
+                break;
+
+            case TransactionType::LINK_ACCOUNT: //account link transaction
+                $data = $this->formatAccountLink($data->transaction->remoteAccountKey,$data->transaction->action);
+                $transaction["remoteAccountKey"] = $data->remoteAccountKey;
+                $transaction["action"] = $data->action;
+                $transaction = new AccountLinkTransactionDTO($transaction);
+                break;
         }
-        return $transaction;
+        return new TransactionInfoDTO(array("meta" => $meta,"transaction" => $transaction));
+    }
+
+    /**
+     * @param int $networkType
+     *
+     * @param array $data
+     * 
+     * @return EmbeddedTransactionInfoDTO
+     */
+    public function formatEmbeddedData($networkType, $data){
+        $height = new UInt64DTO($data->meta->height);
+        $aggregateHash = $data->meta->aggregateHash;
+        $aggregateId = $data->meta->aggregateId;
+        $index = $data->meta->index;
+        $id = $data->meta->id;
+        $transactionMetaDTO = array(
+            "height" => $height,
+            "aggregateHash" => $aggregateHash,
+            "aggregateId" => $aggregateId,
+            "index" => $index,
+            "id" => $id
+        );
+
+        $meta = new EmbeddedTransactionMetaDTO($transactionMetaDTO);
+
+        $signer = $data->transaction->signer;
+        $version = $data->transaction->version;
+        $type = $data->transaction->type;
+
+        $transaction = array(
+            'signer' => $signer,
+            'version' => $version,
+            'type' => $type
+        );
+        
+        switch (dechex($type)){
+            case TransactionType::LOCK: //lock transaction
+                $data = $this->formatHashLock($data->transaction->duration,$data->transaction->mosaicId,$data->transaction->amount,$data->transaction->hash);
+                $transaction["duration"] = $data->duration;
+                $transaction["mosaic"] = $data->mosaic;
+                $transaction["hash"] = $data->hash;
+                $transaction = new EmbeddedHashLockTransactionDTO($transaction);
+                break;
+                
+            case TransactionType::TRANSFER: //transfer transaction
+                $data = $this->formatTransfer($networkType,$data->transaction->mosaics,$data->transaction->recipient,$data->transaction->message);
+                $transaction["mosaics"] = $data->mosaics;
+                $transaction["recipient"] = $data->recipient;
+                $transaction["message"] = $data->message;
+                $transaction = new EmbeddedTransferTransactionDTO($transaction);
+                break;
+
+            case TransactionType::MOSAIC_DEFINITION: //mosaic definition transaction
+                $data = $this->formatMosaicDefinition($data->transaction->mosaicNonce,$data->transaction->mosaicId,$data->transaction->properties);
+                $transaction["mosaicNonce"] = $data->mosaicNonce;
+                $transaction["mosaicId"] = $data->mosaicId;
+                $transaction["properties"] = $data->properties;
+                $transaction = new EmbeddedMosaicDefinitionTransactionDTO($transaction);
+                break;
+
+            case TransactionType::MOSAIC_SUPPLY_CHANGE: //mosaic supply change transaction
+                $data = $this->formatMosaicSupplyChange($data->transaction->mosaicId,$data->transaction->direction,$data->transaction->delta);
+                $transaction["mosaicId"] = $data->mosaicId;
+                $transaction["direction"] = $data->direction;
+                $transaction["delta"] = $data->delta;
+                $transaction = new EmbeddedMosaicSupplyChangeTransactionDTO($transaction);
+                break;
+
+            case TransactionType::REGISTER_NAMESPACE: //register namespace transaction
+                $data = $this->formatRegisterNamespace($data->transaction->namespaceType,$data->transaction->duration,$data->transaction->namespaceId,$data->transaction->name,$data->transaction->parentId);
+                $transaction["namespaceType"] = $data->namespaceType;
+                $transaction["duration"] = $data->duration;
+                $transaction["namespaceId"] = $data->namespaceId;
+                $transaction["name"] = $data->name;
+                $transaction["parentId"] = $data->parentId;
+                $transaction = new EmbeddedRegisterNamespaceTransactionDTO($transaction);
+                break;
+
+            case TransactionType::ADDRESS_ALIAS: //address alias transaction
+                $data = $this->formatAddressAlias($data->transaction->aliasAction,$data->transaction->namespaceId,$data->transaction->address);
+                $transaction["aliasAction"] = $data->aliasAction;
+                $transaction["namespaceId"] = $data->namespaceId;
+                $transaction["address"] = $data->address;
+                $transaction = new EmbeddedAddressAliasTransactionDTO($transaction);
+                break;
+
+            case TransactionType::MOSAIC_ALIAS: //mosaic alias transaction
+                $data = $this->formatMosaicAlias($data->transaction->aliasAction,$data->transaction->namespaceId,$data->transaction->mosaicId);
+                $transaction["aliasAction"] = $data->aliasAction;
+                $transaction["namespaceId"] = $data->namespaceId;
+                $transaction["mosaicId"] = $data->mosaicId;
+                $transaction = new EmbeddedMosaicAliasTransactionDTO($transaction);
+                break;
+
+            case TransactionType::MODIFY_MULTISIG: //modify multisig account transaction
+                $data = $this->formatModifyMultisigAccount($data->transaction->minRemovalDelta,$data->transaction->minApprovalDelta,$data->transaction->modifications);
+                $transaction["minRemovalDelta"] = $data->minRemovalDelta;
+                $transaction["minApprovalDelta"] = $data->minApprovalDelta;
+                $transaction["modifications"] = $data->modifications;
+                $transaction = new EmbeddedModifyMultisigAccountTransactionDTO($transaction);
+                break;
+
+            case TransactionType::ACCOUNT_PROPERTY_ADDRESS: //account property address transaction
+                $data = $this->formatAccountProperty($data->transaction->propertyType,$data->transaction->modifications);
+                $transaction["propertyType"] = $data->propertyType;
+                $transaction["modifications"] = $data->modifications;
+                $transaction = new EmbeddedAccountPropertiesTransactionDTO($transaction);
+                break;
+            
+            case TransactionType::ACCOUNT_PROPERTY_MOSAIC: //account property mosaic transaction
+                $data = $this->formatAccountProperty($data->transaction->propertyType,$data->transaction->modifications);
+                $transaction["propertyType"] = $data->propertyType;
+                $transaction["modifications"] = $data->modifications;
+                $transaction = new EmbeddedAccountPropertiesTransactionDTO($transaction);
+                break;
+
+            case TransactionType::ACCOUNT_PROPERTY_ENTITY_TYPE: //account property antity type transaction
+                $data = $this->formatAccountProperty($data->transaction->propertyType,$data->transaction->modifications);
+                $transaction["propertyType"] = $data->propertyType;
+                $transaction["modifications"] = $data->modifications;
+                $transaction = new EmbeddedAccountPropertiesTransactionDTO($transaction);
+                break;
+
+            case TransactionType::SECRET_LOCK: //secret lock transaction
+                $data = $this->formatSecretLock($networkType,$data->transaction->duration,$data->transaction->mosaicId,$data->transaction->amount,$data->transaction->hashAlgorithm,$data->transaction->secret,$data->transaction->recipient);
+                $transaction["duration"] = $data->duration;
+                $transaction["mosaicId"] = $data->mosaicId;
+                $transaction["amount"] = $data->amount;
+                $transaction["hashAlgorithm"] = $data->hashAlgorithm;
+                $transaction["secret"] = $data->secret;
+                $transaction["recipient"] = $data->recipient;
+                $transaction = new EmbeddedSecretLockTransactionDTO($transaction);
+                break;
+            
+            case TransactionType::SECRET_PROOF: //secret proof transaction
+                $data = $this->formatSecretProof($networkType,$data->transaction->hashAlgorithm,$data->transaction->secret,$data->transaction->proof,$data->transaction->recipient);
+                $transaction["hashAlgorithm"] = $data->hashAlgorithm;
+                $transaction["secret"] = $data->secret;
+                $transaction["proof"] = $data->proof;
+                $transaction["recipient"] = $data->recipient;
+                $transaction = new EmbeddedSecretProofTransactionDTO($transaction);
+                break;
+
+            case TransactionType::LINK_ACCOUNT: //account link transaction
+                $data = $this->formatAccountLink($data->transaction->remoteAccountKey,$data->transaction->action);
+                $transaction["remoteAccountKey"] = $data->remoteAccountKey;
+                $transaction["action"] = $data->action;
+                $transaction = new EmbeddedAccountLinkTransactionDTO($transaction);
+                break;
+        }
+        return new EmbeddedTransactionInfoDTO(array("meta" => $meta,"transaction" => $transaction));;
     }
 
     /**
@@ -272,9 +507,8 @@ class Transaction{
         $group = $data->group;
         $status = $data->status;
         $hash = $data->hash;
-        $height = new HeightDTO($data->height);
-        $transMap = new TransactionMapping;
-        $deadline = $transMap->ExtractDeadline($data->deadline);
+        $height = new UInt64DTO($data->height);
+        $deadline = new UInt64DTO($data->deadline);
 
         $transactionStatus = array(
             'group' => $group,
@@ -356,35 +590,189 @@ class Transaction{
     }
 
     public function formatTransfer($networkType,$mosaics_raw,$recipient_raw,$message_raw){
-        $Mosaics = array();
+        $mosaics = array();
         for ($i=0;$i<count($mosaics_raw);$i++){
-            $mosaic = new MosaicDTO($mosaics_raw[$i]->id,$mosaics_raw[$i]->amount);
-            $Mosaics[$i] = $mosaic;
+            $id = new UInt64DTO($mosaics_raw[$i]->id);
+            $amount = new UInt64DTO($mosaics_raw[$i]->amount);
+            $mosaic = new MosaicDTO($id,$amount);
+            $mosaics[$i] = $mosaic;
         }
 
         $hex = new \Proximax\Utils\Hex;
-        $addrDecode = $hex->DecodeString($recipient_raw);
-        $addrString = Base32::encode(implode(array_map("chr", $addrDecode)));
-        $Recipient = new Address($addrString,$networkType);
+        if (is_string($recipient_raw)){
+            $addrDecode = $hex->DecodeString($recipient_raw);
+            $recipient = Base32::encode(implode(array_map("chr", $addrDecode)));
+        }
+        else if(is_array($recipient_raw)){ //NamespaceId
+            $recipient = new UInt64DTO($recipient_raw);
+        }
         
-        $mess = pack('H*', $message_raw->payload);
-        $Message = new Message($mess,$message_raw->type);
+        $message = new MessageDTO($message_raw->type,$message_raw->payload);
 
         $result = new \stdClass();
-        $result->mosaics = $Mosaics;
-        $result->recipient = $Recipient;
-        $result->message = $Message;
+        $result->mosaics = $mosaics;
+        $result->recipient = $recipient;
+        $result->message = $message;
         
         return $result;
     }
 
-    public function formatLockFunds($duration_raw,$mosaicId_raw,$amount_raw,$hash_raw){
-        $mosaic = new MosaicDTO($mosaicId_raw,$amount_raw);
+    public function formatMosaicDefinition($mosaicNonce_raw,$mosaicId_raw,$properties_raw){
+        $mosaicId = new UInt64DTO($mosaicId_raw);
+
+        $properties = array();
+        for ($i=0;$i<count($properties_raw);$i++){
+            $id = $properties_raw[$i]->id;
+            $value = new UInt64DTO($properties_raw[$i]->value);
+            $mosaicPropertyDTO = array(
+                "id" => $id,
+                "value" => $value
+            );
+            $properties[$i] = new MosaicPropertyDTO($mosaicPropertyDTO);
+        }
+        $result = new \stdClass();
+        $result->mosaicNonce = $mosaicNonce_raw;
+        $result->mosaicId = $mosaicId;
+        $result->properties = $properties;
+        
+        return $result;
+    }
+
+    public function formatMosaicSupplyChange($mosaicId,$direction,$delta){
+        $mosaicId = new UInt64DTO($mosaicId);
+        $delta = new UInt64DTO($delta);
+        $result = new \stdClass();
+        $result->mosaicId = $mosaicId;
+        $result->direction = $direction;
+        $result->delta = $delta;
+        
+        return $result;
+    }
+
+    public function formatHashLock($duration,$mosaicId,$amount,$hash){
+        $id = new UInt64DTO($mosaicId);
+        $amount = new UInt64DTO($amount);
+        $mosaic = new MosaicDTO($id,$amount);
 
         $result = new \stdClass();
         $result->mosaic = $mosaic;
-        $result->duration = (($duration_raw[1] << 32) | ($duration_raw[0]));
-        $result->hash = $hash_raw;
+        $result->duration = new UInt64DTO($duration);
+        $result->hash = $hash;
+
+        return $result;
+    }
+
+    public function formatRegisterNamespace($namespaceType,$duration,$namespaceId,$name,$parentId){
+        $result = new \stdClass();
+        $result->namespaceType = $namespaceType;
+        $result->duration = new UInt64DTO($duration);
+        $result->namespaceId = new UInt64DTO($namespaceId);
+        $result->name = $name;
+        $result->parentId = new UInt64DTO($parentId);
+
+        return $result;
+    }
+
+    public function formatAddressAlias($aliasAction,$namespaceId,$address){
+        $result = new \stdClass();
+        $result->aliasAction = $aliasAction;
+        $result->namespaceId = new UInt64DTO($namespaceId);
+        $result->address = $address;
+
+        return $result;
+    }
+
+    public function formatMosaicAlias($aliasAction,$namespaceId,$mosaicId){
+        $result = new \stdClass();
+        $result->aliasAction = $aliasAction;
+        $result->namespaceId = new UInt64DTO($namespaceId);
+        $result->mosaicId = new UInt64DTO($mosaicId);
+
+        return $result;
+    }
+
+    public function formatModifyMultisigAccount($minRemovalDelta,$minApprovalDelta,$modifications_raw){
+        $modifications = array();
+        for ($i=0;$i<count($modifications_raw);$i++){
+            $modification = $modifications_raw[$i];
+            $modifications[$i] = new CosignatoryModificationDTO($modification->type,$modification->cosignatoryPublicKey);
+        }
+        $result = new \stdClass();
+        $result->minRemovalDelta = $minRemovalDelta;
+        $result->minApprovalDelta = $minApprovalDelta;
+        $result->modifications = $modifications;
+
+        return $result;
+    }
+
+    public function formatAccountProperty($propertyType,$modifications_raw){
+        $modifications = array();
+        for ($i=0;$i<count($modifications_raw);$i++){
+            $modification = $modifications_raw[$i];
+            if (is_array($modification->value)){
+                $value = new UInt64DTO($modification->value);
+            }
+            else if (is_string($modification->value)){
+                $value = $modification->value;
+            }
+            else if (is_int($modification->value)){
+                $value = $modification->value;
+            }
+            $accountPropertiesModificationDTO = array(
+                "type" => $modification->type,
+                "value" => $value
+            );
+            $modifications[$i] = new AccountPropertiesModificationDTO($accountPropertiesModificationDTO);
+        }
+        $result = new \stdClass();
+        $result->propertyType = $propertyType;
+        $result->modifications = $modifications;
+
+        return $result;
+    }
+
+    public function formatSecretLock($networkType,$duration,$mosaicId,$amount,$hashAlgorithm,$secret,$recipient_raw){
+        $hex = new \Proximax\Utils\Hex;
+        if (is_string($recipient_raw)){
+            $addrDecode = $hex->DecodeString($recipient_raw);
+            $recipient = Base32::encode(implode(array_map("chr", $addrDecode)));
+        }
+        else if(is_array($recipient_raw)){ //NamespaceId
+            $recipient = new UInt64DTO($recipient_raw);
+        }
+        $result = new \stdClass();
+        $result->duration = new UInt64DTO($duration);
+        $result->mosaicId = new UInt64DTO($mosaicId);
+        $result->amount = new UInt64DTO($amount);
+        $result->hashAlgorithm = $hashAlgorithm;
+        $result->secret = $secret;
+        $result->recipient = $recipient;
+
+        return $result;
+    }
+
+    public function formatSecretProof($networkType,$hashAlgorithm,$secret,$proof,$recipient_raw){
+        $hex = new \Proximax\Utils\Hex;
+        if (is_string($recipient_raw)){
+            $addrDecode = $hex->DecodeString($recipient_raw);
+            $recipient = Base32::encode(implode(array_map("chr", $addrDecode)));
+        }
+        else if(is_array($recipient_raw)){ //NamespaceId
+            $recipient = new UInt64DTO($recipient_raw);
+        }
+        $result = new \stdClass();
+        $result->hashAlgorithm = $hashAlgorithm;
+        $result->secret = $secret;
+        $result->proof = $proof;
+        $result->recipient = $recipient;
+
+        return $result;
+    }
+
+    public function formatAccountLink($remoteAccountKey,$action){
+        $result = new \stdClass();
+        $result->remoteAccountKey = $remoteAccountKey;
+        $result->action = $action;
 
         return $result;
     }
@@ -392,13 +780,12 @@ class Transaction{
     public function formatAggregate($networkType,$cosignatures_raw,$transactions_raw){
         $cosignatures = array();
         for ($i=0;$i<count($cosignatures_raw);$i++){
-            $signer = (new Account)->newAccountFromPublicKey($cosignatures_raw[$i]->signer,$networkType);
-            $cosignatures[$i] = new CosignatureDTO($cosignatures_raw[$i]->signature,$signer);
+            $cosignatures[$i] = new CosignatureDTO($cosignatures_raw[$i]->signature,$cosignatures_raw[$i]->signer);
         }
 
         $transactions = array();
         for ($i=0;$i<count($transactions_raw);$i++){
-            $transactions[$i] = $this->formatData($networkType,$transactions_raw[$i]);
+            $transactions[$i] = $this->formatEmbeddedData($networkType,$transactions_raw[$i]);
         }
         $result = new \stdClass();
         $result->cosignatures = $cosignatures;

@@ -25,14 +25,19 @@ namespace Proximax\Model;
  */
 class AggregateTransactionDTO extends TransactionDTO{
 
-    private $cosignatures;//CosignatureDTO array
+    private $cosignatures;//array CosignatureDTO
 
-    private $transactions;//TransactionDTO array
+    private $transactions;//array EmbeddedTransactionInfoDTO
 
     public function __construct($data){
-        $this->abstractTransaction = $data["AbstractTransaction"];
-        $this->cosignatures = $data["Cosignatures"];
-        $this->transactions = $data["Transactions"];
+        $this->signature = $data["signature"];
+        $this->signer = $data["signer"];
+        $this->version = $data["version"];
+        $this->type = $data["type"];
+        $this->maxFee = $data["maxFee"];
+        $this->deadline = $data["deadline"];
+        $this->cosignatures = $data["cosignatures"];
+        $this->transactions = $data["transactions"];
     }
 
     public function getCosignatures(){

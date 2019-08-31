@@ -14,6 +14,7 @@
  */
 
 namespace Proximax\Model;
+use Proximax\Utils\Utils;
 
 /**
  * UInt64DTO class Doc Comment
@@ -23,7 +24,7 @@ namespace Proximax\Model;
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
-class UInt64DTO extends TransactionDTO{
+class UInt64DTO{
 
     private $array; 
 
@@ -33,6 +34,16 @@ class UInt64DTO extends TransactionDTO{
 
     public function getArray(){
         return $this->array;
+    }
+
+    public function getValue(){
+        $value = ($this->array[1] << 32) | $this->array[0];
+        return $value;
+    }
+
+    public function getString(){
+        $utils = new Utils;
+        return $utils->bigIntToHexString($this->array);
     }
 }
 ?>

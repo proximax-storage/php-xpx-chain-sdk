@@ -25,10 +25,40 @@ namespace Proximax\Model;
  */
 class TransactionDTO{
 
-    public $abstractTransaction;
+    protected $signature;//String
 
-    public function getAbstracTransaction(){
-        return $this->abstractTransaction;
+    protected $signer;//String
+
+    protected $version;//NetworkTypeEnum
+
+    protected $type;//EntityTypeEnum
+
+    protected $maxFee;//UInt64DTO
+
+    protected $deadline;//UInt64DTO
+
+    public function getSignature(){
+        return $this->signature;
+    }
+
+    public function getSigner(){
+        return $this->signer;
+    }
+
+    public function getVersion(){
+        return $this->version;
+    }
+
+    public function getType(){
+        return $this->type;
+    }
+
+    public function getMaxFee(){
+        return $this->maxFee;
+    }
+
+    public function getDeadline(){
+        return $this->deadline;
     }
 
 }

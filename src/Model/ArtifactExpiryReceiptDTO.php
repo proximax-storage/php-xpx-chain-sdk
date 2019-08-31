@@ -28,9 +28,9 @@ class ArtifactExpiryReceiptDTO extends ReceiptDTO{
     private $artifactId; //UInt64DTO
 
     public function __construct($dataArray){
-        $this->artifactId = $data["artifactId"];
-        $this->version = $data["version"];
-        $this->type = $data["type"];
+        $this->artifactId = $dataArray["artifactId"];
+        $this->version = $dataArray["version"];
+        $this->type = $dataArray["type"];
     }
 
     public function getArtifactId(){

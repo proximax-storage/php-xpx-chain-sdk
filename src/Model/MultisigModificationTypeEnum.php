@@ -16,55 +16,25 @@
 namespace Proximax\Model;
 
 /**
- * AccountPropertyType class Doc Comment
+ * MultisigModificationTypeEnum class Doc Comment
  *
  * @category class
  * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
-class AccountPropertyType
+class MultisigModificationTypeEnum
 {    
     /**
      * @internal
      * @var integer
      */
-    const ALLOW_ADDRESS = "01"; //1
+    const ADD = 0;
 
     /**
      * @internal
      * @var integer
      */
-    const ALLOW_MOSAIC = "02"; //2
-
-    /**
-     * @internal
-     * @var integer
-     */
-    const ALLOW_TRANSACTION = "04"; //4
-
-    /**
-     * @internal
-     * @var integer
-     */
-    const SENTINEL = "05"; //5
-
-    /**
-     * @internal
-     * @var integer
-     */
-    const BLOCK_ADDRESS = "81"; //129
-
-    /**
-     * @internal
-     * @var integer
-     */
-    const BLOCK_MOSAIC = "82"; //130
-
-    /**
-     * @internal
-     * @var integer
-     */
-    const BLOCK_TRANSACTION = "84"; //132
+    const REMOVE = 1;
 
 }

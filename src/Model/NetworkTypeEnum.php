@@ -14,27 +14,23 @@
  */
 
 namespace Proximax\Model;
+use Proximax\Utils\Utils;
 
 /**
- * AliasActionType class Doc Comment
+ * NetworkTypeEnum class Doc Comment
  *
  * @category class
  * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
-class AliasActionType
-{    
-    /**
-     * @internal
-     * @var integer
-     */
-    const LINK = 0;
+class NetworkTypeEnum{
 
-    /**
-     * @internal
-     * @var integer
-     */
-    const UNLINK = 1;
-
+    const MAIN_NET = 104;//0x68
+  
+    const TEST_NET = 152;//0x98
+    
+    const MIJIN = 96;//0x60
+    
+    const MIJIN_TEST = 144;//0x90
 }

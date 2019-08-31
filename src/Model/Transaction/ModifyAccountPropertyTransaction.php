@@ -40,7 +40,7 @@ use Base32\Base32;
  */
 class ModifyAccountPropertyTransaction extends \Proximax\Model\Transaction{
 
-    private $propertyType; //AccountPropertyType
+    private $propertyType; //AccountPropertyTypeEnum
 
     private $modifications; //array AccountPropertyModification
      

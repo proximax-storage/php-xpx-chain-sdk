@@ -17,14 +17,14 @@ namespace Proximax\Model;
 use Proximax\Core\KeccakHasher;
 use Proximax\Utils\Hex;
 /**
- * HashType class Doc Comment
+ * HashAlgorithmEnum class Doc Comment
  *
  * @category class
  * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
-class HashType
+class HashAlgorithmEnum
 {    
     /**
      *  hashed using SHA3-256

@@ -8,8 +8,8 @@
     use Proximax\Model\Config;
     use Proximax\Infrastructure\Network;
     use Proximax\Model\AccountPropertyModification;
-    use Proximax\Model\AccountPropertyType;
-    use Proximax\Model\AccountPropertyModificationType;
+    use Proximax\Model\AccountPropertyTypeEnum;
+    use Proximax\Model\AccountPropertiesModificationTypeEnum;
     use Proximax\Model\MosaicId;
 
     $config = new Config;
@@ -31,10 +31,10 @@
     $mosaicId = new MosaicId(array(2227523919,1484419338));
     $accountProperty = new ModifyAccountPropertyTransaction(
         new Deadline(1),
-        AccountPropertyType::ALLOW_MOSAIC,
+        AccountPropertyTypeEnum::ALLOW_MOSAIC,
         array(
             new AccountPropertyModification(
-                AccountPropertyModificationType::ADD,
+                AccountPropertiesModificationTypeEnum::ADD,
                 $mosaicId
             )
         ),

@@ -14,9 +14,7 @@
  */
 
 namespace Proximax\Model;
-
-use Proximax\Core\Encryption as CryptoHelper;
-use RuntimeException;
+use Proximax\Model\MessageTypeEnum;
 
 /**
  * Message class Doc Comment
@@ -27,25 +25,8 @@ use RuntimeException;
  * @link     https://github.com/swagger-api/swagger-codegen
  */
 class Message{
-    /**
-     * @internal
-     * @var integer
-     */
-    public const TYPE_HEX = 0;
 
-    /**
-     * @internal
-     * @var integer
-     */
-    public const TYPE_SIMPLE = 1;
-
-    /**
-     * @internal
-     * @var integer
-     */
-    public const TYPE_ENCRYPTED = 2;
-
-    public $type; //int
+    public $type; //MessageTypeEnum
 
     public $payload; // array
 
@@ -58,7 +39,7 @@ class Message{
         if ($type !== null){
             $this->type = $type;
         }
-        else $this->type = self::TYPE_HEX;
+        else $this->type = MessageTypeEnum::TYPE_HEX;
     }
 
     /**

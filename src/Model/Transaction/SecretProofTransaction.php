@@ -38,7 +38,7 @@ use Base32\Base32;
  */
 class SecretProofTransaction extends \Proximax\Model\Transaction{
 
-    private $hashType; //HashType
+    private $hashType; //HashAlgorithmEnum
 
     private $secret; //String
 

@@ -30,8 +30,8 @@ class MerkleProofInfoDTO{
     private $type; //String
 
     public function __construct($dataArray){
-        $this->payload = $data["payload"];
-        $this->type = $data["type"];
+        $this->payload = $dataArray["payload"];
+        $this->type = $dataArray["type"];
     }
 
     public function getPayload(){

@@ -24,21 +24,15 @@ use Proximax\Utils\Utils;
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
-class BlockDTO{
+class BlockDTO extends EntityDTO{
 
     private $signature;//string
 
-    private $signer;//PublicAccount
+    private $height;//UInt64DTO
 
-    private $version;//int
+    private $timestamp;//UInt64DTO
 
-    private $type;//int 
-
-    private $height;//int
-
-    private $timestamp;//deadline
-
-    private $difficulty;//int
+    private $difficulty;//UInt64DTO
 
     private $feeMultiplier;//int
 
@@ -52,36 +46,30 @@ class BlockDTO{
 
     private $beneficiary;//string
 
-    public function __construct($signature, $signer, $version, $type, $height, $timestamp, $difficulty, $feeMultiplier, $previousBlockHash, $blockTransactionsHash, $blockReceiptsHash, $stateHash, $beneficiary){
-        $this->signature = $signature;
-        $this->signer = $signer;
-        $this->version = $version;
-        $this->type = $type;
-        $this->height = $height;
-        $this->timestamp = $timestamp;
-        $this->difficulty = $difficulty;
-        $this->feeMultiplier = $feeMultiplier;
-        $this->previousBlockHash = $previousBlockHash;
-        $this->blockTransactionsHash = $blockTransactionsHash;
-        $this->blockReceiptsHash = $blockReceiptsHash;
-        $this->stateHash = $stateHash;
-        $this->beneficiary = $beneficiary;
+    private $feeInterest;//string
+
+    private $feeInterestDenominator;//string
+
+    public function __construct($data){
+        $this->signature = $data["signature"];
+        $this->signer = $data["signer"];
+        $this->version = $data["version"];
+        $this->type = $data["type"];
+        $this->height = $data["height"];
+        $this->timestamp = $data["timestamp"];
+        $this->difficulty = $data["difficulty"];
+        $this->feeMultiplier = $data["feeMultiplier"];
+        $this->previousBlockHash = $data["previousBlockHash"];
+        $this->blockTransactionsHash = $data["blockTransactionsHash"];
+        $this->blockReceiptsHash = $data["blockReceiptsHash"];
+        $this->stateHash = $data["stateHash"];
+        $this->beneficiary = $data["beneficiary"];
+        $this->feeInterest = $data["feeInterest"];
+        $this->feeInterestDenominator = $data["feeInterestDenominator"];
     }
 
     public function getSignature(){
         return $this->signature;
-    }
-
-    public function getSigner(){
-        return $this->signer;
-    }
-
-    public function getVersion(){
-        return $this->version;
-    }
-
-    public function getType(){
-        return $this->type;
     }
 
     public function getHeight(){
@@ -118,5 +106,13 @@ class BlockDTO{
 
     public function getBeneficiary(){
         return $this->beneficiary;
+    }
+
+    public function getFeeInterest(){
+        return $this->feeInterest;
+    }
+
+    public function getFeeInterestDenominator(){
+        return $this->feeInterestDenominator;
     }
 }

@@ -26,7 +26,7 @@ use \Google\FlatBuffers\FlatbufferBuilder;
 use \Catapult\Buffers\RegisterNamespaceTransactionBuffer;
 use Proximax\Utils\Utils;
 use Proximax\Model\AbstractTransaction;
-use Proximax\Model\NamespaceType;
+use Proximax\Model\NamespaceTypeEnum;
 use Proximax\Model\Transaction\IdGenerator;
 use Proximax\Model\NamespaceId;
 
@@ -72,7 +72,7 @@ class RegisterNamespaceTransaction extends \Proximax\Model\Transaction{
         $this->setAbstractTransaction($abstractTransaction);
         $this->namespaceName = $namespaceName;
         $this->namespaceId = new NamespaceId(IdGenerator::NewNamespaceIdFromName($namespaceName));
-        $this->namespaceType = NamespaceType::ROOT;
+        $this->namespaceType = NamespaceTypeEnum::ROOT;
         $this->duration = $duration;
         $this->parentId = array(0,0);
 
@@ -99,7 +99,7 @@ class RegisterNamespaceTransaction extends \Proximax\Model\Transaction{
         $this->parentId = new NamespaceId(IdGenerator::NewNamespaceIdFromName($parentName));
         $this->namespaceName = $namespaceName;
         $this->namespaceId = new NamespaceId(IdGenerator::generateNamespaceId($namespaceName,$this->parentId->getId()));
-        $this->namespaceType = NamespaceType::SUB;
+        $this->namespaceType = NamespaceTypeEnum::SUB;
         $this->duration = 0;
 
         return $this;
@@ -129,10 +129,10 @@ class RegisterNamespaceTransaction extends \Proximax\Model\Transaction{
         $deadlineVector = RegisterNamespaceTransactionBuffer::createDeadlineVector($builder, $deadline->getTimeArray());
         $feeVector = RegisterNamespaceTransactionBuffer::createMaxFeeVector($builder, $maxFee);
         $namespaceIdVector = RegisterNamespaceTransactionBuffer::createNamespaceIdVector($builder, $namespaceId->getId());
-        if ($namespaceType == NamespaceType::ROOT){
+        if ($namespaceType == NamespaceTypeEnum::ROOT){
             $durationParentIdVector = RegisterNamespaceTransactionBuffer::createDurationParentIdVector($builder, $duration);
         }
-        else if ($namespaceType == NamespaceType::SUB){
+        else if ($namespaceType == NamespaceTypeEnum::SUB){
             $durationParentIdVector = RegisterNamespaceTransactionBuffer::createDurationParentIdVector($builder, $parentId->getId());
         }
         

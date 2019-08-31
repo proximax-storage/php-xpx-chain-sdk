@@ -10,7 +10,7 @@
     use Proximax\Model\MetadataModification;
     use Proximax\Model\MetadataModificationType;
     use Proximax\Model\MultisigCosignatoryModification;
-    use Proximax\Model\MultisigCosignatoryModificationType;
+    use Proximax\Model\MultisigModificationTypeEnum;
     use Proximax\Utils\Utils;
 
     $config = new Config;
@@ -43,19 +43,19 @@
         $fileHash,
         array(
             new MultisigCosignatoryModification(
-                MultisigCosignatoryModificationType::ADD,
+                MultisigModificationTypeEnum::ADD,
                 $customer->getPublicAccount()
             )
         ),
         array(
             new MultisigCosignatoryModification(
-                MultisigCosignatoryModificationType::ADD,
+                MultisigModificationTypeEnum::ADD,
                 $replicator->getPublicAccount()
             )
         ),
         array(
             new MultisigCosignatoryModification(
-                MultisigCosignatoryModificationType::ADD,
+                MultisigModificationTypeEnum::ADD,
                 $verificator->getPublicAccount()
             )
         ),

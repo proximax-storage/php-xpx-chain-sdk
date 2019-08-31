@@ -16,24 +16,24 @@
 namespace Proximax\Model;
 
 /**
- * AccountLinkAction class Doc Comment
+ * MosaicMetadataDTO class Doc Comment
  *
  * @category class
  * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
-class AccountLinkAction
-{    
-    /**
-     * @internal
-     * @var integer
-     */
-    const LINK = 0;
+class MosaicMetadataDTO extends MetadataDTO{
 
-    /**
-     * @internal
-     * @var integer
-     */
-    const UNLINK = 1;
+    private $metadataId;//UInt64DTO
+
+    public function __construct($data){
+        $this->metadataType = $data["metadataType"];
+        $this->fields = $data["fields"];
+        $this->metadataId = $data["metadataId"];
+    }
+
+    public function getMetadataId(){
+        return $this->metadataId;
+    }
 }

@@ -39,7 +39,7 @@ class AccountLinkTransaction extends \Proximax\Model\Transaction{
 
     private $remoteAccount; //PublicAccount 
 
-    private $linkAction; //AccountLinkAction
+    private $linkAction; //LinkActionEnum
      
     public function __construct($deadline, $remoteAccount, $linkAction, $networkType){
         $version = TransactionVersion::LINK_ACCOUNT_VERSION;
