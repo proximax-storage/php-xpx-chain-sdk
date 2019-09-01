@@ -7,16 +7,16 @@
     $config = new Config;
     $network = new Network;
   
-    $baseUrl = "http://13.229.183.224:3000";
+    $baseUrl = "http://192.168.1.41:3000";
     $wsReconnectionTimeout = 5000;
     $transId = "5D4CDC46C682350001782297";
-    $hash = "555C32CAECA8626A0DBB665CEB708F64C2BF7E8C8C4B6E5FB6FEA0C23EA13C94";
-    $netType = Network::getIdfromName("PublicTest");
+    $hash = "52F7221E2269E71CB7C26E5A6A062B74D04B8900E3A4A683ED5B2E6691C4EC40";
+    $netType = Network::getIdfromName("MijinTest");
 
     if ($netType){
         $config = $config->NewConfig($baseUrl,$netType,$wsReconnectionTimeout);
     }
     $Transaction = new Transaction;
-    $transaction = $Transaction->GetTransaction($config,$transId);
+    $transaction = $Transaction->GetTransaction($config,$hash);
     var_dump($transaction);
 ?>

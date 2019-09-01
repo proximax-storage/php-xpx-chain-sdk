@@ -25,17 +25,22 @@ namespace Proximax\Model;
  */
 class TransferTransactionDTO extends TransactionDTO{
 
-    private $mosaics; //array Mosaic
+    private $mosaics; //array MosaicDTO or NamespaceId
 
-    private $recipient; //Address
+    private $recipient; //string  or NamespaceId
 
-    private $message; //Message
+    private $message; //MessageDTO
 
-    public function __construct($arrayData){
-        $this->abstractTransaction = $arrayData["AbstractTransaction"];
-        $this->mosaics = $arrayData["Mosaics"];
-        $this->recipient = $arrayData["Recipient"];
-        $this->message = $arrayData["Message"];
+    public function __construct($dataArray){
+        $this->signature = $dataArray["signature"];
+        $this->signer = $dataArray["signer"];
+        $this->version = $dataArray["version"];
+        $this->type = $dataArray["type"];
+        $this->maxFee = $dataArray["maxFee"];
+        $this->deadline = $dataArray["deadline"];
+        $this->mosaics = $dataArray["mosaics"];
+        $this->recipient = $dataArray["recipient"];
+        $this->message = $dataArray["message"];
     }
 
     public function getMosaics(){

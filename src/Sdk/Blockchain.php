@@ -21,7 +21,18 @@ use Proximax\Infrastructure\TransactionMapping;
 use Proximax\Model\Account;
 use Proximax\Model\BlockInfoDTO;
 use Proximax\Model\BlockchainStorageInfo;
-
+use Proximax\Model\StatementsDTO;
+use Proximax\Model\UInt64DTO;
+use Proximax\Model\SourceDTO;
+use Proximax\Model\BalanceTransferReceiptDTO;
+use Proximax\Model\BalanceChangeReceiptDTO;
+use Proximax\Model\ArtifactExpiryReceiptDTO;
+use Proximax\Model\InflationReceiptDTO;
+use Proximax\Model\TransactionStatementDTO;
+use Proximax\Model\ResolutionEntryDTO;
+use Proximax\Model\MerklePathItem;
+use Proximax\Model\MerkleProofInfo;
+use Proximax\Model\MerkleProofInfoDTO;
 /**
  * Blockchain class Doc Comment
  *
@@ -177,7 +188,7 @@ class Blockchain{
      *
      * @param config $config
      * 
-     * @return StatmentsDTO
+     * @return StatementsDTO
      */
     public function GetReceiptsByHeight($config,$height){
         $BlockchainRoutesApi = new BlockchainRoutesApi;
@@ -189,7 +200,7 @@ class Blockchain{
         $data = $BlockchainRoutesApi->getReceiptsByHeight($height);
         $transactions = array();
         if ($data[1] == 200){ // successfull
-            return new StatmentsDTO($this->StatementsDTO($networkType,$data[0]));
+            return new StatementsDTO($this->StatementsDTO($networkType,$data[0]));
         }
         else return null;
     }
@@ -208,6 +219,27 @@ class Blockchain{
         $networkType = $config->NetworkType;
 
         $data = $BlockchainRoutesApi->getMerkleReceiptByHeightAndHash($height,$hash);
+        $transactions = array();
+        if ($data[1] == 200){ // successfull
+            return new MerkleProofInfoDTO($this->MerkleProofInfoDTO($networkType,$data[0]));
+        }
+        else return null;
+    }
+
+    /**
+     *
+     * @param config $config
+     * 
+     * @return MerkleProofInfoDTO
+     */
+    public function GetMerkleTransactionByHeightAndHash($config,$height,$hash){
+        $BlockchainRoutesApi = new BlockchainRoutesApi;
+        $ApiClient = new ApiClient;
+        $url = $config->BaseURL;
+        $ApiClient->setHost($url);
+        $networkType = $config->NetworkType;
+
+        $data = $BlockchainRoutesApi->getMerkleTransactionByHeightAndHash($height,$hash);
         $transactions = array();
         if ($data[1] == 200){ // successfull
             return new MerkleProofInfoDTO($this->MerkleProofInfoDTO($networkType,$data[0]));
@@ -285,63 +317,61 @@ class Blockchain{
             $receipts = array();
             for ($j=0;$j<count($transactionStatement->receipts);$j++){
                 $receipt = $transactionStatement->receipts[$j];
-                switch ($receipt->type){ //recheck
-                    case 1:
-                        $sender = $receipt->sender;
-                        $recipient = $receipt->recipient;
-                        $mosaicId = $receipt->mosaicId;
-                        $amount = $receipt->amount;
-                        $version = $receipt->version;
-                        $type = $receipt->type;
-                        $receiptDTO = array(
-                            "sender" => $sender,
-                            "recipient" => $recipient,
-                            "mosaicId" => $mosaicId,
-                            "amount" => $amount,
-                            "version" => $version,
-                            "type" => $type,
-                        );
-                        $receipts[$j] = new BalanceTransferReceiptDTO($receiptDTO);
-                        break;
-                    case 2 || 3:
-                        $account = $receipt->account;
-                        $mosaicId = $receipt->mosaicId;
-                        $amount = $receipt->amount;
-                        $version = $receipt->version;
-                        $type = $receipt->type;
-                        $receiptDTO = array(
-                            "account" => $account,
-                            "mosaicId" => $mosaicId,
-                            "amount" => $amount,
-                            "version" => $version,
-                            "type" => $type,
-                        );
-                        $receipts[$j] = new BalanceChangeReceiptDTO($receiptDTO);
-                        break;
-                    case 4:
-                        $artifactId = $receipt->artifactId;
-                        $version = $receipt->version;
-                        $type = $receipt->type;
-                        $receiptDTO = array(
-                            "artifactId" => $artifactId,
-                            "version" => $version,
-                            "type" => $type,
-                        );
-                        $receipts[$j] = new ArtifactExpiryReceiptDTO($receiptDTO);
-                        break;
-                    case 5:
-                        $mosaic = $receipt->mosaic;
-                        $amount = $receipt->amount;
-                        $version = $receipt->version;
-                        $type = $receipt->type;
-                        $receiptDTO = array(
-                            "mosaic" => $mosaic,
-                            "amount" => $amount,
-                            "version" => $version,
-                            "type" => $type,
-                        );
-                        $receipts[$j] = new InflationReceiptDTO($receiptDTO);
-                        break;
+                if (dechex($receipt->type)[0] == "1"){ //recheck
+                    $sender = $receipt->sender;
+                    $recipient = $receipt->recipient;
+                    $mosaicId = $receipt->mosaicId;
+                    $amount = $receipt->amount;
+                    $version = $receipt->version;
+                    $type = $receipt->type;
+                    $receiptDTO = array(
+                        "sender" => $sender,
+                        "recipient" => $recipient,
+                        "mosaicId" => $mosaicId,
+                        "amount" => $amount,
+                        "version" => $version,
+                        "type" => $type,
+                    );
+                    $receipts[$j] = new BalanceTransferReceiptDTO($receiptDTO);
+                }
+                else if (dechex($receipt->type)[0] == "2" || dechex($receipt->type)[0] == "3"){
+                    $account = $receipt->account;
+                    $mosaicId = $receipt->mosaicId;
+                    $amount = $receipt->amount;
+                    $version = $receipt->version;
+                    $type = $receipt->type;
+                    $receiptDTO = array(
+                        "account" => $account,
+                        "mosaicId" => $mosaicId,
+                        "amount" => $amount,
+                        "version" => $version,
+                        "type" => $type,
+                    );
+                    $receipts[$j] = new BalanceChangeReceiptDTO($receiptDTO);
+                }
+                else if (dechex($receipt->type)[0] == "4"){
+                    $artifactId = $receipt->artifactId;
+                    $version = $receipt->version;
+                    $type = $receipt->type;
+                    $receiptDTO = array(
+                        "artifactId" => $artifactId,
+                        "version" => $version,
+                        "type" => $type,
+                    );
+                    $receipts[$j] = new ArtifactExpiryReceiptDTO($receiptDTO);
+                }
+                else if (dechex($receipt->type)[0] == "5"){
+                    $mosaicId = $receipt->mosaicId;
+                    $amount = $receipt->amount;
+                    $version = $receipt->version;
+                    $type = $receipt->type;
+                    $receiptDTO = array(
+                        "mosaicId" => $mosaicId,
+                        "amount" => $amount,
+                        "version" => $version,
+                        "type" => $type,
+                    );
+                    $receipts[$j] = new InflationReceiptDTO($receiptDTO);
                 }
             }
             $transactionStatementDTO = array(
@@ -387,7 +417,7 @@ class Blockchain{
      *
      * @param array $data
      * 
-     * @return MerkleProofInfoDTO 
+     * @return array
      */
     private function MerkleProofInfoDTO($networkType, $data){
         $merklePath = array();

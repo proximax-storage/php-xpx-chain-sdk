@@ -24,15 +24,15 @@ namespace Proximax\Model;
  * @link     https://github.com/swagger-api/swagger-codegen
  */
 class TransactionStatusDTO {
-    private $group;
+    private $group; //string
 
-    private $status;
+    private $status;//string
 
-    private $hash;
+    private $hash;//string
 
-    private $deadline;
+    private $deadline;//UInt64DTO
 
-    private $height;
+    private $height;//UInt64DTO
 
     public function __construct($dataArray){
         $this->group = $dataArray["group"];

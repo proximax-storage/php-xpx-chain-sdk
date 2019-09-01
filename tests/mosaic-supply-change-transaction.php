@@ -10,13 +10,13 @@
     use Proximax\Utils\Utils;
     use Proximax\Model\Address;
     use Proximax\Model\MosaicId;
-    use Proximax\Model\MosaicSupplyType;
+    use Proximax\Model\MosaicDirectionEnum;
     use Proximax\Model\Transaction\IdGenerator;
 
     $config = new Config;
     $network = new Network;
 
-    $baseUrl = "http://192.168.0.107:3000";
+    $baseUrl = "http://192.168.1.41:3000";
     $wsReconnectionTimeout = 5000;
     $networkType = Network::getIdfromName("MijinTest");
     if ($networkType){
@@ -28,11 +28,11 @@
     $privateKey = "760B7E531925FAB015349C12093943E86FBFBE5CB831F14447ED190EC10F6B1B";
     $account = (new Account)->newAccountFromPrivateKey($privateKey,$networkType);
 
-    $mosaicId = new MosaicId(array(2922282680,1964758636));
+    $mosaicId = new MosaicId(array(3879309932,567479887));
     $transfer = new MosaicSupplyChangeTransaction(
         new Deadline(1),
         $mosaicId,
-        MosaicSupplyType::INCREASE,
+        MosaicDirectionEnum::INCREASE,
         (new Utils)->fromBigInt(100000000000),
         $networkType
     );

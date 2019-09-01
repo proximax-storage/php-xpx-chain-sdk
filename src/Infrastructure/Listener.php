@@ -15,6 +15,9 @@
 
 namespace Proximax\Infrastructure;
 use Proximax\Infrastructure\Listener\ListenerChannel;
+use Amp\Websocket;
+use Amp\Loop;
+use Proximax\Infrastructure\Listener\BlockChannelMessage;
 
 /**
  * Listener class Doc Comment
@@ -24,52 +27,206 @@ use Proximax\Infrastructure\Listener\ListenerChannel;
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
-class Listener {
-    public function newBlock() {
-        this.subscribeTo(ListenerChannel::BLOCK);
-        return BlockChannelMessage.subscribeTo(messageSubject);
+class Listener{
+
+    public function newBlock($host,$port,$callback = null) {
+        $channel = ListenerChannel::BLOCK;
+        Loop::run(function () use ($host, $port, $channel, $callback){
+            $connection = yield Websocket\connect('ws://' . $host . ':' . $port . '/ws');
+        
+            $message = yield $connection->receive();
+            $payload = yield $message->buffer();
+            $uid = json_decode($payload)->uid;
+
+            $data = $this->subscribeTo($uid, $channel);
+
+            $connection->send($data);
+            $continue = true;
+            while ($continue){      
+                $message = yield $connection->receive();
+                $payload = yield $message->buffer();
+                if ($callback !== null){
+                    $blockChannelMessage = new BlockChannelMessage($payload);
+                    $continue = $callback($blockChannelMessage);
+                }
+            }
+        });
     }
  
-    public function confirmed($address) {
+    public function confirmed($host,$port,$address,$callback = null) {
         $channel = ListenerChannel::CONFIRMED_ADDED;
-        this.subscribeTo($channel, address);
-        return TransactionChannelMessage.subscribeTo(messageSubject, channel, address);
+        Loop::run(function () use ($host, $port, $channel, $address, $callback){
+            $connection = yield Websocket\connect('ws://' . $host . ':' . $port . '/ws');
+        
+            $message = yield $connection->receive();
+            $payload = yield $message->buffer();
+            $uid = json_decode($payload)->uid;
+
+            $data = $this->subscribeTo($uid, $channel . "/" .$address);
+
+            $connection->send($data);
+            $continue = true;
+            while ($continue){      
+                $message = yield $connection->receive();
+                $payload = yield $message->buffer();
+                if ($callback !== null){
+                    $continue = $callback($payload);
+                }
+            }
+        });
     }
  
-    public function unconfirmedAdded($address) {
+    public function unconfirmedAdded($host,$port,$address,$callback = null) {
         $channel = ListenerChannel::UNCONFIRMED_ADDED;
-        this.subscribeTo($channel, address);
-        return TransactionChannelMessage.subscribeTo(messageSubject, channel, address);
+        Loop::run(function () use ($host, $port, $channel, $address, $callback){
+            $connection = yield Websocket\connect('ws://' . $host . ':' . $port . '/ws');
+        
+            $message = yield $connection->receive();
+            $payload = yield $message->buffer();
+            $uid = json_decode($payload)->uid;
+
+            $data = $this->subscribeTo($uid, $channel . "/" .$address);
+
+            $connection->send($data);
+            $continue = true;
+            while ($continue){      
+                $message = yield $connection->receive();
+                $payload = yield $message->buffer();
+                if ($callback !== null){
+                    $continue = $callback($payload);
+                }
+            }
+        });
     }
  
-    public function unconfirmedRemoved($address) {
+    public function unconfirmedRemoved($host,$port,$address,$callback = null) {
         $channel = ListenerChannel::UNCONFIRMED_REMOVED;
-        this.subscribeTo($channel, address);
-        return SimpleChannelMessage.subscribeTo(messageSubject, channel, address);
+        Loop::run(function () use ($host, $port, $channel, $address, $callback){
+            $connection = yield Websocket\connect('ws://' . $host . ':' . $port . '/ws');
+        
+            $message = yield $connection->receive();
+            $payload = yield $message->buffer();
+            $uid = json_decode($payload)->uid;
+
+            $data = $this->subscribeTo($uid, $channel . "/" .$address);
+
+            $connection->send($data);
+            $continue = true;
+            while ($continue){      
+                $message = yield $connection->receive();
+                $payload = yield $message->buffer();
+                if ($callback !== null){
+                    $continue = $callback($payload);
+                }
+            }
+        });
     }
  
-    public function aggregateBondedAdded($address) {
+    public function aggregateBondedAdded($host,$port,$address,$callback = null) {
         $channel = ListenerChannel::AGGREGATE_BONDED_ADDED;
-        this.subscribeTo($channel, $address);
-        return TransactionChannelMessage.subscribeTo(messageSubject, channel, address)
-                .map(transaction -> (AggregateTransaction)transaction);
+        Loop::run(function () use ($host, $port, $channel, $address, $callback){
+            $connection = yield Websocket\connect('ws://' . $host . ':' . $port . '/ws');
+        
+            $message = yield $connection->receive();
+            $payload = yield $message->buffer();
+            $uid = json_decode($payload)->uid;
+
+            $data = $this->subscribeTo($uid, $channel . "/" .$address);
+
+            $connection->send($data);
+            $continue = true;
+            while ($continue){      
+                $message = yield $connection->receive();
+                $payload = yield $message->buffer();
+                if ($callback !== null){
+                    $continue = $callback($payload);
+                }
+            }
+        });
     }
  
-    public function aggregateBondedRemoved($address) {
+    public function aggregateBondedRemoved($host,$port,$address,$callback = null) {
        $channel = ListenerChannel::AGGREGATE_BONDED_REMOVED;
-       this.subscribeTo($channel, $address);
-       return SimpleChannelMessage.subscribeTo(messageSubject, channel, address);
+        Loop::run(function () use ($host, $port, $channel, $address, $callback){
+            $connection = yield Websocket\connect('ws://' . $host . ':' . $port . '/ws');
+        
+            $message = yield $connection->receive();
+            $payload = yield $message->buffer();
+            $uid = json_decode($payload)->uid;
+
+            $data = $this->subscribeTo($uid, $channel . "/" .$address);
+
+            $connection->send($data);
+            $continue = true;
+            while ($continue){      
+                $message = yield $connection->receive();
+                $payload = yield $message->buffer();
+                if ($callback !== null){
+                    $continue = $callback($payload);
+                }
+            }
+        });
     }
  
-    public function status($address) {
+    public function status($host,$port,$address,$callback = null) {
         $channel = ListenerChannel::STATUS;
-        this.subscribeTo($channel, $address);
-        return StatusChannelMessage.subscribeTo(messageSubject, address);
+        Loop::run(function () use ($host, $port, $channel, $address, $callback){
+            $connection = yield Websocket\connect('ws://' . $host . ':' . $port . '/ws');
+        
+            $message = yield $connection->receive();
+            $payload = yield $message->buffer();
+            $uid = json_decode($payload)->uid;
+
+            $data = $this->subscribeTo($uid, $channel . "/" .$address);
+
+            $connection->send($data);
+            $continue = true;
+            while ($continue){      
+                $message = yield $connection->receive();
+                $payload = yield $message->buffer();
+                if ($callback !== null){
+                    $continue = $callback($payload);
+                }
+            }
+        });
     }
  
-    public function cosignatureAdded($address) {
+    public function cosignatureAdded($host,$port,$address,$callback = null) {
         $channel = ListenerChannel::COSIGNATURE;
-        this.subscribeTo($channel, $address);
-        return CosignatureChannelMessage.subscribeTo(messageSubject, address);
+        Loop::run(function () use ($host, $port, $channel, $address, $callback){
+            $connection = yield Websocket\connect('ws://' . $host . ':' . $port . '/ws');
+        
+            $message = yield $connection->receive();
+            $payload = yield $message->buffer();
+            $uid = json_decode($payload)->uid;
+
+            $data = $this->subscribeTo($uid, $channel . "/" .$address);
+
+            $connection->send($data);
+            $continue = true;
+            while ($continue){      
+                $message = yield $connection->receive();
+                $payload = yield $message->buffer();
+                if ($callback !== null){
+                    $continue = $callback($payload);
+                }
+            }
+        });
+    }
+
+    public function subscribeTo($uid, $channel){
+        $subscriptionMessage = new \stdClass();
+        $subscriptionMessage->uid = $uid;
+        $subscriptionMessage->subscribe = $channel;
+
+        return json_encode($subscriptionMessage);
+    }
+
+    public function unsubscribeTo($uid, $channel){
+        $subscriptionMessage = new \stdClass();
+        $subscriptionMessage->uid = $uid;
+        $subscriptionMessage->unsubscribe = $channel;
+
+        return json_encode($subscriptionMessage);
     }
 }

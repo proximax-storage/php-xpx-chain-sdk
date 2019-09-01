@@ -14,7 +14,7 @@
  */
 
 namespace Proximax\Model;
-use Proximax\Model\AccountPropertyModificationType;
+
 /**
  * AccountPropertyModification class Doc Comment
  *
@@ -25,9 +25,9 @@ use Proximax\Model\AccountPropertyModificationType;
  */
 class AccountPropertyModification{
 
-    private $type;//AccountPropertyModificationType
+    private $type;//AccountPropertiesModificationTypeEnum
 
-    private $value;
+    private $value;//array string or UInt64DTO or int
 
     public function __construct($type, $value){
         $this->type = $type;

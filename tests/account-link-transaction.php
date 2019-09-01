@@ -7,12 +7,12 @@
     use Proximax\Sdk\Transaction;
     use Proximax\Model\Config;
     use Proximax\Infrastructure\Network;
-    use Proximax\Model\AccountLinkAction;
+    use Proximax\Model\LinkActionEnum;
 
     $config = new Config;
     $network = new Network;
   
-    $baseUrl = "http://192.168.0.107:3000";
+    $baseUrl = "http://192.168.1.41:3000";
     $wsReconnectionTimeout = 5000;
     $networkType = Network::getIdfromName("MijinTest");
     if ($networkType){
@@ -20,7 +20,7 @@
     }
 
     $privateKey = "760B7E531925FAB015349C12093943E86FBFBE5CB831F14447ED190EC10F6B1B";
-    $publicKeyRemoveAccount = "803BD90020E0BB5F0B03AC75C86056A4D4AB5940F2A3A520694D8E7FF217E961";
+    $publicKeyRemoveAccount = "F5FB54E9A2AC5B616C92D5FCC52A98A5FA03B4E0ECE0C51B2ABB7FA25D75B9DA";
 
     $accountOriginal = (new Account)->newAccountFromPrivateKey($privateKey,$networkType);
     $accountRemove = (new Account)->newAccountFromPublicKey($publicKeyRemoveAccount,$networkType);
@@ -30,7 +30,7 @@
     $accountLink = new AccountLinkTransaction(
         new Deadline(1),
         $accountRemove,
-        AccountLinkAction::LINK,
+        LinkActionEnum::LINK,
         $networkType
     );
     

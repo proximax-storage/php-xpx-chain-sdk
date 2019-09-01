@@ -14,7 +14,7 @@
  */
 
 namespace Proximax\Model;
-use Proximax\Model\AbstractTransaction;
+
 /**
  * CosignatureDTO class Doc Comment
  *
@@ -25,9 +25,9 @@ use Proximax\Model\AbstractTransaction;
  */
 class CosignatureDTO{
 
-    private $signature; //atring
+    private $signature; //string
 
-    private $signer; //PublicAccount
+    private $signer; //string
 
     public function __construct($signature,$signer){
         $this->signature = $signature;

@@ -7,10 +7,10 @@
     $config = new Config;
     $network = new Network;
   
-    $baseUrl = "http://13.229.183.224:3000";
+    $baseUrl = "http://192.168.1.41:3000";
     $wsReconnectionTimeout = 5000;
-    $hash = "7C0056F27904C28A26AAA908667C99565FFB8E1962A4706E8D107EB0CB6E4A5C";
-    $netType = Network::getIdfromName("PublicTest");
+    $hash = "4B203F8E02F4B776FD5C1C62C6CCD70DE57AE1F22266F3764BF6E82838343940";
+    $netType = Network::getIdfromName("MijinTest");
 
     if ($netType){
         $config = $config->NewConfig($baseUrl,$netType,$wsReconnectionTimeout);

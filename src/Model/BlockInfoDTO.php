@@ -30,8 +30,32 @@ class BlockInfoDTO{
     private $block;//BlockDTO
 
     public function __construct($data = null){
-        $this->meta = new BlockMetaDTO($data["hash"],$data["generationHash"],$data["totalFee"],$data["numTransactions"]);
-        $this->block = new BlockDTO($data["signature"],$data["signer"],$data["version"],$data["type"],$data["height"],$data["timestamp"],$data["difficulty"],$data["feeMultiplier"],$data["previousBlockHash"],$data["blockTransactionsHash"],$data["blockReceiptsHash"],$data["stateHash"],$data["beneficiary"]);
+        $blockMetaDTO = array(
+            "hash" => $data["hash"],
+            "generationHash" => $data["generationHash"],
+            "totalFee" => $data["totalFee"],
+            "subCacheMerkleRoots" => $data["subCacheMerkleRoots"],
+            "numTransactions" => $data["numTransactions"]
+        );
+        $this->meta = new BlockMetaDTO($blockMetaDTO);
+        $blockDTO = array(
+            "signature" => $data["signature"],
+            "signer" => $data["signer"],
+            "version" => $data["version"],
+            "type" => $data["type"],
+            "height" => $data["height"],
+            "timestamp" => $data["timestamp"],
+            "difficulty" => $data["difficulty"],
+            "feeMultiplier" => $data["feeMultiplier"],
+            "previousBlockHash" => $data["previousBlockHash"],
+            "blockTransactionsHash" => $data["blockTransactionsHash"],
+            "blockReceiptsHash" => $data["blockReceiptsHash"],
+            "stateHash" => $data["stateHash"],
+            "beneficiary" => $data["beneficiary"],
+            "feeInterest" => $data["feeInterest"],
+            "feeInterestDenominator" => $data["feeInterestDenominator"]
+        );
+        $this->block = new BlockDTO($blockDTO);
     }
 
     public function getMeta(){

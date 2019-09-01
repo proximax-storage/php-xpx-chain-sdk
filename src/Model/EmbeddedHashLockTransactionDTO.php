@@ -16,26 +16,28 @@
 namespace Proximax\Model;
 
 /**
- * LockFundsTransactionDTO class Doc Comment
+ * EmbeddedHashLockTransactionDTO class Doc Comment
  *
  * @category class
  * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
-class LockFundsTransactionDTO extends TransactionDTO{
+class EmbeddedHashLockTransactionDTO extends EmbeddedTransactionDTO{
 
-    private $duration;//int
+    private $duration;//UInt64DTO
 
-    private $mosaic;//Mosaic
+    private $mosaic;//MosaicDTO
 
     private $hash;//string
 
     public function __construct($data){
-        $this->abstractTransaction = $data["AbstractTransaction"];
-        $this->duration = $data["Duration"];
-        $this->mosaic = $data["Mosaic"];
-        $this->hash = $data["Hash"];
+        $this->signer = $data["signer"];
+        $this->version = $data["version"];
+        $this->type = $data["type"];
+        $this->duration = $data["duration"];
+        $this->mosaic = $data["mosaic"];
+        $this->hash = $data["hash"];
     }
 
     public function getDuration(){

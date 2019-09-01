@@ -24,7 +24,8 @@ namespace Proximax\Model;
  * @link     https://github.com/swagger-api/swagger-codegen
  */
 class MultisigCosignatoryModification{
-    private $type; //MultisigCosignatoryModificationType
+    
+    private $type; //MultisigModificationTypeEnum
 
     private $publicAccount; //PublicAccount
 

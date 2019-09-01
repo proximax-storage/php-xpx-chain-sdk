@@ -25,11 +25,12 @@ use Proximax\Utils\Utils;
  * @link     https://github.com/swagger-api/swagger-codegen
  */
 class MosaicDTO{
-    private $id; //big Int
+    
+    private $id; //UInt64DTO
 
-    private $amount;//big Int
+    private $amount;//UInt64DTO
 
-    public function __construct(array $id,array $amount){
+    public function __construct($id, $amount){
         $this->id = $id;
         $this->amount = $amount;
     }
@@ -37,18 +38,9 @@ class MosaicDTO{
     public function getId(){
         return  $this->id;
     }
-    
-    public function getIdValue(){
-        $utils = new Utils;
-        return $utils->bigIntToHexString($this->id);
-    }
 
     public function getAmount(){
         return  $this->amount;
-    }
-
-    public function getAmountValue(){
-        return  ($this->amount[1] << 32) | $this->amount[0];
     }
 }
 

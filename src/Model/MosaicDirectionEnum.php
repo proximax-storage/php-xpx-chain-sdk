@@ -16,25 +16,25 @@
 namespace Proximax\Model;
 
 /**
- * MultisigCosignatoryModificationType class Doc Comment
+ * MosaicDirectionEnum class Doc Comment
  *
  * @category class
  * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
-class MultisigCosignatoryModificationType
+class MosaicDirectionEnum
 {    
     /**
      * @internal
      * @var integer
      */
-    const ADD = 0;
+    const DECREASE = 0;
 
     /**
      * @internal
      * @var integer
      */
-    const REMOVE = 1;
+    const INCREASE = 1;
 
 }

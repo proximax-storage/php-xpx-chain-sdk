@@ -2,7 +2,7 @@
     require "vendor/autoload.php";
 
     use Proximax\Model\Transaction\AliasTransaction;
-    use Proximax\Model\AliasActionType;
+    use Proximax\Model\AliasActionEnum;
     use Proximax\Model\Deadline;
     use Proximax\Model\Account;
     use Proximax\Sdk\Transaction;
@@ -29,7 +29,7 @@
 
     $transfer = (new AliasTransaction)->NewAddressAliasTransaction(
         new Deadline(1),
-        AliasActionType::LINK,
+        AliasActionEnum::LINK,
         $namespace,
         $address,
         $networkType

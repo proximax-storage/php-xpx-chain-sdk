@@ -40,7 +40,7 @@ class MosaicSupplyChangeTransaction extends \Proximax\Model\Transaction{
 
     private $mosaicId; //MosaicId
 
-    private $mosaicSupplyType; //MosaicSupplyTpe
+    private $mosaicSupplyType; //MosaicDirectionEnum
 
     private $delta; //bigInt
      

@@ -30,10 +30,10 @@ class InflationReceiptDTO extends ReceiptDTO{
     private $amount; //UInt64DTO
 
     public function __construct($dataArray){
-        $this->mosaicId = $data["mosaicId"];
-        $this->amount = $data["amount"];
-        $this->version = $data["version"];
-        $this->type = $data["type"];
+        $this->mosaicId = $dataArray["mosaicId"];
+        $this->amount = $dataArray["amount"];
+        $this->version = $dataArray["version"];
+        $this->type = $dataArray["type"];
     }
 
     public function getMosaicId(){

@@ -21,10 +21,10 @@
         $config = $config->NewConfig($baseUrl,$networkType,$wsReconnectionTimeout);
     }
 
-    $privateKey = "760B7E531925FAB015349C12093943E86FBFBE5CB831F14447ED190EC10F6B1B";
+    $privateKey = "14F8423888AE5F719B06FF5B5B242DDD31CE8003639FC69A2D3EFB82E32A2FBF";
     $deadline = new Deadline(1); //1 is time include blockchain, unit hour
-    $address = new Address("SB7Z7YQFUNNLOUOJN3M5VDACBJTDANEQZXKKA3LG", $networkType);
-    $mosaic = new NetworkCurrencyMosaic(0);
+    $address = new Address("SC6UUGZLEIAGRXCJXMEUEH2QE7VVMYC3Z55I3QJW", $networkType);
+    $mosaic = new NetworkCurrencyMosaic(9000000000000);
     $message = new Message("Hello world");
 
     $generationHash = "7B631D803F912B00DC0CBED3014BBD17A302BA50B99D233B9C2D9533B842ABDF";

@@ -14,7 +14,7 @@
  */
 
 namespace Proximax\Model;
-use Proximax\Model\AccountPropertyModificationType;
+
 /**
  * MetadataModification class Doc Comment
  *

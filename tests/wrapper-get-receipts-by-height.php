@@ -14,7 +14,7 @@
     if ($networkType){
         $config = $config->NewConfig($baseUrl,$networkType,$wsReconnectionTimeout);
     }
-    $height = 4000;
+    $height = 4654;
     $receipts = (new Blockchain)->GetReceiptsByHeight($config,$height);
     var_dump($receipts);
 

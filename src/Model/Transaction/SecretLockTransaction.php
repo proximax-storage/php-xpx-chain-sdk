@@ -42,7 +42,7 @@ class SecretLockTransaction extends \Proximax\Model\Transaction{
 
     private $duration; //bigInt
 
-    private $hashType; //HashType
+    private $hashType; //HashAlgorithmEnum
 
     private $secret; //String
 
