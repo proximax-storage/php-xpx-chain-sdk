@@ -7,10 +7,10 @@
     $config = new Config;
     $network = new Network;
   
-    $baseUrl = "http://192.168.0.105:3000";
+    $baseUrl = "http://192.168.0.107:3000";
     $wsReconnectionTimeout = 5000;
     $pKey1 = "990585BBB7C97BB61D90410B67552D82D30738994BA7CF2B1041D1E0A6E4169B";
-    $pKey2 = "803BD90020E0BB5F0B03AC75C86056A4D4AB5940F2A3A520694D8E7FF217E961";
+    $pKey2 = "952C2E8302D2C657BC96A6FC8D72018A55F8B521A3AFC7903C88023D92CEF205";
 
     $netType = Network::getIdfromName("MijinTest");
 

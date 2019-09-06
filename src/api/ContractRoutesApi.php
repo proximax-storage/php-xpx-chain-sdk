@@ -72,15 +72,15 @@ class ContractRoutesApi
     /**
      * Operation getContractsAccount
      * 
-     * @param  string $accountId is public key(required)
+     * @param  string $publicKey is public key(required)
      *
      * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      * @return \Proximax\Model\ContractInfoDTO
      */
-    public function getContractsAccount($accountId)
+    public function getContractsAccount($publicKey)
     {
-        $response = $this->getContractsAccountWithHttpInfo($accountId);
+        $response = $this->getContractsAccountWithHttpInfo($publicKey);
         return $response;
     }
 
@@ -93,10 +93,10 @@ class ContractRoutesApi
      * @throws \InvalidArgumentException
      * @return array of \Proximax\Model\ContractInfoDTO, HTTP status code, HTTP response headers (array of strings)
      */
-    public function getContractsAccountWithHttpInfo($accountId)
+    public function getContractsAccountWithHttpInfo($publicKey)
     {
         $returnType = '\Proximax\Model\ContractInfoDTO';
-        $request = $this->getContractsAccountRequest($accountId);
+        $request = $this->getContractsAccountRequest($publicKey);
 
         try {
             $options = $this->createHttpClientOption();
@@ -160,14 +160,14 @@ class ContractRoutesApi
     /**
      * Operation getContractsAccountAsync
      *
-     * @param  string $accountId (required)
+     * @param  string $publicKey (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getContractsAccountAsync($accountId)
+    public function getContractsAccountAsync($publicKey)
     {
-        return $this->getContractsAccountAsyncWithHttpInfo($accountId)
+        return $this->getContractsAccountAsyncWithHttpInfo($publicKey)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -178,15 +178,15 @@ class ContractRoutesApi
     /**
      * Operation getContractsAccountAsyncWithHttpInfo
      *
-     * @param  string $accountId (required)
+     * @param  string $publicKey (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getContractsAccountAsyncWithHttpInfo($accountId)
+    public function getContractsAccountAsyncWithHttpInfo($publicKey)
     {
         $returnType = '\Proximax\Model\ContractInfoDTO';
-        $request = $this->getContractsAccountRequest($accountId);
+        $request = $this->getContractsAccountRequest($publicKey);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -228,17 +228,17 @@ class ContractRoutesApi
     /**
      * Create request for operation 'getContractsAccount'
      *
-     * @param  string $accountId (required)
+     * @param  string $publicKey (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function getContractsAccountRequest($accountId)
+    protected function getContractsAccountRequest($publicKey)
     {
-        // verify the required parameter 'accountId' is set
-        if ($mosaicId === null) {
+        // verify the required parameter 'publicKey' is set
+        if ($publicKey === null) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $accountId when calling getContractsAccount'
+                'Missing the required parameter $publicKey when calling getContractsAccount'
             );
         }
 
@@ -251,10 +251,10 @@ class ContractRoutesApi
 
 
         // path params
-        if ($accountId !== null) {
+        if ($publicKey !== null) {
             $resourcePath = str_replace(
                 '{' . 'publicKey' . '}',
-                ObjectSerializer::toPathValue($accountId),
+                ObjectSerializer::toPathValue($publicKey),
                 $resourcePath
             );
         }
@@ -504,7 +504,7 @@ class ContractRoutesApi
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
-        $httpBody = new \stdClass();
+        $httpBody = '';
         $multipart = false;
 
 
@@ -1034,7 +1034,7 @@ class ContractRoutesApi
         // for model (json/xml)
         if (isset($_tempBody)) {
             // $_tempBody is the method argument, if present
-            $httpBody->accountIds = $_tempBody;
+            $httpBody->addresses = $_tempBody;
             // \stdClass has no __toString(), so we should encode it manually
             if ($httpBody instanceof \stdClass && $headers['Content-Type'] === 'application/json') {
                 $httpBody = \GuzzleHttp\json_encode($httpBody);
@@ -1079,5 +1079,24 @@ class ContractRoutesApi
             $headers,
             $httpBody
         );
+    }
+
+    /**
+     * Create http client option
+     *
+     * @throws \RuntimeException on file opening failure
+     * @return array of http client options
+     */
+    protected function createHttpClientOption()
+    {
+        $options = [];
+        if ($this->config->getDebug()) {
+            $options[RequestOptions::DEBUG] = fopen($this->config->getDebugFile(), 'a');
+            if (!$options[RequestOptions::DEBUG]) {
+                throw new \RuntimeException('Failed to open the debug file: ' . $this->config->getDebugFile());
+            }
+        }
+
+        return $options;
     }
 }

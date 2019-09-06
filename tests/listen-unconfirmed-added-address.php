@@ -7,5 +7,6 @@
         return true;
     }
 
-    $listener = (new Listener)->newBlock("192.168.1.41","3000","callBack");
+    $address = "SC6UUGZLEIAGRXCJXMEUEH2QE7VVMYC3Z55I3QJW"; 
+    $listener = (new Listener)->unconfirmedAdded("192.168.1.41","3000",$address,"callBack");
 ?>

@@ -236,7 +236,7 @@ class MetadataRoutesApi
     protected function getMetadataAccountRequest($accountId)
     {
         // verify the required parameter 'accountId' is set
-        if ($mosaicId === null) {
+        if ($accountId === null) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $accountId when calling getMetadataAccount'
             );
@@ -504,7 +504,7 @@ class MetadataRoutesApi
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
-        $httpBody = new \stdClass();
+        $httpBody = '';
         $multipart = false;
 
 
@@ -650,7 +650,7 @@ class MetadataRoutesApi
             }
 
             return [
-                ObjectSerializer::deserialize($content, $returnType, []),
+                $content,
                 $response->getStatusCode(),
                 $response->getHeaders()
             ];
@@ -1339,5 +1339,24 @@ class MetadataRoutesApi
             $headers,
             $httpBody
         );
+    }
+
+    /**
+     * Create http client option
+     *
+     * @throws \RuntimeException on file opening failure
+     * @return array of http client options
+     */
+    protected function createHttpClientOption()
+    {
+        $options = [];
+        if ($this->config->getDebug()) {
+            $options[RequestOptions::DEBUG] = fopen($this->config->getDebugFile(), 'a');
+            if (!$options[RequestOptions::DEBUG]) {
+                throw new \RuntimeException('Failed to open the debug file: ' . $this->config->getDebugFile());
+            }
+        }
+
+        return $options;
     }
 }

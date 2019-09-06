@@ -3,10 +3,11 @@
     use Proximax\Infrastructure\Listener;
 
     function callBack($data){
+        var_dump("Call Back");
         var_dump($data);
         return true;
     }
 
     $address = "SC6UUGZLEIAGRXCJXMEUEH2QE7VVMYC3Z55I3QJW"; 
-    $listener = (new Listener)->confirmed("192.168.1.41","3000",$address,"callBack");
+    $listener = (new Listener)->aggregateBondedRemoved("192.168.1.41","3000",$address,"callBack");
 ?>
