@@ -82,7 +82,7 @@ class NamespaceRoutesApi
      */
     public function getNamespace($namespaceId)
     {
-        list($response) = $this->getNamespaceWithHttpInfo($namespaceId);
+        $response = $this->getNamespaceWithHttpInfo($namespaceId);
         return $response;
     }
 
@@ -141,7 +141,7 @@ class NamespaceRoutesApi
             }
 
             return [
-                ObjectSerializer::deserialize($content, $returnType, []),
+                $content,
                 $response->getStatusCode(),
                 $response->getHeaders()
             ];
@@ -336,7 +336,7 @@ class NamespaceRoutesApi
      *
      * Get namespaces an account owns
      *
-     * @param  string $publicKey The account public key for which namespaces should be retrieved (required)
+     * @param  string $accountId The account public key for which namespaces should be retrieved (required)
      * @param  int $pageSize The numbers of namespace to return (optional)
      * @param  string $id Id last namespace id to apply pagination (optional)
      *
@@ -344,9 +344,9 @@ class NamespaceRoutesApi
      * @throws \InvalidArgumentException
      * @return \Proximax\Model\NamespaceInfoDTO[]
      */
-    public function getNamespacesFromAccount($publicKey, $pageSize = null, $id = null)
+    public function getNamespacesFromAccount($accountId, $pageSize = null, $id = null)
     {
-        list($response) = $this->getNamespacesFromAccountWithHttpInfo($publicKey, $pageSize, $id);
+        $response = $this->getNamespacesFromAccountWithHttpInfo($accountId, $pageSize, $id);
         return $response;
     }
 
@@ -355,7 +355,7 @@ class NamespaceRoutesApi
      *
      * Get namespaces an account owns
      *
-     * @param  string $publicKey The account public key for which namespaces should be retrieved (required)
+     * @param  string $accountId The account public key for which namespaces should be retrieved (required)
      * @param  int $pageSize The numbers of namespace to return (optional)
      * @param  string $id Id last namespace id to apply pagination (optional)
      *
@@ -363,10 +363,10 @@ class NamespaceRoutesApi
      * @throws \InvalidArgumentException
      * @return array of \Proximax\Model\NamespaceInfoDTO[], HTTP status code, HTTP response headers (array of strings)
      */
-    public function getNamespacesFromAccountWithHttpInfo($publicKey, $pageSize = null, $id = null)
+    public function getNamespacesFromAccountWithHttpInfo($accountId, $pageSize = null, $id = null)
     {
         $returnType = '\Proximax\Model\NamespaceInfoDTO[]';
-        $request = $this->getNamespacesFromAccountRequest($publicKey, $pageSize, $id);
+        $request = $this->getNamespacesFromAccountRequest($accountId, $pageSize, $id);
 
         try {
             $options = $this->createHttpClientOption();
@@ -407,7 +407,7 @@ class NamespaceRoutesApi
             }
 
             return [
-                ObjectSerializer::deserialize($content, $returnType, []),
+                $content,
                 $response->getStatusCode(),
                 $response->getHeaders()
             ];
@@ -432,16 +432,16 @@ class NamespaceRoutesApi
      *
      * Get namespaces an account owns
      *
-     * @param  string $publicKey The account public key for which namespaces should be retrieved (required)
+     * @param  string $accountId The account public key for which namespaces should be retrieved (required)
      * @param  int $pageSize The numbers of namespace to return (optional)
      * @param  string $id Id last namespace id to apply pagination (optional)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getNamespacesFromAccountAsync($publicKey, $pageSize = null, $id = null)
+    public function getNamespacesFromAccountAsync($accountId, $pageSize = null, $id = null)
     {
-        return $this->getNamespacesFromAccountAsyncWithHttpInfo($publicKey, $pageSize, $id)
+        return $this->getNamespacesFromAccountAsyncWithHttpInfo($accountId, $pageSize, $id)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -454,17 +454,17 @@ class NamespaceRoutesApi
      *
      * Get namespaces an account owns
      *
-     * @param  string $publicKey The account public key for which namespaces should be retrieved (required)
+     * @param  string $accountId The account public key for which namespaces should be retrieved (required)
      * @param  int $pageSize The numbers of namespace to return (optional)
      * @param  string $id Id last namespace id to apply pagination (optional)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getNamespacesFromAccountAsyncWithHttpInfo($publicKey, $pageSize = null, $id = null)
+    public function getNamespacesFromAccountAsyncWithHttpInfo($accountId, $pageSize = null, $id = null)
     {
         $returnType = '\Proximax\Model\NamespaceInfoDTO[]';
-        $request = $this->getNamespacesFromAccountRequest($publicKey, $pageSize, $id);
+        $request = $this->getNamespacesFromAccountRequest($accountId, $pageSize, $id);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -506,23 +506,23 @@ class NamespaceRoutesApi
     /**
      * Create request for operation 'getNamespacesFromAccount'
      *
-     * @param  string $publicKey The account public key for which namespaces should be retrieved (required)
+     * @param  string $accountId The account public key for which namespaces should be retrieved (required)
      * @param  int $pageSize The numbers of namespace to return (optional)
      * @param  string $id Id last namespace id to apply pagination (optional)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function getNamespacesFromAccountRequest($publicKey, $pageSize = null, $id = null)
+    protected function getNamespacesFromAccountRequest($accountId, $pageSize = null, $id = null)
     {
-        // verify the required parameter 'publicKey' is set
-        if ($publicKey === null) {
+        // verify the required parameter 'accountId' is set
+        if ($accountId === null) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $publicKey when calling getNamespacesFromAccount'
+                'Missing the required parameter $accountId when calling getNamespacesFromAccount'
             );
         }
 
-        $resourcePath = '/account/{publicKey}/namespaces';
+        $resourcePath = '/account/{accountId}/namespaces';
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
@@ -539,10 +539,10 @@ class NamespaceRoutesApi
         }
 
         // path params
-        if ($publicKey !== null) {
+        if ($accountId !== null) {
             $resourcePath = str_replace(
-                '{' . 'publicKey' . '}',
-                ObjectSerializer::toPathValue($publicKey),
+                '{' . 'accountId' . '}',
+                ObjectSerializer::toPathValue($accountId),
                 $resourcePath
             );
         }
@@ -616,7 +616,7 @@ class NamespaceRoutesApi
      *
      * Get namespaces information
      *
-     * @param  \Proximax\Model\PublicKeys $publicKeys Accounts public key array (required)
+     * @param  $accountIds Accounts public key array (required)
      * @param  int $pageSize The numbers of namespace to return (optional)
      * @param  string $id Id last namespace id to apply pagination (optional)
      *
@@ -624,9 +624,9 @@ class NamespaceRoutesApi
      * @throws \InvalidArgumentException
      * @return \Proximax\Model\NamespaceInfoDTO[]
      */
-    public function getNamespacesFromAccounts($publicKeys, $pageSize = null, $id = null)
+    public function getNamespacesFromAccounts($accountIds, $pageSize = null, $id = null)
     {
-        list($response) = $this->getNamespacesFromAccountsWithHttpInfo($publicKeys, $pageSize, $id);
+        $response = $this->getNamespacesFromAccountsWithHttpInfo($accountIds, $pageSize, $id);
         return $response;
     }
 
@@ -635,7 +635,7 @@ class NamespaceRoutesApi
      *
      * Get namespaces information
      *
-     * @param  \Proximax\Model\PublicKeys $publicKeys Accounts public key array (required)
+     * @param  \Proximax\Model\accountIds $accountIds Accounts public key array (required)
      * @param  int $pageSize The numbers of namespace to return (optional)
      * @param  string $id Id last namespace id to apply pagination (optional)
      *
@@ -643,10 +643,10 @@ class NamespaceRoutesApi
      * @throws \InvalidArgumentException
      * @return array of \Proximax\Model\NamespaceInfoDTO[], HTTP status code, HTTP response headers (array of strings)
      */
-    public function getNamespacesFromAccountsWithHttpInfo($publicKeys, $pageSize = null, $id = null)
+    public function getNamespacesFromAccountsWithHttpInfo($accountIds, $pageSize = null, $id = null)
     {
         $returnType = '\Proximax\Model\NamespaceInfoDTO[]';
-        $request = $this->getNamespacesFromAccountsRequest($publicKeys, $pageSize, $id);
+        $request = $this->getNamespacesFromAccountsRequest($accountIds, $pageSize, $id);
 
         try {
             $options = $this->createHttpClientOption();
@@ -687,7 +687,7 @@ class NamespaceRoutesApi
             }
 
             return [
-                ObjectSerializer::deserialize($content, $returnType, []),
+                $content,
                 $response->getStatusCode(),
                 $response->getHeaders()
             ];
@@ -712,16 +712,16 @@ class NamespaceRoutesApi
      *
      * Get namespaces information
      *
-     * @param  \Proximax\Model\PublicKeys $publicKeys Accounts public key array (required)
+     * @param  \Proximax\Model\accountIds $accountIds Accounts public key array (required)
      * @param  int $pageSize The numbers of namespace to return (optional)
      * @param  string $id Id last namespace id to apply pagination (optional)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getNamespacesFromAccountsAsync($publicKeys, $pageSize = null, $id = null)
+    public function getNamespacesFromAccountsAsync($accountIds, $pageSize = null, $id = null)
     {
-        return $this->getNamespacesFromAccountsAsyncWithHttpInfo($publicKeys, $pageSize, $id)
+        return $this->getNamespacesFromAccountsAsyncWithHttpInfo($accountIds, $pageSize, $id)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -734,17 +734,17 @@ class NamespaceRoutesApi
      *
      * Get namespaces information
      *
-     * @param  \Proximax\Model\PublicKeys $publicKeys Accounts public key array (required)
+     * @param  \Proximax\Model\accountIds $accountIds Accounts public key array (required)
      * @param  int $pageSize The numbers of namespace to return (optional)
      * @param  string $id Id last namespace id to apply pagination (optional)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getNamespacesFromAccountsAsyncWithHttpInfo($publicKeys, $pageSize = null, $id = null)
+    public function getNamespacesFromAccountsAsyncWithHttpInfo($accountIds, $pageSize = null, $id = null)
     {
         $returnType = '\Proximax\Model\NamespaceInfoDTO[]';
-        $request = $this->getNamespacesFromAccountsRequest($publicKeys, $pageSize, $id);
+        $request = $this->getNamespacesFromAccountsRequest($accountIds, $pageSize, $id);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -786,19 +786,19 @@ class NamespaceRoutesApi
     /**
      * Create request for operation 'getNamespacesFromAccounts'
      *
-     * @param  \Proximax\Model\PublicKeys $publicKeys Accounts public key array (required)
+     * @param  \Proximax\Model\accountIds $accountIds Accounts public key array (required)
      * @param  int $pageSize The numbers of namespace to return (optional)
      * @param  string $id Id last namespace id to apply pagination (optional)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function getNamespacesFromAccountsRequest($publicKeys, $pageSize = null, $id = null)
+    protected function getNamespacesFromAccountsRequest($accountIds, $pageSize = null, $id = null)
     {
-        // verify the required parameter 'publicKeys' is set
-        if ($publicKeys === null) {
+        // verify the required parameter 'accountIds' is set
+        if ($accountIds === null) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $publicKeys when calling getNamespacesFromAccounts'
+                'Missing the required parameter $accountIds when calling getNamespacesFromAccounts'
             );
         }
 
@@ -821,8 +821,8 @@ class NamespaceRoutesApi
 
         // body params
         $_tempBody = null;
-        if (isset($publicKeys)) {
-            $_tempBody = $publicKeys;
+        if (isset($accountIds)) {
+            $_tempBody = $accountIds;
         }
 
         if ($multipart) {
@@ -839,7 +839,7 @@ class NamespaceRoutesApi
         // for model (json/xml)
         if (isset($_tempBody)) {
             // $_tempBody is the method argument, if present
-            $httpBody->publicKeys = $_tempBody;
+            $httpBody->addresses = $_tempBody;
             // \stdClass has no __toString(), so we should encode it manually
             if ($httpBody instanceof \stdClass && $headers['Content-Type'] === 'application/json') {
                 $httpBody = \GuzzleHttp\json_encode($httpBody);
@@ -899,7 +899,7 @@ class NamespaceRoutesApi
      */
     public function getNamespacesNames($namespaceIds)
     {
-        list($response) = $this->getNamespacesNamesWithHttpInfo($namespaceIds);
+        $response = $this->getNamespacesNamesWithHttpInfo($namespaceIds);
         return $response;
     }
 
@@ -958,7 +958,7 @@ class NamespaceRoutesApi
             }
 
             return [
-                ObjectSerializer::deserialize($content, $returnType, []),
+                $content,
                 $response->getStatusCode(),
                 $response->getHeaders()
             ];

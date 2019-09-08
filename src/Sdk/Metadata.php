@@ -51,7 +51,7 @@ class Metadata{
         $data = $metadataRoutesApi->getMetadataAccount($accountId);
         
         if ($data[1] == 200){ // successfull
-            return $this->formatMetadataAccount($networkType, $data[0]);
+            return $this->formatMetadata($networkType, $data[0]);
         }
         else return null;
     }
@@ -112,7 +112,11 @@ class Metadata{
     public function formatMetadata($networkType, $data){
 
         $metadataType = $data->metadata->metadataType;
-        $fields = new FieldDTO($data->metadata->fields->key,$data->metadata->fields->value);
+        $fields = array();
+        for ($i=0;$i<count($data->metadata->fields);$i++){
+            $field = $data->metadata->fields[$i];
+            $fields[$i] = new FieldDTO($field->key,$field->value);
+        }
         $metadataId = $data->metadata->metadataId;
 
         $metadataDTO = array(

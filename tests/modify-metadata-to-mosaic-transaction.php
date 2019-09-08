@@ -29,7 +29,7 @@
 
     $modifyMetadata = new ModifyMetadataTransaction(
         new Deadline(1),
-        new MosaicId(array(2227523919,1484419338)),
+        new MosaicId(array(3787844460,817231021)),
         array(
             new MetadataModification(
                 MetadataModificationType::ADD,

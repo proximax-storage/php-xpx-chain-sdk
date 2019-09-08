@@ -27,6 +27,7 @@ use \Catapult\Buffers\MessageBuffer;
 use \Catapult\Buffers\MosaicBuffer;
 use \Catapult\Buffers\TransferTransactionBuffer;
 use Proximax\Utils\Utils;
+use Proximax\Utils\Hex;
 use Proximax\Model\AbstractTransaction;
 use Base32\Base32;
 use Proximax\Model\Address;
@@ -104,7 +105,8 @@ class TransferTransaction extends \Proximax\Model\Transaction{
         }
         // serialize the recipient
         if ($address instanceof NamespaceId){
-            $recipientBytes = $address->getId();
+            $address = $this->newAddressFromNamespaceId($address->getId());
+            $recipientBytes = (new Utils)->stringToByteArray(Base32::decode($address));
         }
         else if ($address instanceof Address){
             $recipientBytes = (new Utils)->stringToByteArray(Base32::decode($address->address));
@@ -160,6 +162,19 @@ class TransferTransaction extends \Proximax\Model\Transaction{
         $builder_byte = array_slice($tmp,0,count($tmp));
         $output = $TransferTransactionSchema->serialize($builder_byte);
         return $output;
+    }
+
+    private function newAddressFromNamespaceId($namespaceId){
+        $p1 = (new Utils)->intToArray($namespaceId[0]);
+        $p2 = (new Utils)->intToArray($namespaceId[1]);
+        $namespaceB = array_merge((new Utils)->ReverseByteArray($p1), (new Utils)->ReverseByteArray($p2));
+        $a = dechex(Network::getIdfromName("AliasAddress"));
+        $a .= (new Hex)->EncodeToString($namespaceB);
+        $a .= "00000000000000000000000000000000";
+
+        $ph = (new Hex)->DecodeString($a);
+        $parse = Base32::encode(implode(array_map("chr", $ph)));
+        return $parse;
     }
 }
 ?>

@@ -138,4 +138,16 @@ class TransactionType
      */
     const TRANSFER = "4154"; // 16724
 
+    /**
+     * @internal
+     * @var integer
+     */
+    const BLOCKCHAIN_CONFIG = "4159"; // 16729
+
+    /**
+     * @internal
+     * @var integer
+     */
+    const BLOCKCHAIN_UPGRADE = "4158"; // 16728
+
 }

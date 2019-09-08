@@ -9,13 +9,12 @@
   
     $baseUrl = "http://192.168.0.107:3000";
     $wsReconnectionTimeout = 5000;
-    $pKey = "990585BBB7C97BB61D90410B67552D82D30738994BA7CF2B1041D1E0A6E4169B";
+    $publicKey = "990585BBB7C97BB61D90410B67552D82D30738994BA7CF2B1041D1E0A6E4169B";
     $netType = Network::getIdfromName("MijinTest");
 
     if ($netType){
         $config = $config->NewConfig($baseUrl,$netType,$wsReconnectionTimeout);
     }
-    $Account = new Account;
-    $account = $Account->IncomingTransactions($config,$pKey);
+    $account = (new Account)->GetAccountPropertiesInfo($config,$publicKey);
     var_dump($account);
 ?>

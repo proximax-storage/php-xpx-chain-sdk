@@ -139,4 +139,16 @@ class TransactionVersion
      */
     const TRANSFER_VERSION = 3;
 
+    /**
+     * @internal
+     * @var integer
+     */
+    const BLOCKCHAIN_CONFIG_VERSION = 1;
+
+    /**
+     * @internal
+     * @var integer
+     */
+    const BLOCKCHAIN_UPGRADE_VERSION = 1;
+
 }

@@ -29,6 +29,10 @@ use Proximax\Model\PublicAccount;
 use Proximax\Model\Message;
 use Proximax\Model\HeightDTO;
 use Proximax\Model\MultisigDTO;
+use Proximax\Model\UInt64DTO;
+use Proximax\Model\AccountPropertyDTO;
+use Proximax\Model\AccountPropertiesDTO;
+use Proximax\Model\AccountPropertiesInfoDTO;
 
 /**
  * Account class Doc Comment
@@ -256,6 +260,57 @@ class Account{
         return new MultisigDTO($account);
     }
 
+    /**
+     *
+     * @param config $config
+     *
+     * @param Address $accountId Account address or publicKey
+     * 
+     * @return AccountPropertiesInfoDTO
+     */
+    public function GetAccountPropertiesInfo($config, $accountId){
+        $AccountRoutesApi = new AccountRoutesApi;
+        $ApiClient = new ApiClient;
+        $url = $config->BaseURL;
+        $ApiClient->setHost($url);
+        $networkType = $config->NetworkType;
+
+        $data = $AccountRoutesApi->getAccountPropertiesInfo($accountId);
+        if ($data[1] == 200){ // successfull
+            $account = $this->formatDataAccountProperties($networkType, $data[0]);
+        }
+        else $account = null;
+        return new AccountPropertiesInfoDTO($account);
+    }
+
+    /**
+     *
+     * @param config $config
+     *
+     * @param array $accountIds Array of publicKeys and address
+     * 
+     * @return AccountPropertiesInfoDTO array
+     */
+    public function GetAccountsPropertiesInfo($config, $addresses){
+        $AccountRoutesApi = new AccountRoutesApi;
+        $ApiClient = new ApiClient;
+
+        $url = $config->BaseURL;
+        $ApiClient->setHost($url);
+        $networkType = $config->NetworkType;
+
+        $data = $AccountRoutesApi->getAccountsPropertiesInfo($addresses);
+        $arr_account = array();
+        if ($data[1] == 200){ // successfull
+            for ($i=0;$i<count($data[0]);$i++){
+                $account = $this->formatDataAccountProperties($networkType, $data[0][$i]);
+                $AccountDTO = new AccountPropertiesInfoDTO($account);
+                $arr_account[$i] = $AccountDTO;
+            }
+        }
+        return $arr_account;
+    }
+
 
     /**
      * @param int $networkType
@@ -326,6 +381,57 @@ class Account{
             "multisigAccounts" => $multisigAccounts,
         );
         return $multisig;
+    }
+
+
+    /**
+     * @param int $networkType
+     *
+     * @param array $data
+     * 
+     * @return AccountPropertiesInfoDTO array
+     */
+    private function formatDataAccountProperties($networkType, $data){
+        $hex = new \Proximax\Utils\Hex;
+        $address = $hex->DecodeString($data->accountProperties->address);
+        $address = Base32::encode(implode(array_map("chr", $address)));
+
+        $properties = array();
+        for ($i=0;$i<count($data->accountProperties->properties);$i++){
+            $property = $data->accountProperties->properties[$i];
+            $propertyType = $property->propertyType;
+            $values = array();
+            for ($j=0;$j<count($property->values);$j++){
+                if ($propertyType == 1 || $propertyType == 129){
+                    $hex = new \Proximax\Utils\Hex;
+                    $value = $hex->DecodeString($property->values[$i]);
+                    $value = Base32::encode(implode(array_map("chr", $value)));
+                }
+                else if (is_string($property->values[$i]) || is_int($property->values[$i])){
+                    $value = $property->values[$i];
+                }
+                else if (is_array($property->values[$i])){
+                    $value = new UInt64DTO($property->values[$i]);
+                }
+                $values[$i] = $value;
+            }
+            $accountPropertyDTO = array(
+                "propertyType" => $propertyType,
+                "values" => $values
+            );
+            $properties[$i] = new AccountPropertyDTO($accountPropertyDTO);       
+        }
+
+        $accountPropertiesDTO = array(
+            "address" => $address,
+            "properties" => $properties
+        );
+
+        $accountProperties = new AccountPropertiesDTO($accountPropertiesDTO);
+        $account = array(
+            "accountProperties" => $accountProperties
+        );
+        return $account;
     }
 }
 ?>
