@@ -1,5 +1,5 @@
 <?php
-    require "vendor/autoload.php";
+    require "../vendor/autoload.php";
 
     use Proximax\Model\Transaction\AccountLinkTransaction;
     use Proximax\Model\Deadline;
@@ -12,9 +12,9 @@
     $config = new Config;
     $network = new Network;
   
-    $baseUrl = "http://192.168.1.41:3000";
+    $baseUrl = "https://bctestnet3.brimstone.xpxsirius.io";
     $wsReconnectionTimeout = 5000;
-    $networkType = Network::getIdfromName("MijinTest");
+    $networkType = Network::getIdfromName("publictest");
     if ($networkType){
         $config = $config->NewConfig($baseUrl,$networkType,$wsReconnectionTimeout);
     }
@@ -25,7 +25,7 @@
     $accountOriginal = (new Account)->newAccountFromPrivateKey($privateKey,$networkType);
     $accountRemove = (new Account)->newAccountFromPublicKey($publicKeyRemoveAccount,$networkType);
 
-    $generationHash = "7B631D803F912B00DC0CBED3014BBD17A302BA50B99D233B9C2D9533B842ABDF";
+    $generationHash = "56D112C98F7A7E34D1AEDC4BD01BC06CA2276DD546A93E36690B785E82439CA9";
 
     $accountLink = new AccountLinkTransaction(
         new Deadline(1),

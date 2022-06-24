@@ -168,7 +168,7 @@ class Encryption
             $res = hash_init($algorithm);
         }
         else {
-            throw new RuntimeException("Unsupported hash algorithm '" . $algo . "'.");
+            throw new RuntimeException("Unsupported hash algorithm '" . $algorithm . "'.");
         }
 
         //XXX should return Hasher class to keep track of key size

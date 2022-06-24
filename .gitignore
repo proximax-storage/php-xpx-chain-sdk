@@ -15,3 +15,5 @@ phpdoc
 phpdocmd
 build/
 docs/
+.idea
+.idea/
