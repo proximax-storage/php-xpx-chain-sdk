@@ -250,7 +250,7 @@ class TransactionRoutesApi
             );
         }
 
-        $resourcePath = '/transaction/cosignature';
+        $resourcePath = '/transactions/cosignature';
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
@@ -509,7 +509,7 @@ class TransactionRoutesApi
             );
         }
 
-        $resourcePath = '/transaction/partial';
+        $resourcePath = '/transactions/partial';
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
@@ -768,7 +768,7 @@ class TransactionRoutesApi
             );
         }
 
-        $resourcePath = '/transaction';
+        $resourcePath = '/transactions';
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
@@ -1027,7 +1027,7 @@ class TransactionRoutesApi
             );
         }
 
-        $resourcePath = '/transaction/{transactionId}';
+        $resourcePath = '/transactions/{transactionId}';
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
@@ -1289,7 +1289,7 @@ class TransactionRoutesApi
             );
         }
 
-        $resourcePath = '/transaction/{hash}/status';
+        $resourcePath = '/transactionStatus/{hash}';
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
@@ -1551,7 +1551,7 @@ class TransactionRoutesApi
             );
         }
 
-        $resourcePath = '/transaction';
+        $resourcePath = '/transactions';
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
@@ -1808,7 +1808,7 @@ class TransactionRoutesApi
             );
         }
 
-        $resourcePath = '/transaction/statuses';
+        $resourcePath = '/transactionStatus';
         $formParams = [];
         $queryParams = [];
         $headerParams = [];

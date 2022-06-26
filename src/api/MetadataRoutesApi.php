@@ -1012,7 +1012,7 @@ class MetadataRoutesApi
             );
         }
 
-        $resourcePath = '/metadata/{metadataId}';
+        $resourcePath = '/metadata_v2/{metadataId}';
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
@@ -1265,7 +1265,7 @@ class MetadataRoutesApi
             );
         }
 
-        $resourcePath = '/metadata';
+        $resourcePath = '/metadata_v2';
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
