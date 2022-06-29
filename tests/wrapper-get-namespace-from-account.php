@@ -1,5 +1,5 @@
 <?php
-    require "vendor/autoload.php";
+    require "../vendor/autoload.php";
 
     use Proximax\Model\Config;
     use Proximax\Infrastructure\Network;
@@ -8,14 +8,14 @@
     $config = new Config;
     $network = new Network;
   
-    $baseUrl = "http://192.168.0.107:3000";
+    $baseUrl = "https://bctestnet3.brimstone.xpxsirius.io";
     $wsReconnectionTimeout = 5000;
-    $networkType = Network::getIdfromName("MijinTest");
+    $networkType = Network::getIdfromName("publictest");
     if ($networkType){
         $config = $config->NewConfig($baseUrl,$networkType,$wsReconnectionTimeout);
     }
 
-    $accountId = "SC6UUGZLEIAGRXCJXMEUEH2QE7VVMYC3Z55I3QJW";
+    $accountId = "VC6UUGZLEIAGRXCJXMEUEH2QE7VVMYC3Z67RVRIN";
     $namespaceInfo = (new Namespaces)->GetNamespaceFromAccount($config,$accountId, null, null);
     var_dump($namespaceInfo);
 ?>

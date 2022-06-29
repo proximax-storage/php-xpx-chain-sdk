@@ -1,5 +1,5 @@
 <?php
-    require "vendor/autoload.php";
+    require "../vendor/autoload.php";
 
     use Proximax\Model\Config;
     use Proximax\Infrastructure\Network;
@@ -12,9 +12,9 @@
     $config = new Config;
     $network = new Network;
   
-    $baseUrl = "http://192.168.0.107:3000";
+    $baseUrl = "https://bctestnet3.brimstone.xpxsirius.io";
     $wsReconnectionTimeout = 5000;
-    $networkType = Network::getIdfromName("MijinTest");
+    $networkType = Network::getIdfromName("publictest");
     if ($networkType){
         $config = $config->NewConfig($baseUrl,$networkType,$wsReconnectionTimeout);
     }
@@ -22,11 +22,11 @@
 
     $configInfo = (new Sdk)->GetConfigByHeight($config,$height);
     
-    $privateKey = "C06B2CC5D7B66900B2493CF68BE10B7AA8690D973B7F0B65D0DAE4F7AA464716";
+    $privateKey = "760B7E531925FAB015349C12093943E86FBFBE5CB831F14447ED190EC10F6B1B";
 
     $account = (new Account)->newAccountFromPrivateKey($privateKey,$networkType);
 
-    $generationHash = "7B631D803F912B00DC0CBED3014BBD17A302BA50B99D233B9C2D9533B842ABDF";
+    $generationHash = "56D112C98F7A7E34D1AEDC4BD01BC06CA2276DD546A93E36690B785E82439CA9";
     
     $applyHeightDelta = $configInfo->getCatapultConfig()->getHeight()->getArray();
     $blockchainConfig = $configInfo->getCatapultConfig()->getBlockchainConfig();

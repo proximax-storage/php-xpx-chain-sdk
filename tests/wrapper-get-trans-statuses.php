@@ -1,5 +1,5 @@
 <?php
-    require "vendor/autoload.php";
+    require "../vendor/autoload.php";
     use Proximax\Model\Config;
     use Proximax\Sdk\Transaction;
     use Proximax\Infrastructure\Network;

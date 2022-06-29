@@ -1,5 +1,5 @@
 <?php
-    require "vendor/autoload.php";
+    require "../vendor/autoload.php";
 
     use Proximax\Sdk\Mosaic;
     use Proximax\Model\Config;
@@ -9,14 +9,14 @@
     $config = new Config;
     $network = new Network;
   
-    $baseUrl = "http://192.168.0.107:3000";
+    $baseUrl = "https://bctestnet3.brimstone.xpxsirius.io";
     $wsReconnectionTimeout = 5000;
-    $networkType = Network::getIdfromName("MijinTest");
+    $networkType = Network::getIdfromName("publictest");
     if ($networkType){
         $config = $config->NewConfig($baseUrl,$networkType,$wsReconnectionTimeout);
     }
 
-    $mosaicHexId = (new Utils)->bigIntToHexString(array(481110499,231112638));
+    $mosaicHexId = (new Utils)->bigIntToHexString(array(3020295898,2840468446));
     $mosaicInfo = (new Mosaic)->GetMosaicsInfo($config,array($mosaicHexId));
     var_dump($mosaicInfo);
 

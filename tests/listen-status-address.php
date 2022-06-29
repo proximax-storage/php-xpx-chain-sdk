@@ -1,5 +1,5 @@
 <?php
-    require "vendor/autoload.php";
+    require "../vendor/autoload.php";
     use Proximax\Infrastructure\Listener;
 
     function callBack($data){

@@ -1,5 +1,5 @@
 <?php
-    require "vendor/autoload.php";
+    require "../vendor/autoload.php";
     use Proximax\Model\Config;
     use Proximax\Sdk\Account;
     use Proximax\Infrastructure\Network;
@@ -7,10 +7,10 @@
     $config = new Config;
     $network = new Network;
   
-    $baseUrl = "http://192.168.0.107:3000";
+    $baseUrl = "https://bctestnet3.brimstone.xpxsirius.io";
     $wsReconnectionTimeout = 5000;
-    $pKey = "990585BBB7C97BB61D90410B67552D82D30738994BA7CF2B1041D1E0A6E4169B";
-    $netType = Network::getIdfromName("MijinTest");
+    $pKey = "803bd90020e0bb5f0b03ac75c86056a4d4ab5940f2a3a520694d8e7ff217e961";
+    $netType = Network::getIdfromName("publictest");
 
     if ($netType){
         $config = $config->NewConfig($baseUrl,$netType,$wsReconnectionTimeout);

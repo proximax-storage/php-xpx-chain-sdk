@@ -1,5 +1,5 @@
 <?php
-    require "vendor/autoload.php";
+    require "../vendor/autoload.php";
 
     use Proximax\Model\Deadline;
     use Proximax\Model\Message;
@@ -17,9 +17,9 @@
     $config = new Config;
     $network = new Network;
   
-    $baseUrl = "http://192.168.1.41:3000";
+    $baseUrl = "https://bctestnet3.brimstone.xpxsirius.io";
     $wsReconnectionTimeout = 5000;
-    $networkType = Network::getIdfromName("MijinTest");
+    $networkType = Network::getIdfromName("publictest");
     if ($networkType){
         $config = $config->NewConfig($baseUrl,$networkType,$wsReconnectionTimeout);
     }
@@ -28,7 +28,7 @@
 	$firstAccountPrivateKey  = "760B7E531925FAB015349C12093943E86FBFBE5CB831F14447ED190EC10F6B1B";
     $secondAccountPrivateKey = "B55478C892A6476760C5E77E443FE411F2D62B0F42496FC12EDB37F3306F8D69";
     
-    $generationHash = "7B631D803F912B00DC0CBED3014BBD17A302BA50B99D233B9C2D9533B842ABDF";
+    $generationHash = "56D112C98F7A7E34D1AEDC4BD01BC06CA2276DD546A93E36690B785E82439CA9";
 
     $firstAccount = (new Account)->newAccountFromPrivateKey($firstAccountPrivateKey,$networkType);
     $secondAccount = (new Account)->newAccountFromPrivateKey($secondAccountPrivateKey,$networkType);

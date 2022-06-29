@@ -1,5 +1,5 @@
 <?php
-    require "vendor/autoload.php";
+    require "../vendor/autoload.php";
 
     use Proximax\Model\Transaction\ModifyAccountPropertyTransaction;
     use Proximax\Model\Deadline;
@@ -14,20 +14,20 @@
     $config = new Config;
     $network = new Network;
   
-    $baseUrl = "http://192.168.0.107:3000";
+    $baseUrl = "https://bctestnet3.brimstone.xpxsirius.io";
     $wsReconnectionTimeout = 5000;
-    $networkType = Network::getIdfromName("MijinTest");
+    $networkType = Network::getIdfromName("publictest");
     if ($networkType){
         $config = $config->NewConfig($baseUrl,$networkType,$wsReconnectionTimeout);
     }
 
     $privateKey = "760B7E531925FAB015349C12093943E86FBFBE5CB831F14447ED190EC10F6B1B";
-    $publicKeyBlock = "952C2E8302D2C657BC96A6FC8D72018A55F8B521A3AFC7903C88023D92CEF205";
+    $publicKeyBlock = "990585bbb7c97bb61d90410b67552d82d30738994ba7cf2b1041d1e0a6e4169b";
 
     $account = (new Account)->newAccountFromPrivateKey($privateKey,$networkType);
     $accountBlock = (new Account)->newAccountFromPublicKey($publicKeyBlock,$networkType);
 
-    $generationHash = "7B631D803F912B00DC0CBED3014BBD17A302BA50B99D233B9C2D9533B842ABDF";
+    $generationHash = "56D112C98F7A7E34D1AEDC4BD01BC06CA2276DD546A93E36690B785E82439CA9";
 
     $accountProperty = new ModifyAccountPropertyTransaction(
         new Deadline(1),

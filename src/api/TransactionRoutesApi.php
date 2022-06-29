@@ -1402,7 +1402,6 @@ class TransactionRoutesApi
     {
         $returnType = 'object[]';
         $request = $this->getTransactionsRequest($transactionIds);
-
         try {
             $options = $this->createHttpClientOption();
             try {
@@ -1415,9 +1414,7 @@ class TransactionRoutesApi
                     $e->getResponse() ? $e->getResponse()->getBody()->getContents() : null
                 );
             }
-
             $statusCode = $response->getStatusCode();
-
             if ($statusCode < 200 || $statusCode > 299) {
                 throw new ApiException(
                     sprintf(

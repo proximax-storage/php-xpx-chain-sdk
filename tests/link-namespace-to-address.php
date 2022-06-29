@@ -1,5 +1,5 @@
 <?php
-    require "vendor/autoload.php";
+    require "../vendor/autoload.php";
 
     use Proximax\Model\Transaction\AliasTransaction;
     use Proximax\Model\AliasActionEnum;
@@ -14,17 +14,17 @@
     $config = new Config;
     $network = new Network;
   
-    $baseUrl = "http://192.168.1.23:3000";
+    $baseUrl = "https://bctestnet3.brimstone.xpxsirius.io";
     $wsReconnectionTimeout = 5000;
-    $networkType = Network::getIdfromName("MijinTest");
+    $networkType = Network::getIdfromName("publictest");
     if ($networkType){
         $config = $config->NewConfig($baseUrl,$networkType,$wsReconnectionTimeout);
     }
 
-    $generationHash = "7B631D803F912B00DC0CBED3014BBD17A302BA50B99D233B9C2D9533B842ABDF";
+    $generationHash = "56D112C98F7A7E34D1AEDC4BD01BC06CA2276DD546A93E36690B785E82439CA9";
 
     $namespace = "mynamespace";
-    $publicKey = "803BD90020E0BB5F0B03AC75C86056A4D4AB5940F2A3A520694D8E7FF217E961";
+    $publicKey = "990585bbb7c97bb61d90410b67552d82d30738994ba7cf2b1041d1e0a6e4169b";
     $address = Address::fromPublicKey($publicKey,$networkType);
 
     $transfer = (new AliasTransaction)->NewAddressAliasTransaction(

@@ -1,5 +1,5 @@
 <?php
-    require "vendor/autoload.php";
+    require "../vendor/autoload.php";
     use Proximax\Infrastructure\Listener;
 
     function callBack($data){
@@ -7,6 +7,6 @@
         return true;
     }
 
-    $address = "SC6UUGZLEIAGRXCJXMEUEH2QE7VVMYC3Z55I3QJW"; 
-    $listener = (new Listener)->cosignatureAdded("192.168.1.41","3000",$address,"callBack");
+    $address = "VC6UUGZLEIAGRXCJXMEUEH2QE7VVMYC3Z67RVRIN";
+    $listener = (new Listener)->cosignatureAdded("https://bctestnet3.brimstone.xpxsirius.io","3000",$address,"callBack");
 ?>

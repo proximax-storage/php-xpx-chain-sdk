@@ -1,5 +1,5 @@
 <?php
-    require "vendor/autoload.php";
+    require "../vendor/autoload.php";
 
     $keypair = new Proximax\Core\KeyPair();
     var_dump($keypair->getPublicKey("hex")); // will output: 
