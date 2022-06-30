@@ -27,14 +27,14 @@ use Proximax\HeaderSelector;
 use Proximax\ObjectSerializer;
 
 /**
- * ContractRoutesApi Class Doc Comment
+ * UpgradeRoutesApi Class Doc Comment
  *
  * @category Class
  * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
-class ContractRoutesApi
+class ServiceRoutesApi
 {
     /**
      * @var ClientInterface
@@ -70,33 +70,34 @@ class ContractRoutesApi
     }
 
     /**
-     * Operation getContractsAccount
-     * 
-     * @param  string $publicKey is public key(required)
+     * Operation getAccountDrives
+     *
+     * Get drive by accountId.
+     * @param  string $accountId ID of a drive(required)
      *
      * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return \Proximax\Model\ContractInfoDTO
+     * @return \Proximax\Model\CatapultConfigDTO
      */
-    public function getContractsAccount($publicKey)
+    public function getAccountDrives($accountId)
     {
-        $response = $this->getContractsAccountWithHttpInfo($publicKey);
+        $response = $this->getAccountDrivesWithHttpInfo($accountId);
         return $response;
     }
 
     /**
-     * Operation getContractsAccountWithHttpInfo
+     * Operation getUpgradeByHeightWithHttpInfo
      *
      * @param  string $mosaicId The mosaic id for which information should be retreived (required)
      *
      * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return array of \Proximax\Model\ContractInfoDTO, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Proximax\Model\CatapultConfigDTO, HTTP status code, HTTP response headers (array of strings)
      */
-    public function getContractsAccountWithHttpInfo($publicKey)
+    public function getAccountDrivesWithHttpInfo($accountId)
     {
-        $returnType = '\Proximax\Model\ContractInfoDTO';
-        $request = $this->getContractsAccountRequest($publicKey);
+        $returnType = '\Proximax\Model\CatapultConfigDTO';
+        $request = $this->getAccountDrivesRequest($accountId);
 
         try {
             $options = $this->createHttpClientOption();
@@ -158,16 +159,16 @@ class ContractRoutesApi
     }
 
     /**
-     * Operation getContractsAccountAsync
+     * Operation getAccountDrivesAsync
      *
-     * @param  string $publicKey (required)
+     * @param  string $accountId (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getContractsAccountAsync($publicKey)
+    public function getAccountDrivesAsync($accountId)
     {
-        return $this->getContractsAccountAsyncWithHttpInfo($publicKey)
+        return $this->getAccountDrivesAsyncWithHttpInfo($accountId)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -176,17 +177,17 @@ class ContractRoutesApi
     }
 
     /**
-     * Operation getContractsAccountAsyncWithHttpInfo
+     * Operation getAccountDrivesAsyncWithHttpInfo
      *
-     * @param  string $publicKey (required)
+     * @param  string $height (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getContractsAccountAsyncWithHttpInfo($publicKey)
+    public function getAccountDrivesAsyncWithHttpInfo($accountId)
     {
         $returnType = '\Proximax\Model\ContractInfoDTO';
-        $request = $this->getContractsAccountRequest($publicKey);
+        $request = $this->getAccountDrivesRequest($accountId);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -226,23 +227,23 @@ class ContractRoutesApi
     }
 
     /**
-     * Create request for operation 'getContractsAccount'
+     * Create request for operation 'getAccountDrives'
      *
-     * @param  string $publicKey (required)
+     * @param  string $accountId (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function getContractsAccountRequest($publicKey)
+    protected function getAccountDrivesRequest($accountId)
     {
-        // verify the required parameter 'publicKey' is set
-        if ($publicKey === null) {
+        // verify the required parameter 'accountId' is set
+        if ($accountId === null) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $publicKey when calling getContractsAccount'
+                'Missing the required parameter $accountId when calling getAccountDrives'
             );
         }
 
-        $resourcePath = '/account/{publicKey}/contracts';
+        $resourcePath = '/drive/{accountId}';
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
@@ -251,10 +252,10 @@ class ContractRoutesApi
 
 
         // path params
-        if ($publicKey !== null) {
+        if ($accountId !== null) {
             $resourcePath = str_replace(
-                '{' . 'publicKey' . '}',
-                ObjectSerializer::toPathValue($publicKey),
+                '{' . 'accountId' . '}',
+                ObjectSerializer::toPathValue($accountId),
                 $resourcePath
             );
         }
@@ -275,11 +276,9 @@ class ContractRoutesApi
 
         // for model (json/xml)
         if (isset($_tempBody)) {
-            // $_tempBody is the method argument, if present
             $httpBody = $_tempBody;
-            // \stdClass has no __toString(), so we should encode it manually
             if ($httpBody instanceof \stdClass && $headers['Content-Type'] === 'application/json') {
-                $httpBody = \GuzzleHttp\json_encode($httpBody);
+                $httpBody = json_encode($httpBody);
             }
         } elseif (count($formParams) > 0) {
             if ($multipart) {
@@ -294,7 +293,261 @@ class ContractRoutesApi
                 $httpBody = new MultipartStream($multipartContents);
 
             } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = \GuzzleHttp\json_encode($formParams);
+                $httpBody = json_encode($formParams);
+
+            } else {
+                // for HTTP post (form)
+                $httpBody = \GuzzleHttp\Psr7\Query::build($formParams);
+            }
+        }
+
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $query = \GuzzleHttp\Psr7\Query::build($queryParams);
+        return new Request(
+            'GET',
+            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+
+    /**
+     * Operation getAccountDrives
+     *
+     * Get drive by accountId.
+     * @param  string $accountId ID of a drive(required)
+     *
+     * @throws \Proximax\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     * @return \Proximax\Model\CatapultConfigDTO
+     */
+    public function getDrive($accountId)
+    {
+        $response = $this->getDriveWithHttpInfo($accountId);
+        return $response;
+    }
+
+    /**
+     * Operation getDriveWithHttpInfo
+     * Get drive by id
+     * @param  string $mosaicId ID of a drive (required)
+     *
+     * @throws \Proximax\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     * @return array of \Proximax\Model\CatapultConfigDTO, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function getDriveWithHttpInfo($accountId)
+    {
+        $returnType = '\Proximax\Model\CatapultConfigDTO';
+        $request = $this->getDriveRequest($accountId);
+
+        try {
+            $options = $this->createHttpClientOption();
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? $e->getResponse()->getBody()->getContents() : null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    $response->getBody()
+                );
+            }
+
+            $responseBody = $response->getBody();
+            if ($returnType === '\SplFileObject') {
+                $content = $responseBody; //stream goes to serializer
+            } else {
+                $content = $responseBody->getContents();
+                if ($returnType !== 'string') {
+                    $content = json_decode($content);
+                }
+            }
+
+            return [
+                $content,
+                $response->getStatusCode(),
+                $response->getHeaders()
+            ];
+
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Proximax\Model\MosaicInfoDTO',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    break;
+            }
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation getAccountDrivesAsync
+     *
+     * @param  string $accountId ID of a drive (required)
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function getDriveAsync($accountId)
+    {
+        return $this->getDriveAsyncWithHttpInfo($accountId)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            );
+    }
+
+    /**
+     * Operation getDriveAsyncWithHttpInfo
+     *
+     * @param  string $height (required)
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function getDriveAsyncWithHttpInfo($accountId)
+    {
+        $returnType = '\Proximax\Model\ContractInfoDTO';
+        $request = $this->getDriveRequest($accountId);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    $responseBody = $response->getBody();
+                    if ($returnType === '\SplFileObject') {
+                        $content = $responseBody; //stream goes to serializer
+                    } else {
+                        $content = $responseBody->getContents();
+                        if ($returnType !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders()
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        $response->getBody()
+                    );
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'getDrive'
+     *
+     * @param  string $accountId (required)
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    protected function getDriveRequest($accountId)
+    {
+        // verify the required parameter 'accountId' is set
+        if ($accountId === null) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $accountId when calling getDrive'
+            );
+        }
+
+        $resourcePath = '/account/{accountId}/drive';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+
+        // path params
+        if ($accountId !== null) {
+            $resourcePath = str_replace(
+                '{' . 'accountId' . '}',
+                ObjectSerializer::toPathValue($accountId),
+                $resourcePath
+            );
+        }
+
+        // body params
+        $_tempBody = null;
+
+        if ($multipart) {
+            $headers = $this->headerSelector->selectHeadersForMultipart(
+                ['application/json']
+            );
+        } else {
+            $headers = $this->headerSelector->selectHeaders(
+                ['application/json'],
+                []
+            );
+        }
+
+        // for model (json/xml)
+        if (isset($_tempBody)) {
+            $httpBody = $_tempBody;
+            if ($httpBody instanceof \stdClass && $headers['Content-Type'] === 'application/json') {
+                $httpBody = json_encode($httpBody);
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $multipartContents[] = [
+                        'name' => $formParamName,
+                        'contents' => $formParamValue
+                    ];
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = json_encode($formParams);
 
             } else {
                 // for HTTP post (form)
@@ -324,35 +577,36 @@ class ContractRoutesApi
     }
 
     /**
-     * Operation getContract
+     * Operation getAccountDrives
      *
-     *
-     * @param  \Proximax\Model\ContractId $contractId (required)
+     * Get drive by accountId.
+     * @param  string $accountId ID of a drive(required)
+     * @param  string $role role of a drive(required)
      *
      * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return \Proximax\Model\ContractInfoDTO
+     * @return \Proximax\Model\CatapultConfigDTO
      */
-    public function getContract($contractId)
+    public function getDriveByRole($accountId, $role)
     {
-        $response = $this->getContractWithHttpInfo($contractId);
+        $response = $this->getDriveByRoleWithHttpInfo($accountId, $role);
         return $response;
     }
 
     /**
-     * Operation getContractWithHttpInfo
-     *
-     *
-     * @param  \Proximax\Model\ContractId $contractId (required)
+     * Operation getDriveByRoleWithHttpInfo
+     * Get drive by id
+     * @param  string $mosaicId ID of a drive (required)
+     * * @param  string $role role of a drive(required)
      *
      * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return array of \Proximax\Model\ContractInfoDTO, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Proximax\Model\CatapultConfigDTO, HTTP status code, HTTP response headers (array of strings)
      */
-    public function getContractWithHttpInfo($contractId)
+    public function getDriveByRoleWithHttpInfo($accountId, $role)
     {
-        $returnType = '\Proximax\Model\ContractInfoDTO';
-        $request = $this->getContractRequest($contractId);
+        $returnType = '\Proximax\Model\CatapultConfigDTO';
+        $request = $this->getDriveByRoleRequest($accountId, $role);
 
         try {
             $options = $this->createHttpClientOption();
@@ -403,7 +657,7 @@ class ContractRoutesApi
                 case 200:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\Proximax\Model\MosaicInfoDTO[]',
+                        '\Proximax\Model\MosaicInfoDTO',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -414,17 +668,17 @@ class ContractRoutesApi
     }
 
     /**
-     * Operation getContractAsync
+     * Operation getAccountDrivesAsync
      *
-     *
-     * @param  \Proximax\Model\ContractId $contractId (required)
+     * @param  string $accountId ID of a drive (required)
+     * @param  string $role role of a drive(required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getContractAsync($contractId)
+    public function getDriveByRoleAsync($accountId, $role)
     {
-        return $this->getContractAsyncWithHttpInfo($contractId)
+        return $this->getDriveByRoleAsyncWithHttpInfo($accountId, $role)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -433,18 +687,18 @@ class ContractRoutesApi
     }
 
     /**
-     * Operation getContractAsyncWithHttpInfo
+     * Operation getDriveByRoleAsyncWithHttpInfo
      *
-     *
-     * @param  \Proximax\Model\ContractId $contractId(required)
+     * @param  string $height (required)
+     * @param  string $role role of a drive(required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getContractAsyncWithHttpInfo($contractId)
+    public function getDriveByRoleAsyncWithHttpInfo($accountId, $role)
     {
         $returnType = '\Proximax\Model\ContractInfoDTO';
-        $request = $this->getContractRequest($mosaicId);
+        $request = $this->getDriveByRoleRequest($accountId, $role);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -484,23 +738,24 @@ class ContractRoutesApi
     }
 
     /**
-     * Create request for operation 'getContract'
+     * Create request for operation 'getDriveByRole'
      *
-     * @param  \Proximax\Model\ContractId $contractId (required)
+     * @param  string $accountId (required)
+     * @param  string $role role of a drive(required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function getContractRequest($contractId)
+    protected function getDriveByRoleRequest($accountId, $role)
     {
-        // verify the required parameter 'contractId' is set
-        if ($contractId === null) {
+        // verify the required parameter 'accountId' is set
+        if ($accountId === null || $role === null) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $contractId when calling getContract'
+                'Missing the required parameter $accountId when calling getDriveByRole'
             );
         }
 
-        $resourcePath = '/contract/{contractId}';
+        $resourcePath = '/account/{accountId}/drive/{role}';
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
@@ -508,21 +763,25 @@ class ContractRoutesApi
         $multipart = false;
 
 
-
         // path params
-        if ($contractId !== null) {
+        if ($accountId !== null) {
             $resourcePath = str_replace(
-                '{' . 'contractId' . '}',
-                ObjectSerializer::toPathValue($contractId),
+                '{' . 'accountId' . '}',
+                ObjectSerializer::toPathValue($accountId),
+                $resourcePath
+            );
+        }
+
+        if ($role !== null) {
+            $resourcePath = str_replace(
+                '{' . 'role' . '}',
+                ObjectSerializer::toPathValue($role),
                 $resourcePath
             );
         }
 
         // body params
         $_tempBody = null;
-        /*if (isset($contractId)) {
-            $_tempBody = $contractId;
-        }*/
 
         if ($multipart) {
             $headers = $this->headerSelector->selectHeadersForMultipart(
@@ -537,11 +796,9 @@ class ContractRoutesApi
 
         // for model (json/xml)
         if (isset($_tempBody)) {
-            // $_tempBody is the method argument, if present
             $httpBody = $_tempBody;
-            // \stdClass has no __toString(), so we should encode it manually
             if ($httpBody instanceof \stdClass && $headers['Content-Type'] === 'application/json') {
-                $httpBody = \GuzzleHttp\json_encode($httpBody);
+                $httpBody = json_encode($httpBody);
             }
         } elseif (count($formParams) > 0) {
             if ($multipart) {
@@ -556,7 +813,7 @@ class ContractRoutesApi
                 $httpBody = new MultipartStream($multipartContents);
 
             } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = \GuzzleHttp\json_encode($formParams);
+                $httpBody = json_encode($formParams);
 
             } else {
                 // for HTTP post (form)
@@ -585,504 +842,6 @@ class ContractRoutesApi
         );
     }
 
-    /**
-     * Operation getContractsAccounts
-     *
-     * @param  \Proximax\Model\AccountIds $accountIds is publickeys(required)
-     *
-     * @throws \Proximax\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     * @return \Proximax\Model\ContractInfoDTO
-     */
-    public function getContractsAccounts($accountIds)
-    {
-        $response = $this->getContractsAccountsWithHttpInfo($accountIds);
-        return $response;
-    }
-
-    /**
-     * Operation getContractsAccountsWithHttpInfo
-     *
-     * @param  \Proximax\Model\AccountIds $accountIds (required)
-     *
-     * @throws \Proximax\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     * @return array of \Proximax\Model\ContractInfoDTO, HTTP status code, HTTP response headers (array of strings)
-     */
-    public function getContractsAccountsWithHttpInfo($accountIds)
-    {
-        $returnType = '\Proximax\Model\ContractInfoDTO[]';
-        $request = $this->getContractsAccountsRequest($accountIds);
-
-        try {
-            $options = $this->createHttpClientOption();
-            try {
-                $response = $this->client->send($request, $options);
-            } catch (RequestException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
-                    $e->getResponse() ? $e->getResponse()->getBody()->getContents() : null
-                );
-            }
-
-            $statusCode = $response->getStatusCode();
-
-            if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(
-                    sprintf(
-                        '[%d] Error connecting to the API (%s)',
-                        $statusCode,
-                        $request->getUri()
-                    ),
-                    $statusCode,
-                    $response->getHeaders(),
-                    $response->getBody()
-                );
-            }
-
-            $responseBody = $response->getBody();
-            if ($returnType === '\SplFileObject') {
-                $content = $responseBody; //stream goes to serializer
-            } else {
-                $content = $responseBody->getContents();
-                if ($returnType !== 'string') {
-                    $content = json_decode($content);
-                }
-            }
-
-            return [
-                $content,
-                $response->getStatusCode(),
-                $response->getHeaders()
-            ];
-
-        } catch (ApiException $e) {
-            switch ($e->getCode()) {
-                case 200:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\Proximax\Model\ContractInfoDTO[]',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-                    break;
-            }
-            throw $e;
-        }
-    }
-
-    /**
-     * Operation getContractsAccountsAsync
-     *
-     * @param  \Proximax\Model\AccountIds $accountIds (required)
-     *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
-     */
-    public function getContractsAccountsAsync($accountIds)
-    {
-        return $this->getContractsAccountsAsyncWithHttpInfo($accountIds)
-            ->then(
-                function ($response) {
-                    return $response[0];
-                }
-            );
-    }
-
-    /**
-     * Operation getContractsAccountsAsyncWithHttpInfo
-     *
-     * @param  \Proximax\Model\MetadataIds $accountIds (required)
-     *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
-     */
-    public function getContractsAccountsAsyncWithHttpInfo($accountIds)
-    {
-        $returnType = '\Proximax\Model\ContractInfoDTO[]';
-        $request = $this->getContractsAccountsRequest($accountIds);
-
-        return $this->client
-            ->sendAsync($request, $this->createHttpClientOption())
-            ->then(
-                function ($response) use ($returnType) {
-                    $responseBody = $response->getBody();
-                    if ($returnType === '\SplFileObject') {
-                        $content = $responseBody; //stream goes to serializer
-                    } else {
-                        $content = $responseBody->getContents();
-                        if ($returnType !== 'string') {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, $returnType, []),
-                        $response->getStatusCode(),
-                        $response->getHeaders()
-                    ];
-                },
-                function ($exception) {
-                    $response = $exception->getResponse();
-                    $statusCode = $response->getStatusCode();
-                    throw new ApiException(
-                        sprintf(
-                            '[%d] Error connecting to the API (%s)',
-                            $statusCode,
-                            $exception->getRequest()->getUri()
-                        ),
-                        $statusCode,
-                        $response->getHeaders(),
-                        $response->getBody()
-                    );
-                }
-            );
-    }
-
-    /**
-     * Create request for operation 'getContractsAccounts'
-     *
-     * @param  \Proximax\Model\AccountIds $accountIds (required)
-     *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
-     */
-    protected function getContractsAccountsRequest($accountIds)
-    {
-        // verify the required parameter 'accountIds' is set
-        if ($accountIds === null) {
-            throw new \InvalidArgumentException(
-                'Missing the required parameter $accountIds when calling getContractsAccounts'
-            );
-        }
-
-        $resourcePath = '/account/contracts';
-        $formParams = [];
-        $queryParams = [];
-        $headerParams = [];
-        $httpBody = new \stdClass();
-        $multipart = false;
-
-
-
-        // body params
-        $_tempBody = null;
-        if (isset($accountIds)) {
-            $_tempBody = $accountIds;
-        }
-
-        if ($multipart) {
-            $headers = $this->headerSelector->selectHeadersForMultipart(
-                ['application/json']
-            );
-        } else {
-            $headers = $this->headerSelector->selectHeaders(
-                ['application/json'],
-                []
-            );
-        }
-
-        // for model (json/xml)
-        if (isset($_tempBody)) {
-            // $_tempBody is the method argument, if present
-            $httpBody->publicKeys = $_tempBody;
-            // \stdClass has no __toString(), so we should encode it manually
-            if ($httpBody instanceof \stdClass && $headers['Content-Type'] === 'application/json') {
-                $httpBody = \GuzzleHttp\json_encode($httpBody);
-            }
-        } elseif (count($formParams) > 0) {
-            if ($multipart) {
-                $multipartContents = [];
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $multipartContents[] = [
-                        'name' => $formParamName,
-                        'contents' => $formParamValue
-                    ];
-                }
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents);
-
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = \GuzzleHttp\json_encode($formParams);
-
-            } else {
-                // for HTTP post (form)
-                $httpBody = \GuzzleHttp\Psr7\Query::build($formParams);
-            }
-        }
-
-
-        $defaultHeaders = [];
-        if ($this->config->getUserAgent()) {
-            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
-        }
-
-        $headers = array_merge(
-            $defaultHeaders,
-            $headerParams,
-            $headers
-        );
-
-        $query = \GuzzleHttp\Psr7\Query::build($queryParams);
-        return new Request(
-            'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
-            $headers,
-            $httpBody
-        );
-    }
-    
-
-    /**
-     * Operation getContracts
-     *
-     * @param  \Proximax\Model\AccountIds $accountIds is publickeys or addresses(required)
-     *
-     * @throws \Proximax\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     * @return \Proximax\Model\ContractInfoDTO
-     */
-    public function getContracts($accountIds)
-    {
-        $response = $this->getContractsWithHttpInfo($accountIds);
-        return $response;
-    }
-
-    /**
-     * Operation getContractsWithHttpInfo
-     *
-     * @param  \Proximax\Model\AccountIds $accountIds (required)
-     *
-     * @throws \Proximax\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     * @return array of \Proximax\Model\ContractInfoDTO, HTTP status code, HTTP response headers (array of strings)
-     */
-    public function getContractsWithHttpInfo($accountIds)
-    {
-        $returnType = '\Proximax\Model\ContractInfoDTO[]';
-        $request = $this->getContractsRequest($accountIds);
-
-        try {
-            $options = $this->createHttpClientOption();
-            try {
-                $response = $this->client->send($request, $options);
-            } catch (RequestException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
-                    $e->getResponse() ? $e->getResponse()->getBody()->getContents() : null
-                );
-            }
-
-            $statusCode = $response->getStatusCode();
-
-            if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(
-                    sprintf(
-                        '[%d] Error connecting to the API (%s)',
-                        $statusCode,
-                        $request->getUri()
-                    ),
-                    $statusCode,
-                    $response->getHeaders(),
-                    $response->getBody()
-                );
-            }
-
-            $responseBody = $response->getBody();
-            if ($returnType === '\SplFileObject') {
-                $content = $responseBody; //stream goes to serializer
-            } else {
-                $content = $responseBody->getContents();
-                if ($returnType !== 'string') {
-                    $content = json_decode($content);
-                }
-            }
-
-            return [
-                $content,
-                $response->getStatusCode(),
-                $response->getHeaders()
-            ];
-
-        } catch (ApiException $e) {
-            switch ($e->getCode()) {
-                case 200:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\Proximax\Model\ContractInfoDTO[]',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-                    break;
-            }
-            throw $e;
-        }
-    }
-
-    /**
-     * Operation getContractsAsync
-     *
-     * @param  \Proximax\Model\AccountIds $accountIds (required)
-     *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
-     */
-    public function getContractsAsync($accountIds)
-    {
-        return $this->getContractsAsyncWithHttpInfo($accountIds)
-            ->then(
-                function ($response) {
-                    return $response[0];
-                }
-            );
-    }
-
-    /**
-     * Operation getContractsAsyncWithHttpInfo
-     *
-     * @param  \Proximax\Model\MetadataIds $accountIds (required)
-     *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
-     */
-    public function getContractsAsyncWithHttpInfo($accountIds)
-    {
-        $returnType = '\Proximax\Model\ContractInfoDTO[]';
-        $request = $this->getContractsRequest($accountIds);
-
-        return $this->client
-            ->sendAsync($request, $this->createHttpClientOption())
-            ->then(
-                function ($response) use ($returnType) {
-                    $responseBody = $response->getBody();
-                    if ($returnType === '\SplFileObject') {
-                        $content = $responseBody; //stream goes to serializer
-                    } else {
-                        $content = $responseBody->getContents();
-                        if ($returnType !== 'string') {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, $returnType, []),
-                        $response->getStatusCode(),
-                        $response->getHeaders()
-                    ];
-                },
-                function ($exception) {
-                    $response = $exception->getResponse();
-                    $statusCode = $response->getStatusCode();
-                    throw new ApiException(
-                        sprintf(
-                            '[%d] Error connecting to the API (%s)',
-                            $statusCode,
-                            $exception->getRequest()->getUri()
-                        ),
-                        $statusCode,
-                        $response->getHeaders(),
-                        $response->getBody()
-                    );
-                }
-            );
-    }
-
-    /**
-     * Create request for operation 'getContracts'
-     *
-     * @param  \Proximax\Model\AccountIds $accountIds (required)
-     *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
-     */
-    protected function getContractsRequest($accountIds)
-    {
-        // verify the required parameter 'accountIds' is set
-        if ($accountIds === null) {
-            throw new \InvalidArgumentException(
-                'Missing the required parameter $accountIds when calling getContracts'
-            );
-        }
-
-        $resourcePath = '/contract';
-        $formParams = [];
-        $queryParams = [];
-        $headerParams = [];
-        $httpBody = new \stdClass();
-        $multipart = false;
-
-
-
-        // body params
-        $_tempBody = null;
-        if (isset($accountIds)) {
-            $_tempBody = $accountIds;
-        }
-
-        if ($multipart) {
-            $headers = $this->headerSelector->selectHeadersForMultipart(
-                ['application/json']
-            );
-        } else {
-            $headers = $this->headerSelector->selectHeaders(
-                ['application/json'],
-                []
-            );
-        }
-
-        // for model (json/xml)
-        if (isset($_tempBody)) {
-            // $_tempBody is the method argument, if present
-            $httpBody->addresses = $_tempBody;
-            // \stdClass has no __toString(), so we should encode it manually
-            if ($httpBody instanceof \stdClass && $headers['Content-Type'] === 'application/json') {
-                $httpBody = \GuzzleHttp\json_encode($httpBody);
-            }
-        } elseif (count($formParams) > 0) {
-            if ($multipart) {
-                $multipartContents = [];
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $multipartContents[] = [
-                        'name' => $formParamName,
-                        'contents' => $formParamValue
-                    ];
-                }
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents);
-
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = \GuzzleHttp\json_encode($formParams);
-
-            } else {
-                // for HTTP post (form)
-                $httpBody = \GuzzleHttp\Psr7\Query::build($formParams);
-            }
-        }
-
-
-        $defaultHeaders = [];
-        if ($this->config->getUserAgent()) {
-            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
-        }
-
-        $headers = array_merge(
-            $defaultHeaders,
-            $headerParams,
-            $headers
-        );
-
-        $query = \GuzzleHttp\Psr7\Query::build($queryParams);
-        return new Request(
-            'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
-            $headers,
-            $httpBody
-        );
-    }
 
     /**
      * Create http client option

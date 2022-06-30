@@ -15,7 +15,7 @@
         $config = $config->NewConfig($baseUrl,$networkType,$wsReconnectionTimeout);
     }
 
-    $contractId = "F5FB54E9A2AC5B616C92D5FCC52A98A5FA03B4E0ECE0C51B2ABB7FA25D75B9DA";
+    $contractId = "8599BA6DB5B81BB69F96B88DD80A3B9EB7BBF8849CBD979100E89D69C30356E0";
     $contractInfo = (new Contract)->GetContract($config,$contractId);
     var_dump($contractInfo);
 ?>

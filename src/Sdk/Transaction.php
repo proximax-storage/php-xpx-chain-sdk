@@ -104,14 +104,14 @@ class Transaction{
      * 
      * @return TransactionDTO array
      */
-    public function GetTransactions($config, $transIds){
+    public function GetTransactions($config, $transIds, $groupType){
         $TransactionRoutesApi = new TransactionRoutesApi;
         $ApiClient = new ApiClient;
         $url = $config->BaseURL;
         $ApiClient->setHost($url);
         $networkType = $config->NetworkType;
 
-        $data = $TransactionRoutesApi->getTransactions($transIds);
+        $data = $TransactionRoutesApi->getTransactions($transIds, $groupType);
         $arr_trans = array();
         if ($data[1] == 200){ // successfull
             for($i=0;$i<count($data[0]);$i++){

@@ -1381,9 +1381,9 @@ class TransactionRoutesApi
      * @throws \InvalidArgumentException
      * @return object[]
      */
-    public function getTransactions($transactionIds)
+    public function getTransactions($transactionIds, $groupType)
     {
-        $response = $this->getTransactionsWithHttpInfo($transactionIds);
+        $response = $this->getTransactionsWithHttpInfo($transactionIds, $groupType);
         return $response;
     }
 
@@ -1398,10 +1398,10 @@ class TransactionRoutesApi
      * @throws \InvalidArgumentException
      * @return array of object[], HTTP status code, HTTP response headers (array of strings)
      */
-    public function getTransactionsWithHttpInfo($transactionIds)
+    public function getTransactionsWithHttpInfo($transactionIds, $groupType)
     {
         $returnType = 'object[]';
-        $request = $this->getTransactionsRequest($transactionIds);
+        $request = $this->getTransactionsRequest($transactionIds, $groupType);
         try {
             $options = $this->createHttpClientOption();
             try {
@@ -1539,7 +1539,7 @@ class TransactionRoutesApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function getTransactionsRequest($transactionIds)
+    protected function getTransactionsRequest($transactionIds, $groupType = "")
     {
         // verify the required parameter 'transactionIds' is set
         if ($transactionIds === null) {
@@ -1548,7 +1548,7 @@ class TransactionRoutesApi
             );
         }
 
-        $resourcePath = '/transactions';
+        $resourcePath = '/transactions/{group}';
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
@@ -1556,6 +1556,11 @@ class TransactionRoutesApi
         $multipart = false;
 
 
+        $resourcePath = str_replace(
+            '{' . 'group' . '}',
+            ObjectSerializer::toPathValue($groupType),
+            $resourcePath
+        );
 
         // body params
         $_tempBody = null;
@@ -1580,7 +1585,7 @@ class TransactionRoutesApi
             $httpBody->transactionIds = $_tempBody;
             // \stdClass has no __toString(), so we should encode it manually
             if ($httpBody instanceof \stdClass && $headers['Content-Type'] === 'application/json') {
-                $httpBody = \GuzzleHttp\json_encode($httpBody);
+                $httpBody = json_encode($httpBody);
             }
         } elseif (count($formParams) > 0) {
             if ($multipart) {
@@ -1595,7 +1600,7 @@ class TransactionRoutesApi
                 $httpBody = new MultipartStream($multipartContents);
 
             } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = \GuzzleHttp\json_encode($formParams);
+                $httpBody = json_encode($formParams);
 
             } else {
                 // for HTTP post (form)
@@ -1618,7 +1623,7 @@ class TransactionRoutesApi
         $query = \GuzzleHttp\Psr7\Query::build($queryParams);
         return new Request(
             'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath,
             $headers,
             $httpBody
         );
