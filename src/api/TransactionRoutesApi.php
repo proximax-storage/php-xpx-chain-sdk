@@ -1027,7 +1027,7 @@ class TransactionRoutesApi
             );
         }
 
-        $resourcePath = '/transactions/{transactionId}';
+        $resourcePath = '/transactions/confirmed/{transactionId}';
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
@@ -1885,6 +1885,782 @@ class TransactionRoutesApi
             $httpBody
         );
     }
+
+
+
+    /**
+     * Operation searchTransaction
+     *
+     * Get transactions information
+     * Returns transactions information for a given array of transactionIds.
+     *
+     * @throws \Proximax\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     * @return \Proximax\Model\TransactionSearchDTO
+     */
+    public function searchTransaction($searchType, $txnHash)
+    {
+        $response = $this->searchTransactionWithHttpInfo($searchType, $txnHash);
+        return $response;
+    }
+
+    /**
+     * Operation searchTransactionWithHttpInfo
+     *
+     * Returns transactions information for a given array of transactionIds.
+     *
+     *
+     * @throws \Proximax\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     * @return array of \Proximax\Model\TransactionSearchDTO, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function searchTransactionWithHttpInfo($searchType, $txnHash)
+    {
+        $returnType = '\Proximax\Model\TransactionSearchDTO';
+        $request = $this->searchTransactionRequest($searchType, $txnHash);
+
+        try {
+            $options = $this->createHttpClientOption();
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? $e->getResponse()->getBody()->getContents() : null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    $response->getBody()
+                );
+            }
+
+            $responseBody = $response->getBody();
+            if ($returnType === '\SplFileObject') {
+                $content = $responseBody; //stream goes to serializer
+            } else {
+                $content = $responseBody->getContents();
+                if ($returnType !== 'string') {
+                    $content = json_decode($content);
+                }
+            }
+
+            return [
+                $content,
+                $response->getStatusCode(),
+                $response->getHeaders()
+            ];
+
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Proximax\Model\TransactionSearchDTO',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    break;
+            }
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation searchTransactionAsync
+     *
+     * Get transactions information
+     *
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function searchTransactionAsync($searchType, $txnHash)
+    {
+        return $this->searchTransactionAsyncWithHttpInfo($searchType, $txnHash)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            );
+    }
+
+    /**
+     * Operation searchTransactionAsyncWithHttpInfo
+     *
+     * Get transactions information
+     *
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function searchTransactionAsyncWithHttpInfo($searchType, $txnHash)
+    {
+        $returnType = '\Proximax\Model\TransactionSearchDTO';
+        $request = $this->searchTransactionRequest($searchType, $txnHash);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    $responseBody = $response->getBody();
+                    if ($returnType === '\SplFileObject') {
+                        $content = $responseBody; //stream goes to serializer
+                    } else {
+                        $content = $responseBody->getContents();
+                        if ($returnType !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders()
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        $response->getBody()
+                    );
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'searchTransaction'
+     *
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    protected function searchTransactionRequest($searchType, $txnHash)
+    {
+        // verify required parameter 'transactionIds' is not null or undefined
+        if ($searchType === null || $txnHash === null) {
+            throw new \InvalidArgumentException(
+                'Required parameter searchType was null or undefined when calling searchTransaction.'
+            );
+        }
+
+        $resourcePath = '/transactions/{searchType}/{txnHash}';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // body params
+        $_tempBody = null;
+
+        // path params
+        if ($searchType !== null) {
+            $resourcePath = str_replace(
+                '{' . 'searchType' . '}',
+                ObjectSerializer::toPathValue($searchType),
+                $resourcePath
+            );
+        }
+
+        if ($txnHash !== null) {
+            $resourcePath = str_replace(
+                '{' . 'txnHash' . '}',
+                ObjectSerializer::toPathValue($txnHash),
+                $resourcePath
+            );
+        }
+
+        if ($multipart) {
+            $headers = $this->headerSelector->selectHeadersForMultipart(
+                ['application/json']
+            );
+        } else {
+            $headers = $this->headerSelector->selectHeaders(
+                ['application/json'],
+                []
+            );
+        }
+
+        // for model (json/xml)
+        if (isset($_tempBody)) {
+            // $_tempBody is the method argument, if present
+            $httpBody = $_tempBody;
+            // \stdClass has no __toString(), so we should encode it manually
+            if ($httpBody instanceof \stdClass && $headers['Content-Type'] === 'application/json') {
+                $httpBody = json_encode($httpBody);
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $multipartContents[] = [
+                        'name' => $formParamName,
+                        'contents' => $formParamValue
+                    ];
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = json_encode($formParams);
+
+            } else {
+                // for HTTP post (form)
+                $httpBody = \GuzzleHttp\Psr7\Query::build($formParams);
+            }
+        }
+
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $query = \GuzzleHttp\Psr7\Query::build($queryParams);
+        return new Request(
+            'GET',
+            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation searchTransactions
+     *
+     * Get transactions information
+     * Returns transactions information for a given array of transactionIds.
+     *
+     * @throws \Proximax\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     * @return \Proximax\Model\TransactionSearchDTO
+     */
+    public function searchTransactions($searchType)
+    {
+        $response = $this->searchTransactionsWithHttpInfo($searchType);
+        return $response;
+    }
+
+    /**
+     * Operation searchTransactionWithHttpInfo
+     *
+     * Returns transactions information for a given array of transactionIds.
+     *
+     *
+     * @throws \Proximax\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     * @return array of \Proximax\Model\TransactionSearchDTO, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function searchTransactionsWithHttpInfo($searchType)
+    {
+        $returnType = '\Proximax\Model\TransactionSearchDTO';
+        $request = $this->searchTransactionsRequest($searchType);
+
+        try {
+            $options = $this->createHttpClientOption();
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? $e->getResponse()->getBody()->getContents() : null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    $response->getBody()
+                );
+            }
+
+            $responseBody = $response->getBody();
+            if ($returnType === '\SplFileObject') {
+                $content = $responseBody; //stream goes to serializer
+            } else {
+                $content = $responseBody->getContents();
+                if ($returnType !== 'string') {
+                    $content = json_decode($content);
+                }
+            }
+
+            return [
+                $content,
+                $response->getStatusCode(),
+                $response->getHeaders()
+            ];
+
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Proximax\Model\TransactionSearchDTO',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    break;
+            }
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation searchTransactionsAsync
+     *
+     * Get transactions information
+     *
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function searchTransactionsAsync($searchType)
+    {
+        return $this->searchTransactionsAsyncWithHttpInfo($searchType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            );
+    }
+
+    /**
+     * Operation searchTransactionsAsyncWithHttpInfo
+     *
+     * Returns transactions information for a given group and query params.
+     * Get transactions information
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function searchTransactionsAsyncWithHttpInfo($searchType)
+    {
+        $returnType = '\Proximax\Model\TransactionSearchDTO';
+        $request = $this->searchTransactionsRequest($searchType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    $responseBody = $response->getBody();
+                    if ($returnType === '\SplFileObject') {
+                        $content = $responseBody; //stream goes to serializer
+                    } else {
+                        $content = $responseBody->getContents();
+                        if ($returnType !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders()
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        $response->getBody()
+                    );
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'searchTransactions'
+     * Returns transactions information for a given group and query params.
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    protected function searchTransactionsRequest($searchType)
+    {
+        // verify required parameter 'searchType' is not null or undefined
+        if ($searchType === null) {
+            throw new \InvalidArgumentException(
+                'Required parameter searchType was null or undefined when calling searchTransactions.'
+            );
+        }
+
+        $resourcePath = '/transactions/{searchType}';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // body params
+        $_tempBody = null;
+
+        // path params
+        if ($searchType !== null) {
+            $resourcePath = str_replace(
+                '{' . 'searchType' . '}',
+                ObjectSerializer::toPathValue($searchType),
+                $resourcePath
+            );
+        }
+
+        if ($multipart) {
+            $headers = $this->headerSelector->selectHeadersForMultipart(
+                ['application/json']
+            );
+        } else {
+            $headers = $this->headerSelector->selectHeaders(
+                ['application/json'],
+                []
+            );
+        }
+
+        // for model (json/xml)
+        if (isset($_tempBody)) {
+            // $_tempBody is the method argument, if present
+            $httpBody = $_tempBody;
+            // \stdClass has no __toString(), so we should encode it manually
+            if ($httpBody instanceof \stdClass && $headers['Content-Type'] === 'application/json') {
+                $httpBody = json_encode($httpBody);
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $multipartContents[] = [
+                        'name' => $formParamName,
+                        'contents' => $formParamValue
+                    ];
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = json_encode($formParams);
+
+            } else {
+                // for HTTP post (form)
+                $httpBody = \GuzzleHttp\Psr7\Query::build($formParams);
+            }
+        }
+
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $query = \GuzzleHttp\Psr7\Query::build($queryParams);
+        return new Request(
+            'GET',
+            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation getTransactionsCount
+     *
+     * Get transactionTypes count
+     * Returns transactions count separate by type for a given array of transactionTypes.
+     *
+     * @throws \Proximax\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     * @return \Proximax\Model\TransactionCountDTO
+     */
+    public function getTransactionsCount($transactionTypes)
+    {
+        $response = $this->getTransactionsCountWithHttpInfo($transactionTypes);
+        return $response;
+    }
+
+    /**
+     * Operation getTransactionsCountWithHttpInfo
+     *
+     * Returns transactions count separate by type for a given array of transactionTypes.
+     *
+     *
+     * @throws \Proximax\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     * @return array of \Proximax\Model\TransactionCountDTO, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function getTransactionsCountWithHttpInfo($transactionTypes)
+    {
+        $returnType = '\Proximax\Model\TransactionCountDTO';
+        $request = $this->getTransactionsCountRequest($transactionTypes);
+
+        try {
+            $options = $this->createHttpClientOption();
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? $e->getResponse()->getBody()->getContents() : null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    $response->getBody()
+                );
+            }
+
+            $responseBody = $response->getBody();
+            if ($returnType === '\SplFileObject') {
+                $content = $responseBody; //stream goes to serializer
+            } else {
+                $content = $responseBody->getContents();
+                if ($returnType !== 'string') {
+                    $content = json_decode($content);
+                }
+            }
+
+            return [
+                $content,
+                $response->getStatusCode(),
+                $response->getHeaders()
+            ];
+
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Proximax\Model\TransactionCountDTO',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    break;
+            }
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation getTransactionsCountAsync
+     *
+     * Get transactionTypes count
+     *
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function getTransactionsCountAsync($transactionTypes)
+    {
+        return $this->getTransactionsCountAsyncWithHttpInfo($transactionTypes)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            );
+    }
+
+    /**
+     * Operation getTransactionsCountAsyncWithHttpInfo
+     *
+     * Get transactionTypes count
+     *
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function getTransactionsCountAsyncWithHttpInfo($transactionTypes)
+    {
+        $returnType = '\Proximax\Model\TransactionCountDTO';
+        $request = $this->getTransactionsCountRequest($transactionTypes);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    $responseBody = $response->getBody();
+                    if ($returnType === '\SplFileObject') {
+                        $content = $responseBody; //stream goes to serializer
+                    } else {
+                        $content = $responseBody->getContents();
+                        if ($returnType !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders()
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        $response->getBody()
+                    );
+                }
+            );
+    }
+
+
+    /**
+     * Create request for operation 'getTransactionsCount'
+     *
+     * @param transactionTypes (required)
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    protected function getTransactionsCountRequest($transactionTypes)
+    {
+        // verify the required parameter '$transactionTypes' is set
+        if ($transactionTypes === null) {
+            throw new \InvalidArgumentException(
+                'Required parameter transactionTypes was null or undefined when calling getTransactionsCount.'
+            );
+        }
+
+        $resourcePath = '/transactions/count';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = new \stdClass();
+        $multipart = false;
+
+
+        // body params
+        $_tempBody = null;
+        if (isset($transactionTypes)) {
+            $_tempBody = $transactionTypes;
+        }
+
+        if ($multipart) {
+            $headers = $this->headerSelector->selectHeadersForMultipart(
+                ['application/json']
+            );
+        } else {
+            $headers = $this->headerSelector->selectHeaders(
+                ['application/json'],
+                []
+            );
+        }
+
+        // for model (json/xml)
+        if (isset($_tempBody)) {
+            // $_tempBody is the method argument, if present
+            $httpBody->transactionTypes = $_tempBody;
+            // \stdClass has no __toString(), so we should encode it manually
+            if ($httpBody instanceof \stdClass && $headers['Content-Type'] === 'application/json') {
+                $httpBody = json_encode($httpBody);
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $multipartContents[] = [
+                        'name' => $formParamName,
+                        'contents' => $formParamValue
+                    ];
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = json_encode($formParams);
+
+            } else {
+                // for HTTP post (form)
+                $httpBody = \GuzzleHttp\Psr7\Query::build($formParams);
+            }
+        }
+
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $query = \GuzzleHttp\Psr7\Query::build($queryParams);
+        return new Request(
+            'POST',
+            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
 
     /**
      * Create http client option

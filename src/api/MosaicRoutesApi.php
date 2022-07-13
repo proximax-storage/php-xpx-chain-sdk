@@ -1126,6 +1126,553 @@ class MosaicRoutesApi
     }
 
     /**
+     * Retrieve owners of a given mosaic sorted on descending order based on amount. (REST only)
+     *
+     * Get mosaic information
+     *
+     * @param  string $mosaicId The mosaic identifier.(required)
+     * @param  int $page The page of list (starts at 0).(optional)
+     * @param  string $pageSize The count of items on a page (max 100, default 25).
+     *
+     * @throws \Proximax\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     * @return \Proximax\Model\MosaicRichListDTO[]
+     */
+    public function getMosaicRichList($mosaicId, $page = null, $pageSize = null)
+    {
+        list($response) = $this->getMosaicRichListWithHttpInfo($mosaicId, $page, $pageSize);
+        return $response;
+    }
+
+    /**
+     * Operation getMosaicRichListWithHttpInfo
+     *
+     * Get mosaics information
+     *
+     * @param  string $mosaicId The mosaic identifier.(required)
+     * @param  int $page The page of list (starts at 0).(optional)
+     * @param  string $pageSize The count of items on a page (max 100, default 25).
+     *
+     * @throws \Proximax\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     * @return array of \Proximax\Model\MosaicRichListDTO[], HTTP status code, HTTP response headers (array of strings)
+     */
+    public function getMosaicRichListWithHttpInfo($mosaicId, $page = null, $pageSize = null)
+    {
+        $returnType = '\Proximax\Model\MosaicRichListDTO[]';
+        $request = $this->getMosaicRichListRequest($mosaicId, $page, $pageSize);
+
+        try {
+            $options = $this->createHttpClientOption();
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? $e->getResponse()->getBody()->getContents() : null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    $response->getBody()
+                );
+            }
+
+            $responseBody = $response->getBody();
+            if ($returnType === '\SplFileObject') {
+                $content = $responseBody; //stream goes to serializer
+            } else {
+                $content = $responseBody->getContents();
+                if ($returnType !== 'string') {
+                    $content = json_decode($content);
+                }
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders()
+            ];
+
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Proximax\Model\MosaicRichListDTO[]',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    break;
+            }
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation getMosaicRichListAsync
+     *
+     * Get mosaics information
+     *
+     * @param  string $mosaicId The mosaic identifier.(required)
+     * @param  int $page The page of list (starts at 0).(optional)
+     * @param  string $pageSize The count of items on a page (max 100, default 25).
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function getMosaicRichListAsync($mosaicId, $page = null, $pageSize = null)
+    {
+        return $this->getMosaicRichListAsyncWithHttpInfo($mosaicId, $page, $pageSize)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            );
+    }
+
+    /**
+     * Operation getMosaicRichListAsyncWithHttpInfo
+     *
+     * Get mosaics information
+     *
+     * @param  string $mosaicId The mosaic identifier.(required)
+     * @param  int $page The page of list (starts at 0).(optional)
+     * @param  string $pageSize The count of items on a page (max 100, default 25).
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function getMosaicRichListAsyncWithHttpInfo($mosaicId, $page = null, $pageSize = null)
+    {
+        $returnType = '\Proximax\Model\MosaicRichListDTO[]';
+        $request = $this->getMosaicRichListRequest($mosaicId, $page, $pageSize);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    $responseBody = $response->getBody();
+                    if ($returnType === '\SplFileObject') {
+                        $content = $responseBody; //stream goes to serializer
+                    } else {
+                        $content = $responseBody->getContents();
+                        if ($returnType !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders()
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        $response->getBody()
+                    );
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'getMosaicRichList'
+     *
+     * @param  string $mosaicId The mosaic identifier.(required)
+     * @param  int $page The page of list (starts at 0).(optional)
+     * @param  string $pageSize The count of items on a page (max 100, default 25).
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    protected function getMosaicRichListRequest($mosaicId, $page = null, $pageSize = null)
+    {
+        // verify required parameter 'mosaicId' is not null or undefined
+        if ($mosaicId === null) {
+            throw new \InvalidArgumentException(
+                'Required parameter mosaicId was null or undefined when calling getMosaicRichList.'
+            );
+        }
+
+        $resourcePath = '/mosaic/{mosaicId}/richlist';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // query params
+        if ($page !== null) {
+            $queryParams['page'] = ObjectSerializer::toQueryValue($page);
+        }
+
+        // query params
+        if ($pageSize !== null) {
+            $queryParams['pageSize'] = ObjectSerializer::toQueryValue($pageSize);
+        }
+
+
+        // path params
+        if ($mosaicId !== null) {
+            $resourcePath = str_replace(
+                '{' . 'mosaicId' . '}',
+                ObjectSerializer::toPathValue($mosaicId),
+                $resourcePath
+            );
+        }
+
+        // body params
+        $_tempBody = null;
+
+        if ($multipart) {
+            $headers = $this->headerSelector->selectHeadersForMultipart(
+                ['application/json']
+            );
+        } else {
+            $headers = $this->headerSelector->selectHeaders(
+                ['application/json'],
+                []
+            );
+        }
+
+        // for model (json/xml)
+        if (isset($_tempBody)) {
+            // $_tempBody is the method argument, if present
+            $httpBody = $_tempBody;
+            // \stdClass has no __toString(), so we should encode it manually
+            if ($httpBody instanceof \stdClass && $headers['Content-Type'] === 'application/json') {
+                $httpBody = \GuzzleHttp\json_encode($httpBody);
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $multipartContents[] = [
+                        'name' => $formParamName,
+                        'contents' => $formParamValue
+                    ];
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = \GuzzleHttp\json_encode($formParams);
+
+            } else {
+                // for HTTP post (form)
+                $httpBody = \GuzzleHttp\Psr7\Query::build($formParams);
+            }
+        }
+
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $query = \GuzzleHttp\Psr7\Query::build($queryParams);
+        return new Request(
+            'GET',
+            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+
+    /**
+     * Operation getMosaicLevy
+     *
+     * Get mosaic levy of mosaic.
+     *
+     * @param  $mosaicId The mosaic identifier.(required)
+     *
+     * @throws \Proximax\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     * @return \Proximax\Model\MosaicNameDTO[]
+     */
+    public function getMosaicLevy($mosaicId)
+    {
+        list($response) = $this->getMosaicLevyWithHttpInfo($mosaicId);
+        return $response;
+    }
+
+    /**
+     * Operation getMosaicLevyWithHttpInfo
+     *
+     * Get mosaic levy information for a mosaic
+     *
+     * @param  $mosaicId The mosaic identifier.(required)
+     *
+     * @throws \Proximax\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     * @return array of \Proximax\Model\MosaicLevyDTO, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function getMosaicLevyWithHttpInfo($mosaicId)
+    {
+        $returnType = '\Proximax\Model\MosaicLevyDTO';
+        $request = $this->getMosaicLevyRequest($mosaicId);
+
+        try {
+            $options = $this->createHttpClientOption();
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? $e->getResponse()->getBody()->getContents() : null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    $response->getBody()
+                );
+            }
+
+            $responseBody = $response->getBody();
+            if ($returnType === '\SplFileObject') {
+                $content = $responseBody; //stream goes to serializer
+            } else {
+                $content = $responseBody->getContents();
+                if ($returnType !== 'string') {
+                    $content = json_decode($content);
+                }
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders()
+            ];
+
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Proximax\Model\MosaicLevyDTO',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    break;
+            }
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation getMosaicLevyAsync
+     *
+     * Get mosaic levy information for a mosaic
+     *
+     * @param  $mosaicId The mosaic identifier.(required)
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function getMosaicLevyAsync($mosaicId)
+    {
+        return $this->getMosaicLevyAsyncWithHttpInfo($mosaicId)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            );
+    }
+
+    /**
+     * Operation getMosaicLevyAsyncWithHttpInfo
+     *
+     * Get mosaic levy information for a mosaic
+     *
+     * @param  $mosaicId The mosaic identifier.(required)
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function getMosaicLevyAsyncWithHttpInfo($mosaicId)
+    {
+        $returnType = '\Proximax\Model\MosaicLevyDTO';
+        $request = $this->getMosaicLevyRequest($mosaicId);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    $responseBody = $response->getBody();
+                    if ($returnType === '\SplFileObject') {
+                        $content = $responseBody; //stream goes to serializer
+                    } else {
+                        $content = $responseBody->getContents();
+                        if ($returnType !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders()
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        $response->getBody()
+                    );
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'getMosaicLevy'
+     *
+     * @param  $mosaicId The mosaic identifier.(required)
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    protected function getMosaicLevyRequest($mosaicId)
+    {
+        // verify the required parameter '$mosaicId' is set
+        if ($mosaicId === null) {
+            throw new \InvalidArgumentException(
+                'Required parameter mosaicId was null or undefined when calling getMosaicLevy.'
+            );
+        }
+
+        $resourcePath = '/mosaic/{mosaicId}/levy';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = new \stdClass();
+        $multipart = false;
+
+        // body params
+        $_tempBody = null;
+
+        // path params
+        if ($mosaicId !== null) {
+            $resourcePath = str_replace(
+                '{' . 'mosaicId' . '}',
+                ObjectSerializer::toPathValue($mosaicId),
+                $resourcePath
+            );
+        }
+
+        if ($multipart) {
+            $headers = $this->headerSelector->selectHeadersForMultipart(
+                ['application/json']
+            );
+        } else {
+            $headers = $this->headerSelector->selectHeaders(
+                ['application/json'],
+                []
+            );
+        }
+
+        // for model (json/xml)
+        if (isset($_tempBody)) {
+            // $_tempBody is the method argument, if present
+            $httpBody->mosaicIds = $_tempBody;
+            // \stdClass has no __toString(), so we should encode it manually
+            if ($httpBody instanceof \stdClass && $headers['Content-Type'] === 'application/json') {
+                $httpBody = json_encode($httpBody);
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $multipartContents[] = [
+                        'name' => $formParamName,
+                        'contents' => $formParamValue
+                    ];
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = json_encode($formParams);
+
+            } else {
+                // for HTTP post (form)
+                $httpBody = \GuzzleHttp\Psr7\Query::build($formParams);
+            }
+        }
+
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $query = \GuzzleHttp\Psr7\Query::build($queryParams);
+        return new Request(
+            'GET',
+            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+
+
+
+    /**
      * Create http client option
      *
      * @throws \RuntimeException on file opening failure
