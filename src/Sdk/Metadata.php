@@ -103,6 +103,29 @@ class Metadata{
     }
 
     /**
+     *
+     * @param config $config
+     *
+     * @param String $accountId
+     *
+     * @return AddressMetadata
+     */
+    public function GetMetadata($config, $accountId){
+        $metadataRoutesApi = new MetadataRoutesApi;
+        $ApiClient = new ApiClient;
+        $url = $config->BaseURL;
+        $ApiClient->setHost($url);
+        $networkType = $config->NetworkType;
+
+        $data = $metadataRoutesApi->getMetadata($accountId);
+
+        if ($data[1] == 200){ // successfull
+            return $this->formatMetadata($networkType, $data[0]);
+        }
+        else return null;
+    }
+
+    /**
      * @param int $networkType
      *
      * @param array $data
@@ -110,6 +133,40 @@ class Metadata{
      * @return AddressMetadataInfoDTO, MosaicMetadataInfoDTO, NamespaceMetadataInfoDTO
      */
     public function formatMetadata($networkType, $data){
+
+        $metadataType = $data->metadataEntry->metadataType;
+        $fields = array();
+        $i = 0;
+        foreach ($data->metadataEntry as $key => $value) {
+            $fields[$i] = new FieldDTO($key,$value);
+            $i++;
+        }
+        $metadataId = $data->id;
+        $metadataDTO = array(
+            'metadataType' => $metadataType,
+            'fields' => $fields,
+            'metadataId' => $metadataId,
+        );
+
+        if ($metadataType == 1){
+            return new AddressMetadataDTO($metadataDTO);
+        }
+        else if ($metadataType == 2){
+            return new MosaicMetadataDTO($metadataDTO);
+        }
+        else if ($metadataType == 3){
+            return new NamespaceMetadataDTO($metadataDTO);
+        }
+    }
+
+    /**
+     * @param int $networkType
+     *
+     * @param array $data
+     *
+     * @return AddressMetadataInfoDTO, MosaicMetadataInfoDTO, NamespaceMetadataInfoDTO
+     */
+    /*public function formatMetadata($networkType, $data){
 
         $metadataType = $data->metadata->metadataType;
         $fields = array();
@@ -124,7 +181,7 @@ class Metadata{
             'fields' => $fields,
             'metadataId' => $metadataId,
         );
-        
+
         if ($metadataType == 1){
             return new AddressMetadataDTO($metadataDTO);
         }
@@ -134,6 +191,6 @@ class Metadata{
         else if ($metadataType == 3){
             return new NamespaceMetadataDTO($metadataDTO);
         }
-    }
+    }*/
 }
 ?>

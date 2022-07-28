@@ -15,8 +15,8 @@
         $config = $config->NewConfig($baseUrl,$networkType,$wsReconnectionTimeout);
     }
 
-    $address = "990585BBB7C97BB61D90410B67552D82D30738994BA7CF2B1041D1E0A6E4169B";
-    $metadataInfo = (new Metadata)->GetMetadataAccount($config,$address);
+    $compositeHash = "57D649B3FDC7CEE27A621F710492BB01DD8BA812B93B03B6B80044AABC313DB4";
+    $metadataInfo = (new Metadata)->GetMetadata($config,$compositeHash);
     var_dump($metadataInfo);
 
 ?>

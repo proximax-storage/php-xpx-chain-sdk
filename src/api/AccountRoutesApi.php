@@ -1118,7 +1118,7 @@ class AccountRoutesApi
      *
      * Get incoming transactions information
      *
-     * @param  string $publicKey Account publicKey (required)
+     * @param  string $plainAddress The public key of the account. (required)
      * @param  int $pageSize The numbers of transactions to return (optional)
      * @param  string $id Id last transaction id to apply pagination (optional)
      *
@@ -1126,9 +1126,9 @@ class AccountRoutesApi
      * @throws \InvalidArgumentException
      * @return object[]
      */
-    public function incomingTransactions($publicKey, $pageSize = null, $id = null)
+    public function incomingTransactions($plainAddress, $pageSize = null, $id = null)
     {
-        $response = $this->incomingTransactionsWithHttpInfo($publicKey, $pageSize, $id);
+        $response = $this->incomingTransactionsWithHttpInfo($plainAddress, $pageSize, $id);
         return $response;
     }
 
@@ -1137,7 +1137,7 @@ class AccountRoutesApi
      *
      * Get incoming transactions information
      *
-     * @param  string $publicKey Account publicKey (required)
+     * @param  string $plainAddress The public key of the account. (required)
      * @param  int $pageSize The numbers of transactions to return (optional)
      * @param  string $id Id last transaction id to apply pagination (optional)
      *
@@ -1145,10 +1145,10 @@ class AccountRoutesApi
      * @throws \InvalidArgumentException
      * @return array of object[], HTTP status code, HTTP response headers (array of strings)
      */
-    public function incomingTransactionsWithHttpInfo($publicKey, $pageSize = null, $id = null)
+    public function incomingTransactionsWithHttpInfo($plainAddress, $pageSize = null, $id = null)
     {
         $returnType = 'object[]';
-        $request = $this->incomingTransactionsRequest($publicKey, $pageSize, $id);
+        $request = $this->incomingTransactionsRequest($plainAddress, $pageSize, $id);
 
         try {
             $options = $this->createHttpClientOption();
@@ -1214,16 +1214,16 @@ class AccountRoutesApi
      *
      * Get incoming transactions information
      *
-     * @param  string $publicKey Account publicKey (required)
+     * @param  string $plainAddress The public key of the account. (required)
      * @param  int $pageSize The numbers of transactions to return (optional)
      * @param  string $id Id last transaction id to apply pagination (optional)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function incomingTransactionsAsync($publicKey, $pageSize = null, $id = null)
+    public function incomingTransactionsAsync($plainAddress, $pageSize = null, $id = null)
     {
-        return $this->incomingTransactionsAsyncWithHttpInfo($publicKey, $pageSize, $id)
+        return $this->incomingTransactionsAsyncWithHttpInfo($plainAddress, $pageSize, $id)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -1236,17 +1236,17 @@ class AccountRoutesApi
      *
      * Get incoming transactions information
      *
-     * @param  string $publicKey Account publicKey (required)
+     * @param  string $plainAddress The public key of the account. (required)
      * @param  int $pageSize The numbers of transactions to return (optional)
      * @param  string $id Id last transaction id to apply pagination (optional)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function incomingTransactionsAsyncWithHttpInfo($publicKey, $pageSize = null, $id = null)
+    public function incomingTransactionsAsyncWithHttpInfo($plainAddress, $pageSize = null, $id = null)
     {
         $returnType = 'object[]';
-        $request = $this->incomingTransactionsRequest($publicKey, $pageSize, $id);
+        $request = $this->incomingTransactionsRequest($plainAddress, $pageSize, $id);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -1288,23 +1288,23 @@ class AccountRoutesApi
     /**
      * Create request for operation 'incomingTransactions'
      *
-     * @param  string $publicKey Account publicKey (required)
+     * @param  string $plainAddress The public key of the account. (required)
      * @param  int $pageSize The numbers of transactions to return (optional)
      * @param  string $id Id last transaction id to apply pagination (optional)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function incomingTransactionsRequest($publicKey, $pageSize = null, $id = null)
+    protected function incomingTransactionsRequest($plainAddress, $pageSize = null, $id = null)
     {
-        // verify the required parameter 'publicKey' is set
-        if ($publicKey === null) {
+        // verify the required parameter 'plainAddress' is set
+        if ($plainAddress === null) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $publicKey when calling incomingTransactions'
+                'Required parameter publicKey was null or undefined when calling incomingTransactions.'
             );
         }
 
-        $resourcePath = '/account/{publicKey}/transactions/incoming';
+        $resourcePath = '/transactions/confirmed';
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
@@ -1320,13 +1320,9 @@ class AccountRoutesApi
             $queryParams['id'] = ObjectSerializer::toQueryValue($id);
         }
 
-        // path params
-        if ($publicKey !== null) {
-            $resourcePath = str_replace(
-                '{' . 'publicKey' . '}',
-                ObjectSerializer::toPathValue($publicKey),
-                $resourcePath
-            );
+        // query params
+        if ($plainAddress !== null) {
+            $queryParams['recipientAddress'] = ObjectSerializer::toQueryValue($plainAddress);
         }
 
         // body params
@@ -1584,7 +1580,7 @@ class AccountRoutesApi
             );
         }
 
-        $resourcePath = '/account/{publicKey}/transactions/outgoing';
+        $resourcePath = '/transactions/confirmed';
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
@@ -1600,13 +1596,9 @@ class AccountRoutesApi
             $queryParams['id'] = ObjectSerializer::toQueryValue($id);
         }
 
-        // path params
+        // query params
         if ($publicKey !== null) {
-            $resourcePath = str_replace(
-                '{' . 'publicKey' . '}',
-                ObjectSerializer::toPathValue($publicKey),
-                $resourcePath
-            );
+            $queryParams['signerPublicKey'] = ObjectSerializer::toQueryValue($publicKey);
         }
 
         // body params
@@ -1678,7 +1670,7 @@ class AccountRoutesApi
      *
      * Get partial transactions information
      *
-     * @param  string $publicKey Account publicKey (required)
+     * @param  string $plainAddress The address of the account (required)
      * @param  int $pageSize The numbers of transactions to return (optional)
      * @param  string $id Id last transaction id to apply pagination (optional)
      *
@@ -1686,9 +1678,9 @@ class AccountRoutesApi
      * @throws \InvalidArgumentException
      * @return object[]
      */
-    public function partialTransactions($publicKey, $pageSize = null, $id = null)
+    public function partialTransactions($plainAddress, $pageSize = null, $id = null)
     {
-        list($response) = $this->partialTransactionsWithHttpInfo($publicKey, $pageSize, $id);
+        list($response) = $this->partialTransactionsWithHttpInfo($plainAddress, $pageSize, $id);
         return $response;
     }
 
@@ -1697,7 +1689,7 @@ class AccountRoutesApi
      *
      * Get partial transactions information
      *
-     * @param  string $publicKey Account publicKey (required)
+     * @param  string $plainAddress The address of the account (required)
      * @param  int $pageSize The numbers of transactions to return (optional)
      * @param  string $id Id last transaction id to apply pagination (optional)
      *
@@ -1705,10 +1697,10 @@ class AccountRoutesApi
      * @throws \InvalidArgumentException
      * @return array of object[], HTTP status code, HTTP response headers (array of strings)
      */
-    public function partialTransactionsWithHttpInfo($publicKey, $pageSize = null, $id = null)
+    public function partialTransactionsWithHttpInfo($plainAddress, $pageSize = null, $id = null)
     {
         $returnType = 'object[]';
-        $request = $this->partialTransactionsRequest($publicKey, $pageSize, $id);
+        $request = $this->partialTransactionsRequest($plainAddress, $pageSize, $id);
 
         try {
             $options = $this->createHttpClientOption();
@@ -1848,23 +1840,23 @@ class AccountRoutesApi
     /**
      * Create request for operation 'partialTransactions'
      *
-     * @param  string $publicKey Account publicKey (required)
+     * @param  string $plainAddress The address of the account (required)
      * @param  int $pageSize The numbers of transactions to return (optional)
      * @param  string $id Id last transaction id to apply pagination (optional)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function partialTransactionsRequest($publicKey, $pageSize = null, $id = null)
+    protected function partialTransactionsRequest($plainAddress, $pageSize = null, $id = null)
     {
-        // verify the required parameter 'publicKey' is set
-        if ($publicKey === null) {
+        // verify the required parameter 'plainAddress' is set
+        if ($plainAddress === null) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $publicKey when calling partialTransactions'
+                'Required parameter publicKey was null or undefined when calling partialTransactions.'
             );
         }
 
-        $resourcePath = '/account/{publicKey}/transactions/partial';
+        $resourcePath = '/transactions/partial';
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
@@ -1880,14 +1872,10 @@ class AccountRoutesApi
             $queryParams['id'] = ObjectSerializer::toQueryValue($id);
         }
 
-        // path params
-        if ($publicKey !== null) {
-            $resourcePath = str_replace(
-                '{' . 'publicKey' . '}',
-                ObjectSerializer::toPathValue($publicKey),
-                $resourcePath
-            );
+        if ($plainAddress !== null) {
+            $queryParams['address'] = ObjectSerializer::toQueryValue($plainAddress);
         }
+
 
         // body params
         $_tempBody = null;
@@ -2144,7 +2132,7 @@ class AccountRoutesApi
             );
         }
 
-        $resourcePath = '/account/{publicKey}/transactions';
+        $resourcePath = '/transactions/confirmed';
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
@@ -2160,13 +2148,9 @@ class AccountRoutesApi
             $queryParams['id'] = ObjectSerializer::toQueryValue($id);
         }
 
-        // path params
+        // query params
         if ($publicKey !== null) {
-            $resourcePath = str_replace(
-                '{' . 'publicKey' . '}',
-                ObjectSerializer::toPathValue($publicKey),
-                $resourcePath
-            );
+            $queryParams['publicKey'] = ObjectSerializer::toQueryValue($publicKey);
         }
 
         // body params
@@ -2238,7 +2222,7 @@ class AccountRoutesApi
      *
      * Get unconfirmed transactions information
      *
-     * @param  string $publicKey Account publicKey (required)
+     * @param  string $plainAddress The address of the account (required)
      * @param  int $pageSize The numbers of transactions to return (optional)
      * @param  string $id Id last transaction id to apply pagination (optional)
      *
@@ -2246,9 +2230,9 @@ class AccountRoutesApi
      * @throws \InvalidArgumentException
      * @return object[]
      */
-    public function unconfirmedTransactions($publicKey, $pageSize = null, $id = null)
+    public function unconfirmedTransactions($plainAddress, $pageSize = null, $id = null)
     {
-        $response = $this->unconfirmedTransactionsWithHttpInfo($publicKey, $pageSize, $id);
+        $response = $this->unconfirmedTransactionsWithHttpInfo($plainAddress, $pageSize, $id);
         return $response;
     }
 
@@ -2257,7 +2241,7 @@ class AccountRoutesApi
      *
      * Get unconfirmed transactions information
      *
-     * @param  string $publicKey Account publicKey (required)
+     * @param  string $plainAddress The public key of the account. (required)
      * @param  int $pageSize The numbers of transactions to return (optional)
      * @param  string $id Id last transaction id to apply pagination (optional)
      *
@@ -2265,10 +2249,10 @@ class AccountRoutesApi
      * @throws \InvalidArgumentException
      * @return array of object[], HTTP status code, HTTP response headers (array of strings)
      */
-    public function unconfirmedTransactionsWithHttpInfo($publicKey, $pageSize = null, $id = null)
+    public function unconfirmedTransactionsWithHttpInfo($plainAddress, $pageSize = null, $id = null)
     {
         $returnType = 'object[]';
-        $request = $this->unconfirmedTransactionsRequest($publicKey, $pageSize, $id);
+        $request = $this->unconfirmedTransactionsRequest($plainAddress, $pageSize, $id);
 
         try {
             $options = $this->createHttpClientOption();
@@ -2334,16 +2318,16 @@ class AccountRoutesApi
      *
      * Get unconfirmed transactions information
      *
-     * @param  string $publicKey Account publicKey (required)
+     * @param  string $plainAddress The address of the account. (required)
      * @param  int $pageSize The numbers of transactions to return (optional)
      * @param  string $id Id last transaction id to apply pagination (optional)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function unconfirmedTransactionsAsync($publicKey, $pageSize = null, $id = null)
+    public function unconfirmedTransactionsAsync($plainAddress, $pageSize = null, $id = null)
     {
-        return $this->unconfirmedTransactionsAsyncWithHttpInfo($publicKey, $pageSize, $id)
+        return $this->unconfirmedTransactionsAsyncWithHttpInfo($plainAddress, $pageSize, $id)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -2356,17 +2340,17 @@ class AccountRoutesApi
      *
      * Get unconfirmed transactions information
      *
-     * @param  string $publicKey Account publicKey (required)
+     * @param  string $plainAddress The address of the account. (required)
      * @param  int $pageSize The numbers of transactions to return (optional)
      * @param  string $id Id last transaction id to apply pagination (optional)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function unconfirmedTransactionsAsyncWithHttpInfo($publicKey, $pageSize = null, $id = null)
+    public function unconfirmedTransactionsAsyncWithHttpInfo($plainAddress, $pageSize = null, $id = null)
     {
         $returnType = 'object[]';
-        $request = $this->unconfirmedTransactionsRequest($publicKey, $pageSize, $id);
+        $request = $this->unconfirmedTransactionsRequest($plainAddress, $pageSize, $id);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -2408,23 +2392,23 @@ class AccountRoutesApi
     /**
      * Create request for operation 'unconfirmedTransactions'
      *
-     * @param  string $publicKey Account publicKey (required)
+     * @param  string $plainAddress The address of the account. (required)
      * @param  int $pageSize The numbers of transactions to return (optional)
      * @param  string $id Id last transaction id to apply pagination (optional)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function unconfirmedTransactionsRequest($publicKey, $pageSize = null, $id = null)
+    protected function unconfirmedTransactionsRequest($plainAddress, $pageSize = null, $id = null)
     {
         // verify the required parameter 'publicKey' is set
-        if ($publicKey === null) {
+        if ($plainAddress === null) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $publicKey when calling unconfirmedTransactions'
+                'Missing the required parameter plainAddress when calling unconfirmedTransactions'
             );
         }
 
-        $resourcePath = '/account/{publicKey}/transactions/unconfirmed';
+        $resourcePath = '/transactions/unconfirmed';
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
@@ -2440,13 +2424,9 @@ class AccountRoutesApi
             $queryParams['id'] = ObjectSerializer::toQueryValue($id);
         }
 
-        // path params
-        if ($publicKey !== null) {
-            $resourcePath = str_replace(
-                '{' . 'publicKey' . '}',
-                ObjectSerializer::toPathValue($publicKey),
-                $resourcePath
-            );
+        // query params
+        if ($plainAddress !== null) {
+            $queryParams['address'] = ObjectSerializer::toQueryValue($plainAddress);
         }
 
         // body params
@@ -2524,9 +2504,9 @@ class AccountRoutesApi
      * @throws \InvalidArgumentException
      * @return \Proximax\Model\AccountInfoDTO
      */
-    public function getAccountPropertiesInfo($accountId)
+    public function getAccountProperties($accountId)
     {
-        $response = $this->getAccountPropertiesInfoWithHttpInfo($accountId);
+        $response = $this->getAccountPropertiesWithHttpInfo($accountId);
         return $response;
     }
 
@@ -2541,10 +2521,10 @@ class AccountRoutesApi
      * @throws \InvalidArgumentException
      * @return array of \Proximax\Model\AccountInfoDTO, HTTP status code, HTTP response headers (array of strings)
      */
-    public function getAccountPropertiesInfoWithHttpInfo($accountId)
+    public function getAccountPropertiesWithHttpInfo($accountId)
     {
         $returnType = '\Proximax\Model\AccountInfoDTO';
-        $request = $this->getAccountPropertiesInfoRequest($accountId);
+        $request = $this->getAccountPropertiesRequest($accountId);
 
         try {
             $options = $this->createHttpClientOption();
@@ -2616,9 +2596,9 @@ class AccountRoutesApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getAccountPropertiesInfoAsync($accountId)
+    public function getAccountPropertiesAsync($accountId)
     {
-        return $this->getAccountPropertiesInfoAsyncWithHttpInfo($accountId)
+        return $this->getAccountPropertiesAsyncWithHttpInfo($accountId)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -2636,10 +2616,10 @@ class AccountRoutesApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getAccountPropertiesInfoAsyncWithHttpInfo($accountId)
+    public function getAccountPropertiesAsyncWithHttpInfo($accountId)
     {
         $returnType = '\Proximax\Model\AccountInfoDTO';
-        $request = $this->getAccountPropertiesInfoRequest($accountId);
+        $request = $this->getAccountPropertiesRequest($accountId);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -2686,7 +2666,7 @@ class AccountRoutesApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function getAccountPropertiesInfoRequest($accountId)
+    protected function getAccountPropertiesRequest($accountId)
     {
         // verify the required parameter 'accountId' is set
         if ($accountId === null) {

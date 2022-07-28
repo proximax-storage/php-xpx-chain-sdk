@@ -838,7 +838,7 @@ class MetadataRoutesApi
     /**
      * Operation getMetadata
      *
-     * @param  string $metadataId(required)
+     * @param  string $compositeHash (required)
      *
      * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -846,16 +846,16 @@ class MetadataRoutesApi
      * @return \Proximax\Model\MosaicMetadataInfoDTO
      * @return \Proximax\Model\NamespaceMetadataInfoDTO
      */
-    public function getMetadata($metadataId)
+    public function getMetadata($compositeHash)
     {
-        $response = $this->getMetadataWithHttpInfo($metadataId);
+        $response = $this->getMetadataWithHttpInfo($compositeHash);
         return $response;
     }
 
     /**
      * Operation getMetadataWithHttpInfo
      *
-     * @param  string $metadataId (required)
+     * @param  string $compositeHash (required)
      *
      * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -863,10 +863,10 @@ class MetadataRoutesApi
      * @return array of \Proximax\Model\mosaicMetadataInfoDTO, HTTP status code, HTTP response headers (array of strings)
      * @return array of \Proximax\Model\NamespaceMetadataInfoDTO, HTTP status code, HTTP response headers (array of strings)
      */
-    public function getMetadataWithHttpInfo($metadataId)
+    public function getMetadataWithHttpInfo($compositeHash)
     {
         $returnType = '\Proximax\Model\MetadataInfoDTO';
-        $request = $this->getMetadataRequest($metadataId);
+        $request = $this->getMetadataRequest($compositeHash);
 
         try {
             $options = $this->createHttpClientOption();
@@ -930,14 +930,14 @@ class MetadataRoutesApi
     /**
      * Operation getMetadataAsync
      *
-     * @param  string $metadataId (required)
+     * @param  string $compositeHash (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getMetadataAsync($metadataId)
+    public function getMetadataAsync($compositeHash)
     {
-        return $this->getMetadataAsyncWithHttpInfo($metadataId)
+        return $this->getMetadataAsyncWithHttpInfo($compositeHash)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -948,15 +948,15 @@ class MetadataRoutesApi
     /**
      * Operation getMetadataAsyncWithHttpInfo
      *
-     * @param  string $metadataId The namespace id (required)
+     * @param  string $compositeHash The namespace id (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getMetadataAsyncWithHttpInfo($metadataId)
+    public function getMetadataAsyncWithHttpInfo($compositeHash)
     {
         $returnType = '\Proximax\Model\MetadataInfoDTO';
-        $request = $this->getMetadataRequest($metadataId);
+        $request = $this->getMetadataRequest($compositeHash);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -998,21 +998,21 @@ class MetadataRoutesApi
     /**
      * Create request for operation 'getMetadata'
      *
-     * @param  string $metadataId (required)
+     * @param  string $compositeHash (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function getMetadataRequest($metadataId)
+    protected function getMetadataRequest($compositeHash)
     {
         // verify the required parameter 'metadataId' is set
-        if ($metadataId === null) {
+        if ($compositeHash === null) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $metadataId when calling getMetadata'
+                'Missing the required parameter compositeHash when calling getMetadata'
             );
         }
 
-        $resourcePath = '/metadata_v2/{metadataId}';
+        $resourcePath = '/metadata_v2/{compositeHash}';
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
@@ -1020,10 +1020,10 @@ class MetadataRoutesApi
         $multipart = false;
 
         // path params
-        if ($metadataId !== null) {
+        if ($compositeHash !== null) {
             $resourcePath = str_replace(
-                '{' . 'metadataId' . '}',
-                ObjectSerializer::toPathValue($metadataId),
+                '{' . 'compositeHash' . '}',
+                ObjectSerializer::toPathValue($compositeHash),
                 $resourcePath
             );
         }
