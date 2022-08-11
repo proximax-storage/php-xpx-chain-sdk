@@ -23,22 +23,16 @@ namespace Proximax\Model;
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
-class HashLockWithMetaDTO{
-    private $meta;
-    private $lock;
-
+class ExchangeInfoDTO{
+    private $exchange;
     public function __construct($dataArray){
-        $this->meta = $dataArray->meta;
-        $this->lock = new LockDTO($dataArray->lock);
+        $this->exchange = $dataArray["exchange"];
     }
 
-    public function getMeta(){
-        return $this->meta;
+    public function getExchange(){
+        return $this->exchange;
     }
 
-    public function getLock(){
-        return $this->lock;
-    }
 }
 
 

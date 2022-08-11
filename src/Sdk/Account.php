@@ -33,7 +33,7 @@ use Proximax\Model\UInt64DTO;
 use Proximax\Model\AccountPropertyDTO;
 use Proximax\Model\AccountPropertiesDTO;
 use Proximax\Model\AccountPropertiesInfoDTO;
-
+use Proximax\Model\AccountNamesDTO;
 /**
  * Account class Doc Comment
  *
@@ -135,12 +135,11 @@ class Account{
         }
         else $data = $AccountRoutesApi->transactions($publicKey);
         $arr_transaction = array();
-        if ($data[1] == 200){ // successfull
-            for ($i=0;$i<count($data[0]);$i++){
-                $transaction = (new Transaction)->formatData($networkType, $data[0][$i]);
+        if ($data[1] == 200){
+            for ($i=0;$i<count($data[0]->data);$i++){
+                $transaction = (new Transaction)->formatData($networkType, $data[0]->data[$i]);
                 $arr_transaction[$i] = $transaction;
             }
-            
         }
         return $arr_transaction;
     }
@@ -166,8 +165,8 @@ class Account{
         else $data = $AccountRoutesApi->incomingTransactions($publicKey);
         $arr_transaction = array();
         if ($data[1] == 200){ // successfull
-            for ($i=0;$i<count($data[0]);$i++){
-                $transaction = (new Transaction)->formatData($networkType, $data[0][$i]);
+            for ($i=0;$i<count($data[0]->data);$i++){
+                $transaction = (new Transaction)->formatData($networkType, $data[0]->data[$i]);
                 $arr_transaction[$i] = $transaction;
             }
             
@@ -196,8 +195,8 @@ class Account{
         else $data = $AccountRoutesApi->outgoingTransactions($publicKey);
         $arr_transaction = array();
         if ($data[1] == 200){ // successfull
-            for ($i=0;$i<count($data[0]);$i++){
-                $transaction = (new Transaction)->formatData($networkType, $data[0][$i]);
+            for ($i=0;$i<count($data[0]->data);$i++){
+                $transaction = (new Transaction)->formatData($networkType, $data[0]->data[$i]);
                 $arr_transaction[$i] = $transaction;
             }
             
@@ -227,8 +226,8 @@ class Account{
         else $data = $AccountRoutesApi->unconfirmedTransactions($publicKey);
         $arr_transaction = array();
         if ($data[1] == 200){ // successfull
-            for ($i=0;$i<count($data[0]);$i++){
-                $transaction = (new Transaction)->formatData($networkType, $data[0][$i]);
+            for ($i=0;$i<count($data[0]->data);$i++){
+                $transaction = (new Transaction)->formatData($networkType, $data[0]->data[$i]);
                 $arr_transaction[$i] = $transaction;
             }
             
@@ -275,12 +274,39 @@ class Account{
         $ApiClient->setHost($url);
         $networkType = $config->NetworkType;
 
-        $data = $AccountRoutesApi->getAccountPropertiesInfo($accountId);
+        $data = $AccountRoutesApi->getAccountProperties($accountId);
         if ($data[1] == 200){ // successfull
             $account = $this->formatDataAccountProperties($networkType, $data[0]);
         }
         else $account = null;
         return new AccountPropertiesInfoDTO($account);
+    }
+
+    /**
+     *
+     * @param config $config
+     *
+     * @param Address $accountId Account address or publicKey
+     *
+     * @return AccountPropertiesInfoDTO
+     */
+    public function GetAccountNames($config, $accountId){
+        $AccountRoutesApi = new AccountRoutesApi;
+        $ApiClient = new ApiClient;
+        $url = $config->BaseURL;
+        $ApiClient->setHost($url);
+        $networkType = $config->NetworkType;
+
+        $data = $AccountRoutesApi->getAccountsNames($accountId);
+        $names=[];
+        if ($data[1] == 200){ // successfull
+            for ($i = 0; $i< count($data[0]); $i++) {
+                $names[$i] = $this->formatDataAccountNames($networkType, $data[0][$i]);
+            }
+            // $account = $this->formatDataAccountProperties($networkType, $data[0]);
+        }
+        else $names = null;
+        return $names;
     }
 
     /**
@@ -311,6 +337,31 @@ class Account{
         return $arr_account;
     }
 
+
+    /**
+     *
+     * @param config $config
+     *
+     * @param String $publicKey
+     *
+     * @return MultisigDTO
+     */
+    public function GetAccountMultisigGraph($config,$publicKey){
+        $AccountRoutesApi = new AccountRoutesApi;
+        $ApiClient = new ApiClient;
+        $url = $config->BaseURL;
+        $ApiClient->setHost($url);
+        $networkType = $config->NetworkType;
+
+        $data = $AccountRoutesApi->getAccountMultisigGraph($publicKey);
+        if ($data[1] == 200){ // successfull
+            var_dump($data[0]); die;
+            // $account = $this->formatDataMultisig($networkType, $data[0]);
+        }
+        else $account = null;
+
+        return new MultisigDTO($account);
+    }
 
     /**
      * @param int $networkType
@@ -432,6 +483,26 @@ class Account{
             "accountProperties" => $accountProperties
         );
         return $account;
+    }
+
+    /**
+     * @param int $networkType
+     *
+     * @param array $data
+     *
+     * @return AccountNamesDTO array
+     */
+    private function formatDataAccountNames($networkType, $data){
+        $names = [];
+        for ($i=0;$i<count($data->names);$i++){
+            $names[$i] = (new AccountModel)->newAccountFromPublicKey($data->multisig->cosignatories[$i],$networkType);
+        }
+
+        $acountNames = array(
+            "address" => $data->address,
+            "names" => $names
+        );
+        return new AccountNamesDTO($acountNames);
     }
 }
 ?>

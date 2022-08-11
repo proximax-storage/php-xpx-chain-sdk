@@ -17,6 +17,8 @@ namespace Proximax\Sdk;
 
 use Proximax\API\MetadataRoutesApi;
 use Proximax\ApiClient;
+use Proximax\Model\AccountDTO;
+use Proximax\Model\PaginationDTO;
 use Proximax\Model\UInt64DTO;
 use Proximax\Model\AddressMetadataDTO;
 use Proximax\Model\MosaicMetadataDTO;
@@ -79,28 +81,6 @@ class Metadata{
         else return null;
     }
 
-    /**
-     *
-     * @param config $config
-     *
-     * @param UInt64DTO $mosaicId
-     * 
-     * @return MosaicMetadataInfoDTO
-     */
-    public function GetMetadataMosaic($config, $mosaicId){
-        $metadataRoutesApi = new MetadataRoutesApi;
-        $ApiClient = new ApiClient;
-        $url = $config->BaseURL;
-        $ApiClient->setHost($url);
-        $networkType = $config->NetworkType;
-
-        $data = $metadataRoutesApi->getMetadataMosaic($mosaicId);
-        
-        if ($data[1] == 200){ // successfull
-            return $this->formatMetadata($networkType, $data[0]);
-        }
-        else return null;
-    }
 
     /**
      *
@@ -126,6 +106,69 @@ class Metadata{
     }
 
     /**
+     *
+     * @param config $config
+     *
+     * @param String $accountId
+     *
+     * @return AddressMetadata
+     */
+    public function GetMetadatas($config, $accountIds){
+        $metadataRoutesApi = new MetadataRoutesApi;
+        $ApiClient = new ApiClient;
+        $url = $config->BaseURL;
+        $ApiClient->setHost($url);
+        $networkType = $config->NetworkType;
+
+        $data = $metadataRoutesApi->getMetadatas($accountIds);
+        $arr_metadata = array();
+        if ($data[1] == 200){ // successfull
+            for ($i=0;$i<count($data[0]);$i++){
+                $metadata = $this->formatMetadata($networkType, $data[0][$i]);
+                $arr_metadata[$i] = $metadata;
+            }
+        }
+
+        return $arr_metadata;
+    }
+
+    /**
+     *
+     * @param config $config
+     *
+     * @param String $accountId
+     *
+     * @return AddressMetadata
+     */
+    public function SearchMetada($config, $params){
+        $metadataRoutesApi = new MetadataRoutesApi;
+        $ApiClient = new ApiClient;
+        $url = $config->BaseURL;
+        $ApiClient->setHost($url);
+        $networkType = $config->NetworkType;
+
+        $data = $metadataRoutesApi->searchMetadata($params);
+        $arr_metadata = array();
+
+        var_dump($data[1]); die;
+
+        if ($data[1] == 200){ // successfull
+            for ($i=0;$i<count($data[0]);$i++){
+                $metadata = $this->formatMetadata($networkType, $data[0][$i]);
+                $arr_metadata[$i] = $metadata;
+            }
+        }
+
+
+        $metadataDTO = array(
+            'data' => $arr_metadata,
+            'pagination' => new PaginationDTO($data[0]->pagination),
+        );
+
+        return $arr_metadata;
+    }
+
+    /**
      * @param int $networkType
      *
      * @param array $data
@@ -135,17 +178,10 @@ class Metadata{
     public function formatMetadata($networkType, $data){
 
         $metadataType = $data->metadataEntry->metadataType;
-        $fields = array();
-        $i = 0;
-        foreach ($data->metadataEntry as $key => $value) {
-            $fields[$i] = new FieldDTO($key,$value);
-            $i++;
-        }
         $metadataId = $data->id;
         $metadataDTO = array(
-            'metadataType' => $metadataType,
-            'fields' => $fields,
-            'metadataId' => $metadataId,
+            'metadataEntry' => $data->metadataEntry,
+            'id' => $metadataId,
         );
 
         if ($metadataType == 1){
@@ -159,38 +195,5 @@ class Metadata{
         }
     }
 
-    /**
-     * @param int $networkType
-     *
-     * @param array $data
-     *
-     * @return AddressMetadataInfoDTO, MosaicMetadataInfoDTO, NamespaceMetadataInfoDTO
-     */
-    /*public function formatMetadata($networkType, $data){
-
-        $metadataType = $data->metadata->metadataType;
-        $fields = array();
-        for ($i=0;$i<count($data->metadata->fields);$i++){
-            $field = $data->metadata->fields[$i];
-            $fields[$i] = new FieldDTO($field->key,$field->value);
-        }
-        $metadataId = $data->metadata->metadataId;
-
-        $metadataDTO = array(
-            'metadataType' => $metadataType,
-            'fields' => $fields,
-            'metadataId' => $metadataId,
-        );
-
-        if ($metadataType == 1){
-            return new AddressMetadataDTO($metadataDTO);
-        }
-        else if ($metadataType == 2){
-            return new MosaicMetadataDTO($metadataDTO);
-        }
-        else if ($metadataType == 3){
-            return new NamespaceMetadataDTO($metadataDTO);
-        }
-    }*/
 }
 ?>

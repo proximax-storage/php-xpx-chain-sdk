@@ -15,29 +15,32 @@
 
 namespace Proximax\Model;
 
+
 /**
- * AccountDTO Class Doc Comment
+ * MultisigDTO Class Doc Comment
  *
  * @category Class
  * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
-class HashLockWithMetaDTO{
-    private $meta;
-    private $lock;
+class MultisigGraphDTO{
+    private $level;
 
-    public function __construct($dataArray){
-        $this->meta = $dataArray->meta;
-        $this->lock = new LockDTO($dataArray->lock);
+    private $multisigEntries;
+
+
+    public function __construct($data){
+        $this->level = $data["level"];
+        $this->accountAddress = $data["accountAddress"];
     }
 
-    public function getMeta(){
-        return $this->meta;
+    public function getLevel(){
+        return $this->level;
     }
 
-    public function getLock(){
-        return $this->lock;
+    public function getMultisigEntries(){
+        return $this->multisigEntries;
     }
 }
 

@@ -69,771 +69,6 @@ class MetadataRoutesApi
         return $this->config;
     }
 
-    /**
-     * Operation getMetadataAccount
-     * 
-     * @param  string $accountId (required)
-     *
-     * @throws \Proximax\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     * @return \Proximax\Model\AddressMetadataInfoDTO
-     */
-    public function getMetadataAccount($accountId)
-    {
-        $response = $this->getMetadataAccountWithHttpInfo($accountId);
-        return $response;
-    }
-
-    /**
-     * Operation getMetadataAccountWithHttpInfo
-     *
-     * @param  string $accountId (required)
-     *
-     * @throws \Proximax\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     * @return array of \Proximax\Model\AddressMetadataInfoDTO, HTTP status code, HTTP response headers (array of strings)
-     */
-    public function getMetadataAccountWithHttpInfo($accountId)
-    {
-        $returnType = '\Proximax\Model\AddressMetadataInfoDTO';
-        $request = $this->getMetadataAccountRequest($accountId);
-
-        try {
-            $options = $this->createHttpClientOption();
-            try {
-                $response = $this->client->send($request, $options);
-            } catch (RequestException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
-                    $e->getResponse() ? $e->getResponse()->getBody()->getContents() : null
-                );
-            }
-
-            $statusCode = $response->getStatusCode();
-
-            if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(
-                    sprintf(
-                        '[%d] Error connecting to the API (%s)',
-                        $statusCode,
-                        $request->getUri()
-                    ),
-                    $statusCode,
-                    $response->getHeaders(),
-                    $response->getBody()
-                );
-            }
-
-            $responseBody = $response->getBody();
-            if ($returnType === '\SplFileObject') {
-                $content = $responseBody; //stream goes to serializer
-            } else {
-                $content = $responseBody->getContents();
-                if ($returnType !== 'string') {
-                    $content = json_decode($content);
-                }
-            }
-
-            return [
-                $content,
-                $response->getStatusCode(),
-                $response->getHeaders()
-            ];
-
-        } catch (ApiException $e) {
-            switch ($e->getCode()) {
-                case 200:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\Proximax\Model\MosaicInfoDTO',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-                    break;
-            }
-            throw $e;
-        }
-    }
-
-    /**
-     * Operation getMetadataAccountAsync
-     *
-     * @param  string $accountId (required)
-     *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
-     */
-    public function getMetadataAccountAsync($accountId)
-    {
-        return $this->getMetadataAccountAsyncWithHttpInfo($accountId)
-            ->then(
-                function ($response) {
-                    return $response[0];
-                }
-            );
-    }
-
-    /**
-     * Operation getMetadataAccountAsyncWithHttpInfo
-     *
-     * @param  string $mosaicId The mosaic id for which information should be retreived (required)
-     *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
-     */
-    public function getMetadataAccountAsyncWithHttpInfo($accountId)
-    {
-        $returnType = '\Proximax\Model\AddressMetadataInfoDTO';
-        $request = $this->getMetadataAccountRequest($accountId);
-
-        return $this->client
-            ->sendAsync($request, $this->createHttpClientOption())
-            ->then(
-                function ($response) use ($returnType) {
-                    $responseBody = $response->getBody();
-                    if ($returnType === '\SplFileObject') {
-                        $content = $responseBody; //stream goes to serializer
-                    } else {
-                        $content = $responseBody->getContents();
-                        if ($returnType !== 'string') {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, $returnType, []),
-                        $response->getStatusCode(),
-                        $response->getHeaders()
-                    ];
-                },
-                function ($exception) {
-                    $response = $exception->getResponse();
-                    $statusCode = $response->getStatusCode();
-                    throw new ApiException(
-                        sprintf(
-                            '[%d] Error connecting to the API (%s)',
-                            $statusCode,
-                            $exception->getRequest()->getUri()
-                        ),
-                        $statusCode,
-                        $response->getHeaders(),
-                        $response->getBody()
-                    );
-                }
-            );
-    }
-
-    /**
-     * Create request for operation 'getMetadataAccount'
-     *
-     * @param  string $accountId (required)
-     *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
-     */
-    protected function getMetadataAccountRequest($accountId)
-    {
-        // verify the required parameter 'accountId' is set
-        if ($accountId === null) {
-            throw new \InvalidArgumentException(
-                'Missing the required parameter $accountId when calling getMetadataAccount'
-            );
-        }
-
-        $resourcePath = '/account/{accountId}/metadata';
-        $formParams = [];
-        $queryParams = [];
-        $headerParams = [];
-        $httpBody = '';
-        $multipart = false;
-
-
-        // path params
-        if ($accountId !== null) {
-            $resourcePath = str_replace(
-                '{' . 'accountId' . '}',
-                ObjectSerializer::toPathValue($accountId),
-                $resourcePath
-            );
-        }
-
-        // body params
-        $_tempBody = null;
-
-        if ($multipart) {
-            $headers = $this->headerSelector->selectHeadersForMultipart(
-                ['application/json']
-            );
-        } else {
-            $headers = $this->headerSelector->selectHeaders(
-                ['application/json'],
-                []
-            );
-        }
-
-        // for model (json/xml)
-        if (isset($_tempBody)) {
-            // $_tempBody is the method argument, if present
-            $httpBody = $_tempBody;
-            // \stdClass has no __toString(), so we should encode it manually
-            if ($httpBody instanceof \stdClass && $headers['Content-Type'] === 'application/json') {
-                $httpBody = json_encode($httpBody);
-            }
-        } elseif (count($formParams) > 0) {
-            if ($multipart) {
-                $multipartContents = [];
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $multipartContents[] = [
-                        'name' => $formParamName,
-                        'contents' => $formParamValue
-                    ];
-                }
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents);
-
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = json_encode($formParams);
-
-            } else {
-                // for HTTP post (form)
-                $httpBody = \GuzzleHttp\Psr7\Query::build($formParams);
-            }
-        }
-
-
-        $defaultHeaders = [];
-        if ($this->config->getUserAgent()) {
-            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
-        }
-
-        $headers = array_merge(
-            $defaultHeaders,
-            $headerParams,
-            $headers
-        );
-
-        $query = \GuzzleHttp\Psr7\Query::build($queryParams);
-        return new Request(
-            'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
-            $headers,
-            $httpBody
-        );
-    }
-
-    /**
-     * Operation getMetadataMosaic
-     *
-     *
-     * @param  \Proximax\Model\MosaicId $mosaicId (required)
-     *
-     * @throws \Proximax\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     * @return \Proximax\Model\MosaicMetadataInfoDTO
-     */
-    public function getMetadataMosaic($mosaicId)
-    {
-        $response = $this->getMetadataMosaicWithHttpInfo($mosaicId);
-        return $response;
-    }
-
-    /**
-     * Operation getMetadataMosaicWithHttpInfo
-     *
-     *
-     * @param  \Proximax\Model\MosaicId $mosaicId (required)
-     *
-     * @throws \Proximax\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     * @return array of \Proximax\Model\MosaicMetadataInfoDTO, HTTP status code, HTTP response headers (array of strings)
-     */
-    public function getMetadataMosaicWithHttpInfo($mosaicId)
-    {
-        $returnType = '\Proximax\Model\MosaicMetadataInfoDTO';
-        $request = $this->getMetadataMosaicRequest($mosaicId);
-
-        try {
-            $options = $this->createHttpClientOption();
-            try {
-                $response = $this->client->send($request, $options);
-            } catch (RequestException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
-                    $e->getResponse() ? $e->getResponse()->getBody()->getContents() : null
-                );
-            }
-
-            $statusCode = $response->getStatusCode();
-
-            if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(
-                    sprintf(
-                        '[%d] Error connecting to the API (%s)',
-                        $statusCode,
-                        $request->getUri()
-                    ),
-                    $statusCode,
-                    $response->getHeaders(),
-                    $response->getBody()
-                );
-            }
-
-            $responseBody = $response->getBody();
-            if ($returnType === '\SplFileObject') {
-                $content = $responseBody; //stream goes to serializer
-            } else {
-                $content = $responseBody->getContents();
-                if ($returnType !== 'string') {
-                    $content = json_decode($content);
-                }
-            }
-
-            return [
-                $content,
-                $response->getStatusCode(),
-                $response->getHeaders()
-            ];
-
-        } catch (ApiException $e) {
-            switch ($e->getCode()) {
-                case 200:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\Proximax\Model\MosaicInfoDTO[]',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-                    break;
-            }
-            throw $e;
-        }
-    }
-
-    /**
-     * Operation getMetadataMosaicAsync
-     *
-     *
-     * @param  \Proximax\Model\MosaicId $mosaicId (required)
-     *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
-     */
-    public function getMetadataMosaicAsync($mosaicId)
-    {
-        return $this->getMetadataMosaicAsyncWithHttpInfo($mosaicId)
-            ->then(
-                function ($response) {
-                    return $response[0];
-                }
-            );
-    }
-
-    /**
-     * Operation getMetadataMosaicAsyncWithHttpInfo
-     *
-     *
-     * @param  \Proximax\Model\MosaicId $mosaicId(required)
-     *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
-     */
-    public function getMetadataMosaicAsyncWithHttpInfo($mosaicId)
-    {
-        $returnType = '\Proximax\Model\MosaicMetadataInfoDTO';
-        $request = $this->getMetadataMosaicRequest($mosaicId);
-
-        return $this->client
-            ->sendAsync($request, $this->createHttpClientOption())
-            ->then(
-                function ($response) use ($returnType) {
-                    $responseBody = $response->getBody();
-                    if ($returnType === '\SplFileObject') {
-                        $content = $responseBody; //stream goes to serializer
-                    } else {
-                        $content = $responseBody->getContents();
-                        if ($returnType !== 'string') {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, $returnType, []),
-                        $response->getStatusCode(),
-                        $response->getHeaders()
-                    ];
-                },
-                function ($exception) {
-                    $response = $exception->getResponse();
-                    $statusCode = $response->getStatusCode();
-                    throw new ApiException(
-                        sprintf(
-                            '[%d] Error connecting to the API (%s)',
-                            $statusCode,
-                            $exception->getRequest()->getUri()
-                        ),
-                        $statusCode,
-                        $response->getHeaders(),
-                        $response->getBody()
-                    );
-                }
-            );
-    }
-
-    /**
-     * Create request for operation 'getMetadataMosaic'
-     *
-     * @param  \Proximax\Model\MosaicId $mosaicId (required)
-     *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
-     */
-    protected function getMetadataMosaicRequest($mosaicId)
-    {
-        // verify the required parameter 'mosaicIds' is set
-        if ($mosaicId === null) {
-            throw new \InvalidArgumentException(
-                'Missing the required parameter $mosaicIds when calling getMetadataMosaic'
-            );
-        }
-
-        $resourcePath = '/mosaic/{mosaicId}/metadata';
-        $formParams = [];
-        $queryParams = [];
-        $headerParams = [];
-        $httpBody = '';
-        $multipart = false;
-
-
-
-        // path params
-        if ($mosaicId !== null) {
-            $resourcePath = str_replace(
-                '{' . 'mosaicId' . '}',
-                ObjectSerializer::toPathValue($mosaicId),
-                $resourcePath
-            );
-        }
-
-        // body params
-        $_tempBody = null;
-
-        if ($multipart) {
-            $headers = $this->headerSelector->selectHeadersForMultipart(
-                ['application/json']
-            );
-        } else {
-            $headers = $this->headerSelector->selectHeaders(
-                ['application/json'],
-                []
-            );
-        }
-
-        // for model (json/xml)
-        if (isset($_tempBody)) {
-            // $_tempBody is the method argument, if present
-            $httpBody = $_tempBody;
-            // \stdClass has no __toString(), so we should encode it manually
-            if ($httpBody instanceof \stdClass && $headers['Content-Type'] === 'application/json') {
-                $httpBody = json_encode($httpBody);
-            }
-        } elseif (count($formParams) > 0) {
-            if ($multipart) {
-                $multipartContents = [];
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $multipartContents[] = [
-                        'name' => $formParamName,
-                        'contents' => $formParamValue
-                    ];
-                }
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents);
-
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = json_encode($formParams);
-
-            } else {
-                // for HTTP post (form)
-                $httpBody = \GuzzleHttp\Psr7\Query::build($formParams);
-            }
-        }
-
-
-        $defaultHeaders = [];
-        if ($this->config->getUserAgent()) {
-            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
-        }
-
-        $headers = array_merge(
-            $defaultHeaders,
-            $headerParams,
-            $headers
-        );
-
-        $query = \GuzzleHttp\Psr7\Query::build($queryParams);
-        return new Request(
-            'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
-            $headers,
-            $httpBody
-        );
-    }
-
-    /**
-     * Operation getMetadataNamespace
-     *
-     * @param  string $namespaceId(required)
-     *
-     * @throws \Proximax\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     * @return \Proximax\Model\NamespaceMetadataInfoDTO
-     */
-    public function getMetadataNamespace($namespaceId)
-    {
-        $response = $this->getMetadataNamespaceWithHttpInfo($namespaceId);
-        return $response;
-    }
-
-    /**
-     * Operation getMetadataNamespaceWithHttpInfo
-     *
-     * @param  string $namespaceId The namespace id (required)
-     *
-     * @throws \Proximax\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     * @return array of \Proximax\Model\NamespaceMetadataInfoDTO, HTTP status code, HTTP response headers (array of strings)
-     */
-    public function getMetadataNamespaceWithHttpInfo($namespaceId)
-    {
-        $returnType = '\Proximax\Model\NamespaceMetadataInfoDTO';
-        $request = $this->getMetadataNamespaceRequest($namespaceId);
-
-        try {
-            $options = $this->createHttpClientOption();
-            try {
-                $response = $this->client->send($request, $options);
-            } catch (RequestException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
-                    $e->getResponse() ? $e->getResponse()->getBody()->getContents() : null
-                );
-            }
-
-            $statusCode = $response->getStatusCode();
-
-            if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(
-                    sprintf(
-                        '[%d] Error connecting to the API (%s)',
-                        $statusCode,
-                        $request->getUri()
-                    ),
-                    $statusCode,
-                    $response->getHeaders(),
-                    $response->getBody()
-                );
-            }
-
-            $responseBody = $response->getBody();
-            if ($returnType === '\SplFileObject') {
-                $content = $responseBody; //stream goes to serializer
-            } else {
-                $content = $responseBody->getContents();
-                if ($returnType !== 'string') {
-                    $content = json_decode($content);
-                }
-            }
-
-            return [
-                $content,
-                $response->getStatusCode(),
-                $response->getHeaders()
-            ];
-
-        } catch (ApiException $e) {
-            switch ($e->getCode()) {
-                case 200:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\Proximax\Model\MosaicInfoDTO[]',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-                    break;
-            }
-            throw $e;
-        }
-    }
-
-    /**
-     * Operation getMetadataNamespaceAsync
-     *
-     * @param  string $namespaceId (required)
-     *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
-     */
-    public function getMetadataNamespaceAsync($namespaceId)
-    {
-        return $this->getMetadataNamespaceAsyncWithHttpInfo($namespaceId)
-            ->then(
-                function ($response) {
-                    return $response[0];
-                }
-            );
-    }
-
-    /**
-     * Operation getMetadataNamespaceAsyncWithHttpInfo
-     *
-     * @param  string $namespaceId The namespace id (required)
-     *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
-     */
-    public function getMetadataNamespaceAsyncWithHttpInfo($namespaceId)
-    {
-        $returnType = '\Proximax\Model\NamespaceMetadataInfoDTO';
-        $request = $this->getMetadataNamespaceRequest($namespaceId);
-
-        return $this->client
-            ->sendAsync($request, $this->createHttpClientOption())
-            ->then(
-                function ($response) use ($returnType) {
-                    $responseBody = $response->getBody();
-                    if ($returnType === '\SplFileObject') {
-                        $content = $responseBody; //stream goes to serializer
-                    } else {
-                        $content = $responseBody->getContents();
-                        if ($returnType !== 'string') {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        $content,
-                        $response->getStatusCode(),
-                        $response->getHeaders()
-                    ];
-                },
-                function ($exception) {
-                    $response = $exception->getResponse();
-                    $statusCode = $response->getStatusCode();
-                    throw new ApiException(
-                        sprintf(
-                            '[%d] Error connecting to the API (%s)',
-                            $statusCode,
-                            $exception->getRequest()->getUri()
-                        ),
-                        $statusCode,
-                        $response->getHeaders(),
-                        $response->getBody()
-                    );
-                }
-            );
-    }
-
-    /**
-     * Create request for operation 'getMetadataNamespace'
-     *
-     * @param  string $namespaceId The namespace id (required)
-     *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
-     */
-    protected function getMetadataNamespaceRequest($namespaceId)
-    {
-        // verify the required parameter 'namespaceId' is set
-        if ($namespaceId === null) {
-            throw new \InvalidArgumentException(
-                'Missing the required parameter $namespaceId when calling getMetadataNamespace'
-            );
-        }
-
-        $resourcePath = '/namespace/{namespaceId}/metadata';
-        $formParams = [];
-        $queryParams = [];
-        $headerParams = [];
-        $httpBody = '';
-        $multipart = false;
-
-        // path params
-        if ($namespaceId !== null) {
-            $resourcePath = str_replace(
-                '{' . 'namespaceId' . '}',
-                ObjectSerializer::toPathValue($namespaceId),
-                $resourcePath
-            );
-        }
-
-        // body params
-        $_tempBody = null;
-
-        if ($multipart) {
-            $headers = $this->headerSelector->selectHeadersForMultipart(
-                ['application/json']
-            );
-        } else {
-            $headers = $this->headerSelector->selectHeaders(
-                ['application/json'],
-                []
-            );
-        }
-
-        // for model (json/xml)
-        if (isset($_tempBody)) {
-            // $_tempBody is the method argument, if present
-            $httpBody = $_tempBody;
-            // \stdClass has no __toString(), so we should encode it manually
-            if ($httpBody instanceof \stdClass && $headers['Content-Type'] === 'application/json') {
-                $httpBody = json_encode($httpBody);
-            }
-        } elseif (count($formParams) > 0) {
-            if ($multipart) {
-                $multipartContents = [];
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $multipartContents[] = [
-                        'name' => $formParamName,
-                        'contents' => $formParamValue
-                    ];
-                }
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents);
-
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = json_encode($formParams);
-
-            } else {
-                // for HTTP post (form)
-                $httpBody = \GuzzleHttp\Psr7\Query::build($formParams);
-            }
-        }
-
-
-        $defaultHeaders = [];
-        if ($this->config->getUserAgent()) {
-            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
-        }
-
-        $headers = array_merge(
-            $defaultHeaders,
-            $headerParams,
-            $headers
-        );
-
-        $query = \GuzzleHttp\Psr7\Query::build($queryParams);
-        return new Request(
-            'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
-            $headers,
-            $httpBody
-        );
-    }
 
     /**
      * Operation getMetadata
@@ -1256,10 +491,10 @@ class MetadataRoutesApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function getMetadatasRequest($metadataIds)
+    protected function getMetadatasRequest($compositeHashes)
     {
         // verify the required parameter 'metadataIds' is set
-        if ($metadataIds === null) {
+        if ($compositeHashes === null) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $metadataIds when calling getMetadatas'
             );
@@ -1276,10 +511,10 @@ class MetadataRoutesApi
 
         // body params
         $_tempBody = null;
-        if (isset($metadataIds)) {
-            $_tempBody = $metadataIds;
-        }
+        if (isset($compositeHashes)) {
+            $_tempBody = $compositeHashes;
 
+        }
         if ($multipart) {
             $headers = $this->headerSelector->selectHeadersForMultipart(
                 ['application/json']
@@ -1294,7 +529,7 @@ class MetadataRoutesApi
         // for model (json/xml)
         if (isset($_tempBody)) {
             // $_tempBody is the method argument, if present
-            $httpBody->metadataIds = $_tempBody;
+            $httpBody->compositeHashes = $_tempBody;
             // \stdClass has no __toString(), so we should encode it manually
             if ($httpBody instanceof \stdClass && $headers['Content-Type'] === 'application/json') {
                 $httpBody = json_encode($httpBody);
@@ -1320,7 +555,7 @@ class MetadataRoutesApi
             }
         }
 
-
+ //var_dump($httpBody); die;
         $defaultHeaders = [];
         if ($this->config->getUserAgent()) {
             $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
@@ -1340,6 +575,245 @@ class MetadataRoutesApi
             $httpBody
         );
     }
+
+
+    /**
+     * Operation getMetadatas
+     *
+     * @param  \Proximax\Model\MetadataIds $queryParams
+     *
+     * @throws \Proximax\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     * @return \Proximax\Model\MetadataInfo
+     */
+    public function searchMetadata($queryParams)
+    {
+        $response = $this->searchMetadataWithHttpInfo($queryParams);
+        return $response;
+    }
+
+    /**
+     * Operation getMetadatasWithHttpInfo
+     *
+     * @param  \Proximax\Model\MetadataIds $metadataIds (required)
+     *
+     * @throws \Proximax\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     * @return array of \Proximax\Model\MetadataInfoDTO[], HTTP status code, HTTP response headers (array of strings)
+     */
+    public function searchMetadataWithHttpInfo($queryParams)
+    {
+        $returnType = '\Proximax\Model\MetadataInfoDTO[]';
+        $request = $this->searchMetadataRequest($queryParams);
+var_dump($request); die;
+        try {
+            $options = $this->createHttpClientOption();
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? $e->getResponse()->getBody()->getContents() : null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    $response->getBody()
+                );
+            }
+
+            $responseBody = $response->getBody();
+            if ($returnType === '\SplFileObject') {
+                $content = $responseBody; //stream goes to serializer
+            } else {
+                $content = $responseBody->getContents();
+                if ($returnType !== 'string') {
+                    $content = json_decode($content);
+                }
+            }
+
+            return [
+                $content,
+                $response->getStatusCode(),
+                $response->getHeaders()
+            ];
+
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Proximax\Model\MosaicInfoDTO[]',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    break;
+            }
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation getMetadatasAsync
+     *
+     * @param  \Proximax\Model\MetadataIds $metadataIds (required)
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function searchMetadataAsync($metadataIds)
+    {
+        return $this->searchMetadataAsyncWithHttpInfo($metadataIds)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            );
+    }
+
+    /**
+     * Operation getMetadatasAsyncWithHttpInfo
+     *
+     * @param  \Proximax\Model\MetadataIds $metadataIds (required)
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function searchMetadataAsyncWithHttpInfo($metadataIds)
+    {
+        $returnType = '\Proximax\Model\MetadataInfoDTO[]';
+        $request = $this->searchMetadataRequest($metadataIds);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    $responseBody = $response->getBody();
+                    if ($returnType === '\SplFileObject') {
+                        $content = $responseBody; //stream goes to serializer
+                    } else {
+                        $content = $responseBody->getContents();
+                        if ($returnType !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders()
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        $response->getBody()
+                    );
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'getMetadatas'
+     *
+     * @param  \Proximax\Model\MetadataIds $metadataIds (required)
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    protected function searchMetadataRequest($queryParams)
+    {
+        $resourcePath = '/metadata_v2';
+        $formParams = [];
+        $headerParams = [];
+        $httpBody = new \stdClass();
+        $multipart = false;
+
+
+
+        // body params
+        $_tempBody = null;
+        if ($multipart) {
+            $headers = $this->headerSelector->selectHeadersForMultipart(
+                ['application/json']
+            );
+        } else {
+            $headers = $this->headerSelector->selectHeaders(
+                ['application/json'],
+                []
+            );
+        }
+
+        // for model (json/xml)
+        if (isset($_tempBody)) {
+            // $_tempBody is the method argument, if present
+            $httpBody->compositeHashes = $_tempBody;
+            // \stdClass has no __toString(), so we should encode it manually
+            if ($httpBody instanceof \stdClass && $headers['Content-Type'] === 'application/json') {
+                $httpBody = json_encode($httpBody);
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $multipartContents[] = [
+                        'name' => $formParamName,
+                        'contents' => $formParamValue
+                    ];
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = json_encode($formParams);
+
+            } else {
+                // for HTTP post (form)
+                $httpBody = \GuzzleHttp\Psr7\Query::build($formParams);
+            }
+        }
+
+        //var_dump($httpBody); die;
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $query = \GuzzleHttp\Psr7\Query::build($queryParams);
+        return new Request(
+            'GET',
+            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
 
     /**
      * Create http client option

@@ -23,17 +23,22 @@ namespace Proximax\Model;
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
-class AddressMetadataDTO extends MetadataDTO{
+class AddressMetadataDTO extends MetadataEntryDTO{
 
-    private $metadataId;//string
+    private $id; //string
+    private $metadataEntry; //string
 
     public function __construct($data){
-        $this->metadataType = $data["metadataType"];
-        $this->fields = $data["fields"];
-        $this->metadataId = $data["metadataId"];
+        $this->id = $data["id"];
+        $this->metadataEntry = new MetadataEntryDTO($data["metadataEntry"]);
+
     }
 
-    public function getMetadataId(){
-        return $this->metadataId;
+    public function getId(){
+        return $this->id;
+    }
+
+    public function getMetadataEntry(){
+        return $this->metadataEntry;
     }
 }

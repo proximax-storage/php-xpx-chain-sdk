@@ -337,9 +337,9 @@ class ExchangeRoutesApi
      * @throws \InvalidArgumentException
      * @return \Proximax\Model\ExchangeDTO
      */
-    public function getExchangeOffers($accountId, $mosaicId)
+    public function getExchangeOffers($offerType, $mosaicId)
     {
-        $response = $this->getExchangeOffersWithHttpInfo($accountId, $mosaicId);
+        $response = $this->getExchangeOffersWithHttpInfo($offerType, $mosaicId);
         return $response;
     }
 
@@ -353,10 +353,10 @@ class ExchangeRoutesApi
      * @throws \InvalidArgumentException
      * @return array of \Proximax\Model\ExchangeDTO, HTTP status code, HTTP response headers (array of strings)
      */
-    public function getExchangeOffersWithHttpInfo($accountId, $mosaicId)
+    public function getExchangeOffersWithHttpInfo($offerType, $mosaicId)
     {
         $returnType = '\Proximax\Model\ExchangeDTO';
-        $request = $this->getExchangeOffersRequest($accountId, $mosaicId);
+        $request = $this->getExchangeOffersRequest($offerType, $mosaicId);
 
         try {
             $options = $this->createHttpClientOption();
@@ -426,9 +426,9 @@ class ExchangeRoutesApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getExchangeOffersAsync($accountId, $mosaicId)
+    public function getExchangeOffersAsync($offerType, $mosaicId)
     {
-        return $this->getExchangeOffersAsyncWithHttpInfo($accountId, $mosaicId)
+        return $this->getExchangeOffersAsyncWithHttpInfo($offerType, $mosaicId)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -445,10 +445,10 @@ class ExchangeRoutesApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getExchangeOffersAsyncWithHttpInfo($accountId, $mosaicId)
+    public function getExchangeOffersAsyncWithHttpInfo($offerType, $mosaicId)
     {
         $returnType = '\Proximax\Model\ExchangeDTO';
-        $request = $this->getExchangeOffersRequest($accountId, $mosaicId);
+        $request = $this->getExchangeOffersRequest($offerType, $mosaicId);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -494,17 +494,17 @@ class ExchangeRoutesApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function getExchangeOffersRequest($accountId, $mosaicId)
+    protected function getExchangeOffersRequest($offerType, $mosaicId)
     {
 
         // verify the required parameter 'accountId' is set
-        if ($accountId === null || $mosaicId === null ) {
+        if ($offerType === null || $mosaicId === null ) {
             throw new \InvalidArgumentException(
                 'Required parameter offerType was null or undefined when calling getExchangeOffers.'
             );
         }
 
-        $resourcePath = '/account/{accountId}/{mosaicId}';
+        $resourcePath = '/exchange/{offerType}/{mosaicId}';
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
@@ -512,10 +512,10 @@ class ExchangeRoutesApi
         $multipart = false;
 
         // path params
-        if ($accountId !== null) {
+        if ($offerType !== null) {
             $resourcePath = str_replace(
-                '{' . 'accountId' . '}',
-                ObjectSerializer::toPathValue($accountId),
+                '{' . 'offerType' . '}',
+                ObjectSerializer::toPathValue($offerType),
                 $resourcePath
             );
         }
@@ -621,11 +621,12 @@ class ExchangeRoutesApi
      */
     public function getOfferListWithHttpInfo()
     {
-        $returnType = '\Proximax\Model\ExchangeMosaicDTO';
+        $returnType = '\Proximax\Model\ExchangeMosaicDTO[]';
         $request = $this->getOfferListRequest();
 
         try {
             $options = $this->createHttpClientOption();
+
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
@@ -673,7 +674,7 @@ class ExchangeRoutesApi
                 case 200:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\Proximax\Model\ExchangeMosaicDTO',
+                        '\Proximax\Model\ExchangeMosaicDTO[]',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);

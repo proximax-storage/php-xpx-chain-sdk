@@ -97,7 +97,7 @@ class LockRoutesApi
      */
     public function getAccountLockHashWithHttpInfo($accountId)
     {
-        $returnType = '\Proximax\Model\HashLockWithMetaDTO';
+        $returnType = '\Proximax\Model\HashLockWithMetaDTO[]';
         $request = $this->getAccountLockHashRequest($accountId);
 
         try {
@@ -149,7 +149,7 @@ class LockRoutesApi
                 case 200:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\Proximax\Model\HashLockWithMetaDTO',
+                        '\Proximax\Model\HashLockWithMetaDTO[]',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);

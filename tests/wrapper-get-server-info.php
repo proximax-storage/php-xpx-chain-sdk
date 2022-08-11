@@ -7,15 +7,14 @@
 
     $config = new Config;
     $network = new Network;
-
+  
     $baseUrl = "https://bctestnet3.brimstone.xpxsirius.io";
     $wsReconnectionTimeout = 5000;
     $networkType = Network::getIdfromName("publictest");
     if ($networkType){
         $config = $config->NewConfig($baseUrl,$networkType,$wsReconnectionTimeout);
     }
-    $height = 1;
-    $transactions = (new Blockchain)->GetBlockTransactions($config,$height);
-    var_dump($transactions);
+    $storage = (new Blockchain)->GetServerInfo($config);
+    var_dump($storage);
 
 ?>

@@ -16,19 +16,17 @@
 namespace Proximax\Model;
 
 /**
- * AccountNamesDTO Class Doc Comment
+ * AccountPropertiesInfoDTO class Doc Comment
  *
- * @category Class
+ * @category class
  * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
-class AccountNamesDTO {
+class AccountNamesDTO{
 
-
-    private $address;//String
-
-    private $names;//array AccountNamesDTO
+    private $address; //string
+    private $names; //array
 
     public function __construct($data){
         $this->address = $data["address"];
@@ -38,7 +36,6 @@ class AccountNamesDTO {
     public function getAddress(){
         return $this->address;
     }
-
     public function getNames(){
         return $this->names;
     }

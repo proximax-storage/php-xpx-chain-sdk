@@ -16,29 +16,31 @@
 namespace Proximax\Model;
 
 /**
- * AccountDTO Class Doc Comment
+ * EntityDTO class Doc Comment
  *
- * @category Class
+ * @category class
  * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
-class HashLockWithMetaDTO{
-    private $meta;
-    private $lock;
+class PaginationDTO{
 
-    public function __construct($dataArray){
-        $this->meta = $dataArray->meta;
-        $this->lock = new LockDTO($dataArray->lock);
+    private $pageNumber;//int
+
+    private $pageSize;//pageSize
+
+
+    public function __construct($data){
+        $this->pageNumber = $data["pageNumber"];
+        $this->pageSize = $data["pageSize"];
     }
 
-    public function getMeta(){
-        return $this->meta;
+    public function getPageNumber(){
+        return $this->pageNumber;
     }
 
-    public function getLock(){
-        return $this->lock;
+    public function getPageSize(){
+        return $this->pageSize;
     }
+
 }
-
-

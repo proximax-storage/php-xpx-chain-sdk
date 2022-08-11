@@ -214,6 +214,7 @@ class Transaction{
             'maxFee' => $maxFee,
             'deadline' => $deadline
         );
+        // var_dump(dechex($type));die;
         switch (dechex($type)){
             case TransactionType::AGGREGATE_BONDED: //aggregate bonded 
                 $data = $this->formatAggregate($networkType,$data->transaction->cosignatures,$data->transaction->transactions);
@@ -262,6 +263,7 @@ class Transaction{
                 break;
 
             case TransactionType::REGISTER_NAMESPACE: //register namespace transaction
+                // TODO: ASK is parentId exist in other transactions
                 $data = $this->formatRegisterNamespace($data->transaction->namespaceType,$data->transaction->duration,$data->transaction->namespaceId,$data->transaction->name,$data->transaction->parentId);
                 $transaction["namespaceType"] = $data->namespaceType;
                 $transaction["duration"] = $data->duration;

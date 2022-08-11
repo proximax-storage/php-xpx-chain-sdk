@@ -33,6 +33,7 @@ use Proximax\Model\ResolutionEntryDTO;
 use Proximax\Model\MerklePathItem;
 use Proximax\Model\MerkleProofInfo;
 use Proximax\Model\MerkleProofInfoDTO;
+use Proximax\Model\BlockchainServerDTO;
 /**
  * Blockchain class Doc Comment
  *
@@ -64,6 +65,7 @@ class Blockchain{
         
     }
 
+
     /**
      *
      * @param config $config
@@ -86,6 +88,30 @@ class Blockchain{
             return new BlockInfoDTO($blockInfo);
         }
         else return new BlockInfoDTO;
+    }
+
+    /**
+     *
+     * @param config $config
+     *
+     * @param int $height
+     *
+     * @return BlockInfoDTO array
+     */
+    public function GetBlockReceipts($config, $height){
+        $BlockchainRoutesApi = new BlockchainRoutesApi;
+        $ApiClient = new ApiClient;
+
+        $url = $config->BaseURL;
+        $ApiClient->setHost($url);
+        $networkType = $config->NetworkType;
+        $data = $BlockchainRoutesApi->getBlockReceipts($height);
+
+        if ($data[1] == 200){ // successfull
+            $blockInfo = $this->StatementsDTO($networkType,$data[0]);
+            return new StatementsDTO($blockInfo);
+        }
+        else return new StatementsDTO;
     }
 
         /**
@@ -134,8 +160,8 @@ class Blockchain{
         $data = $BlockchainRoutesApi->getBlockTransactions($height);
         $transactions = array();
         if ($data[1] == 200){ // successfull
-            for($i=0;$i<count($data[0]);$i++){
-                $transactions[$i] = (new Transaction)->formatData($networkType,$data[0][$i]);
+            for($i=0;$i<count($data[0]->data);$i++){
+                $transactions[$i] = (new Transaction)->formatData($networkType,$data[0]->data[$i]);
             }
             return $transactions;
         }
@@ -243,6 +269,27 @@ class Blockchain{
         $transactions = array();
         if ($data[1] == 200){ // successfull
             return new MerkleProofInfoDTO($this->MerkleProofInfoDTO($networkType,$data[0]));
+        }
+        else return null;
+    }
+
+    /**
+     *
+     * @param config $config
+     *
+     * @return BlockchainStorageInfo
+     */
+    public function GetServerInfo($config){
+        $BlockchainRoutesApi = new BlockchainRoutesApi;
+        $ApiClient = new ApiClient;
+        $url = $config->BaseURL;
+        $ApiClient->setHost($url);
+        $networkType = $config->NetworkType;
+
+        $data = $BlockchainRoutesApi->getServerInfo();
+        $transactions = array();
+        if ($data[1] == 200){ // successfull
+            return new BlockchainServerDTO($data[0]);
         }
         else return null;
     }

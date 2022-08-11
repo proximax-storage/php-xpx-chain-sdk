@@ -9,14 +9,13 @@
   
     $baseUrl = "https://bctestnet3.brimstone.xpxsirius.io";
     $wsReconnectionTimeout = 5000;
-    $pKey = "VCAWORKQTHTWOZ2YWOF5QKBLF7WAAQLMD5FKNEDK";
+    $pKey = "357966ED5562BAEBF4CBF9D4CB1C7EC30F910C9ADC1B72093C6FEBAF9A75A8C6";
     $netType = Network::getIdfromName("publictest");
 
     if ($netType){
         $config = $config->NewConfig($baseUrl,$netType,$wsReconnectionTimeout);
     }
-
     $Account = new Account;
-    $account = $Account->UnconfirmedTransactions($config,$pKey);
-    var_dump($account);
+    $acc = $Account->GetAccountMultisigGraph($config,$pKey);
+    var_dump($acc);
 ?>

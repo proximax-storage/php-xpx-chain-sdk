@@ -603,11 +603,12 @@ class AccountRoutesApi
      *
      * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return \Proximax\Model\MultisigAccountGraphInfoDTO[]
+     * @return \Proximax\Model\MultisigGraphDTO[]
      */
     public function getAccountMultisigGraph($publicKey)
     {
-        list($response) = $this->getAccountMultisigGraphWithHttpInfo($publicKey);
+        $response = $this->getAccountMultisigGraphWithHttpInfo($publicKey);
+        var_dump($response); die;
         return $response;
     }
 
@@ -620,13 +621,12 @@ class AccountRoutesApi
      *
      * @throws \Proximax\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return array of \Proximax\Model\MultisigAccountGraphInfoDTO[], HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Proximax\Model\MultisigDTO[], HTTP status code, HTTP response headers (array of strings)
      */
     public function getAccountMultisigGraphWithHttpInfo($publicKey)
     {
-        $returnType = '\Proximax\Model\MultisigAccountGraphInfoDTO[]';
+        $returnType = '\Proximax\Model\MultisigGraphDTO[]';
         $request = $this->getAccountMultisigGraphRequest($publicKey);
-
         try {
             $options = $this->createHttpClientOption();
             try {
@@ -676,7 +676,7 @@ class AccountRoutesApi
                 case 200:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\Proximax\Model\MultisigAccountGraphInfoDTO[]',
+                        '\Proximax\Model\MultisigGraphDTO[]',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -718,7 +718,7 @@ class AccountRoutesApi
      */
     public function getAccountMultisigGraphAsyncWithHttpInfo($publicKey)
     {
-        $returnType = '\Proximax\Model\MultisigAccountGraphInfoDTO[]';
+        $returnType = '\Proximax\Model\MultisigDTO[]';
         $request = $this->getAccountMultisigGraphRequest($publicKey);
 
         return $this->client
@@ -761,21 +761,21 @@ class AccountRoutesApi
     /**
      * Create request for operation 'getAccountMultisigGraph'
      *
-     * @param  string $publicKey The multisig account public key for which information should be retreived. (required)
+     * @param  string $accountId The multisig account public key for which information should be retreived. (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function getAccountMultisigGraphRequest($publicKey)
+    protected function getAccountMultisigGraphRequest($accountId)
     {
         // verify the required parameter 'publicKey' is set
-        if ($publicKey === null) {
+        if ($accountId === null) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $publicKey when calling getAccountMultisigGraph'
+                'Missing the required parameter accountId when calling getAccountMultisigGraph'
             );
         }
 
-        $resourcePath = '/account/{publicKey}/multisig/graph';
+        $resourcePath = '/account/{accountId}/multisig/graph';
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
@@ -784,10 +784,10 @@ class AccountRoutesApi
 
 
         // path params
-        if ($publicKey !== null) {
+        if ($accountId !== null) {
             $resourcePath = str_replace(
-                '{' . 'publicKey' . '}',
-                ObjectSerializer::toPathValue($publicKey),
+                '{' . 'accountId' . '}',
+                ObjectSerializer::toPathValue($accountId),
                 $resourcePath
             );
         }
@@ -1187,7 +1187,6 @@ class AccountRoutesApi
                     $content = json_decode($content);
                 }
             }
-
             return [
                 $content,
                 $response->getStatusCode(),

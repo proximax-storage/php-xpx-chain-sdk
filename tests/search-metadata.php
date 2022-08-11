@@ -4,7 +4,6 @@
     use Proximax\Sdk\Metadata;
     use Proximax\Model\Config;
     use Proximax\Infrastructure\Network;
-    use Proximax\Model\MosaicId;
 
     $config = new Config;
     $network = new Network;
@@ -16,8 +15,8 @@
         $config = $config->NewConfig($baseUrl,$networkType,$wsReconnectionTimeout);
     }
 
-    $mosaic = new MosaicId(array(3020295898));
-    $metadataInfo = (new Metadata)->GetMetadataMosaic($config,$mosaic->getIdValue());
+    $compositeHash = ["pageNumber" => 1, "pageSize" => 10];
+    $metadataInfo = (new Metadata)->SearchMetada($config,$compositeHash);
     var_dump($metadataInfo);
 
 ?>
