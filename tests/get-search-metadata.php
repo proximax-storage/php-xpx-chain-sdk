@@ -15,8 +15,8 @@
         $config = $config->NewConfig($baseUrl,$networkType,$wsReconnectionTimeout);
     }
 
-    $compositeHash = ["pageNumber" => 1, "pageSize" => 10];
-    $metadataInfo = (new Metadata)->SearchMetada($config,$compositeHash);
+    $params = ["pageNumber" => 1, "pageSize" => 10];
+    $metadataInfo = (new Metadata)->SearchMetada($config,$params);
     var_dump($metadataInfo);
 
 ?>

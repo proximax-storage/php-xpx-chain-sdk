@@ -586,9 +586,9 @@ class MetadataRoutesApi
      * @throws \InvalidArgumentException
      * @return \Proximax\Model\MetadataInfo
      */
-    public function searchMetadata($queryParams)
+    public function searchMetadata($params)
     {
-        $response = $this->searchMetadataWithHttpInfo($queryParams);
+        $response = $this->searchMetadataWithHttpInfo($params);
         return $response;
     }
 
@@ -601,11 +601,10 @@ class MetadataRoutesApi
      * @throws \InvalidArgumentException
      * @return array of \Proximax\Model\MetadataInfoDTO[], HTTP status code, HTTP response headers (array of strings)
      */
-    public function searchMetadataWithHttpInfo($queryParams)
+    public function searchMetadataWithHttpInfo($params)
     {
         $returnType = '\Proximax\Model\MetadataInfoDTO[]';
-        $request = $this->searchMetadataRequest($queryParams);
-var_dump($request); die;
+        $request = $this->searchMetadataRequest($params);
         try {
             $options = $this->createHttpClientOption();
             try {
@@ -644,6 +643,7 @@ var_dump($request); die;
                 }
             }
 
+            var_dump($content);
             return [
                 $content,
                 $response->getStatusCode(),
@@ -673,9 +673,9 @@ var_dump($request); die;
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function searchMetadataAsync($metadataIds)
+    public function searchMetadataAsync($params)
     {
-        return $this->searchMetadataAsyncWithHttpInfo($metadataIds)
+        return $this->searchMetadataAsyncWithHttpInfo($params)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -691,10 +691,10 @@ var_dump($request); die;
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function searchMetadataAsyncWithHttpInfo($metadataIds)
+    public function searchMetadataAsyncWithHttpInfo($params)
     {
         $returnType = '\Proximax\Model\MetadataInfoDTO[]';
-        $request = $this->searchMetadataRequest($metadataIds);
+        $request = $this->searchMetadataRequest($params);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -741,18 +741,24 @@ var_dump($request); die;
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function searchMetadataRequest($queryParams)
+    protected function searchMetadataRequest($params = [])
     {
+        // verify the required parameter 'height' is set
         $resourcePath = '/metadata_v2';
         $formParams = [];
+        $queryParams = $params;
         $headerParams = [];
-        $httpBody = new \stdClass();
+        $httpBody = '';
         $multipart = false;
 
 
+        // query params
+
+        // $queryParams['embedded'] = ObjectSerializer::toQueryValue('true');
 
         // body params
         $_tempBody = null;
+
         if ($multipart) {
             $headers = $this->headerSelector->selectHeadersForMultipart(
                 ['application/json']
@@ -767,7 +773,7 @@ var_dump($request); die;
         // for model (json/xml)
         if (isset($_tempBody)) {
             // $_tempBody is the method argument, if present
-            $httpBody->compositeHashes = $_tempBody;
+            $httpBody = $_tempBody;
             // \stdClass has no __toString(), so we should encode it manually
             if ($httpBody instanceof \stdClass && $headers['Content-Type'] === 'application/json') {
                 $httpBody = json_encode($httpBody);
@@ -793,7 +799,7 @@ var_dump($request); die;
             }
         }
 
-        //var_dump($httpBody); die;
+
         $defaultHeaders = [];
         if ($this->config->getUserAgent()) {
             $defaultHeaders['User-Agent'] = $this->config->getUserAgent();

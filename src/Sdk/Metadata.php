@@ -149,21 +149,12 @@ class Metadata{
 
         $data = $metadataRoutesApi->searchMetadata($params);
         $arr_metadata = array();
-
-        var_dump($data[1]); die;
-
         if ($data[1] == 200){ // successfull
             for ($i=0;$i<count($data[0]);$i++){
                 $metadata = $this->formatMetadata($networkType, $data[0][$i]);
                 $arr_metadata[$i] = $metadata;
             }
         }
-
-
-        $metadataDTO = array(
-            'data' => $arr_metadata,
-            'pagination' => new PaginationDTO($data[0]->pagination),
-        );
 
         return $arr_metadata;
     }
