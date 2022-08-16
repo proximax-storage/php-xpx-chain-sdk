@@ -8,5 +8,5 @@
     }
 
     $address = "SC6UUGZLEIAGRXCJXMEUEH2QE7VVMYC3Z55I3QJW"; 
-    $listener = (new Listener)->confirmed("192.168.1.41","3000",$address,"callBack");
+    $listener = (new Listener)->confirmed("https://bctestnet3.brimstone.xpxsirius.io","3000",$address,"callBack");
 ?>

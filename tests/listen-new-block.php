@@ -7,5 +7,5 @@
         return true;
     }
 
-    $listener = (new Listener)->newBlock("192.168.1.41","3000","callBack");
+    $listener = (new Listener)->newBlock("https://bctestnet3.brimstone.xpxsirius.io","3000","callBack");
 ?>

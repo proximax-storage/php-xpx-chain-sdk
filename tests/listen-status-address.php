@@ -8,5 +8,5 @@
     }
 
     $address = "SC6UUGZLEIAGRXCJXMEUEH2QE7VVMYC3Z55I3QJW"; 
-    $listener = (new Listener)->status("192.168.1.41","3000",$address,"callBack");
+    $listener = (new Listener)->status("https://bctestnet3.brimstone.xpxsirius.io","3000",$address,"callBack");
 ?>

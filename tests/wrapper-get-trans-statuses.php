@@ -7,10 +7,10 @@
     $config = new Config;
     $network = new Network;
   
-    $baseUrl = "http://13.229.183.224:3000";
+    $baseUrl = "https://bctestnet3.brimstone.xpxsirius.io";
     $wsReconnectionTimeout = 5000;
-    $arr_hash = array("7C0056F27904C28A26AAA908667C99565FFB8E1962A4706E8D107EB0CB6E4A5C");
-    $netType = Network::getIdfromName("PublicTest");
+    $arr_hash = array("A18A4B374F73652276CBEECE4A3D09CD86D937D0BAA21C1C7EA4A7AEA8D5CB71");
+    $netType = Network::getIdfromName("publictest");
 
     if ($netType){
         $config = $config->NewConfig($baseUrl,$netType,$wsReconnectionTimeout);

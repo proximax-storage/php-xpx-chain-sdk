@@ -3,7 +3,7 @@
 
     use Proximax\Model\Config;
     use Proximax\Infrastructure\Network;
-    use Proximax\Sdk\Namespaces;
+    use Proximax\Sdk\Service;
 
     $config = new Config;
     $network = new Network;
@@ -15,7 +15,7 @@
         $config = $config->NewConfig($baseUrl,$networkType,$wsReconnectionTimeout);
     }
 
-    $accountId = "VCTSYT3SPBID36GQDZRC3E4XOUQGIGF5CG6EQXRT";
-    $namespaceInfo = (new Namespaces)->GetNamespaceFromAccount($config,$accountId, null, null);
-    var_dump($namespaceInfo);
+    $accountId = "CFC31B3080B36BC3D59DF4AB936AC72F4DC15CE3C3E1B1EC5EA41415A4C33FEE";
+    $exchangeInfo = (new Service)->GetDrive($config,$accountId);
+    var_dump($exchangeInfo);
 ?>

@@ -29,6 +29,8 @@ class NodeInfoDTO{
 
     private $port; //number
 
+    private $networkIdentifier;
+
     private $version; // number
 
     private $roles; // string
@@ -37,13 +39,14 @@ class NodeInfoDTO{
 
     private $friendlyName; // number
 
-    public function __construct($publicKey, $port, $version, $roles, $host, $friendlyName){
-        $this->publicKey = $publicKey;
-        $this->port = $port;
-        $this->version = $version;
-        $this->roles = $roles;
-        $this->host = $host;
-        $this->friendlyName = $friendlyName;
+    public function __construct($data){
+        $this->publicKey = $data->publicKey;
+        $this->port = $data->port;
+        $this->networkIdentifier = $data->networkIdentifier;
+        $this->version = $data->version;
+        $this->roles = $data->roles;
+        $this->host = $data->host;
+        $this->friendlyName = $data->friendlyName;
     }
 
     public function getPublicKey(){
@@ -52,6 +55,10 @@ class NodeInfoDTO{
 
     public function getPort(){
         return $this->port;
+    }
+
+    public function getNetworkIdentifier(){
+        return $this->networkIdentifier;
     }
 
     public function getVersion(){

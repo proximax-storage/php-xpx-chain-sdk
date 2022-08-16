@@ -14,24 +14,27 @@
  */
 
 namespace Proximax\Model;
+use Proximax\Utils\Utils;
 
 /**
- * AliasDTO class Doc Comment
+ * MosaicDTO class Doc Comment
  *
  * @category class
  * @package  Proximax
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
-class NodeTimeDTO {
-
-    private $communicationTimestamps; //CommunicationTimestamps
+class InlineResponse2001DTO {
+    
+    private $drive; //number
 
     public function __construct($data){
-        $this->communicationTimestamps = $data->communicationTimestamps;
+        $this->drive = new DriveDTO($data->drive);
     }
 
-    public function getCommunicationTimestamps(){
-        return $this->communicationTimestamps;
+    public function getDrive(){
+        return  $this->drive;
     }
 }
+
+

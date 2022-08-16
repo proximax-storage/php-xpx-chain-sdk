@@ -18,6 +18,7 @@ use Proximax\API\MosaicRoutesApi;
 use Proximax\ApiClient;
 use Proximax\Model\MosaicInfoDTO;
 use Proximax\Model\Account;
+use Proximax\Model\MosaicLevyDTO;
 /**
  * Mosaic class Doc Comment
  *
@@ -77,6 +78,29 @@ class Mosaic{
             }
         }
         return $arr_mosaic;
+    }
+
+    /**
+     *
+     * @param config $config
+     *
+     * @param mosaicIds $mosaicId array
+     *
+     * @return MosaicInfoDTO array
+     */
+    public function GetMosaicLevy($config, $mosaicIds){
+        $MosaicRoutesApi = new MosaicRoutesApi;
+        $ApiClient = new ApiClient;
+
+        $url = $config->BaseURL;
+        $ApiClient->setHost($url);
+        $networkType = $config->NetworkType;
+
+        $data = $MosaicRoutesApi->getMosaicLevy($mosaicIds);
+        if ($data[1] == 200){ // successfull
+                return new MosaicLevyDTO($data[0]);
+        }
+        return null;
     }
 
 

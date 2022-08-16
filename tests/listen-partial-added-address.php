@@ -9,5 +9,5 @@
     }
 
     $address = "SC6UUGZLEIAGRXCJXMEUEH2QE7VVMYC3Z55I3QJW"; 
-    $listener = (new Listener)->aggregateBondedAdded("192.168.1.41","3000",$address,"callBack");
+    $listener = (new Listener)->aggregateBondedAdded("https://bctestnet3.brimstone.xpxsirius.io","3000",$address,"callBack");
 ?>

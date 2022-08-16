@@ -1,9 +1,10 @@
 <?php
     require "../vendor/autoload.php";
 
+    use Proximax\Sdk\Mosaic;
     use Proximax\Model\Config;
     use Proximax\Infrastructure\Network;
-    use Proximax\Sdk\Namespaces;
+    use Proximax\Utils\Utils;
 
     $config = new Config;
     $network = new Network;
@@ -15,7 +16,8 @@
         $config = $config->NewConfig($baseUrl,$networkType,$wsReconnectionTimeout);
     }
 
-    $accountId = "VCTSYT3SPBID36GQDZRC3E4XOUQGIGF5CG6EQXRT";
-    $namespaceInfo = (new Namespaces)->GetNamespaceFromAccount($config,$accountId, null, null);
-    var_dump($namespaceInfo);
+    $mosaicHexId = (new Utils)->bigIntToHexString(array(3020295898,2840468446));
+    $mosaicInfo = (new Mosaic)->GetMosaicsInfo($config,array($mosaicHexId));
+    var_dump($mosaicInfo);
+
 ?>

@@ -63,6 +63,10 @@ use Proximax\Model\AccountPropertiesModificationDTO;
 use Proximax\Model\TransactionInfoDTO;
 use Proximax\Model\EmbeddedTransactionInfoDTO;
 use Proximax\Model\MosaicPropertyDTO;
+use Proximax\Model\TransactionSearchDTO;
+use Proximax\Model\PaginationTransactionsDTO;
+
+
 /**
  * Transaction class Doc Comment
  *
@@ -174,6 +178,55 @@ class Transaction{
         }
 
         return $arr_statuses;
+    }
+
+    /**
+     *
+     * @param config $config
+     *
+     * @param String $transId Array of transaction ids or hashes
+     *
+     * @return TransactionSearchDTO array
+     */
+    public function SearchTransaction($config, $transIds, $groupType){
+        $TransactionRoutesApi = new TransactionRoutesApi;
+        $ApiClient = new ApiClient;
+        $url = $config->BaseURL;
+        $ApiClient->setHost($url);
+        $networkType = $config->NetworkType;
+
+        $data = $TransactionRoutesApi->searchTransaction($groupType, $transIds);
+        $arr_trans = array();
+        if ($data[1] == 200){ // successfull
+            return $this->formatData($networkType, $data[0]);
+        } else return null;
+    }
+
+    /**
+     *
+     * @param config $config
+     *
+     * @param String $transId Array of transaction ids or hashes
+     *
+     * @return TransactionSearchDTO array
+     */
+    public function SearchTransactions($config, $groupType){
+        $TransactionRoutesApi = new TransactionRoutesApi;
+        $ApiClient = new ApiClient;
+        $url = $config->BaseURL;
+        $ApiClient->setHost($url);
+        $networkType = $config->NetworkType;
+
+        $data = $TransactionRoutesApi->searchTransactions($groupType);
+        $arr_trans = array();
+        if ($data[1] == 200){ // successfull
+            $arr_trans['pagination'] = new PaginationTransactionsDTO($data[0]->pagination);
+            for($i=0;$i<count($data[0]->data);$i++){
+                $transaction = $this->formatData($networkType, $data[0]->data[$i]);
+                $arr_trans['data'][$i] = $transaction;
+            }
+        }
+        return new TransactionSearchDTO($arr_trans);
     }
 
     /**

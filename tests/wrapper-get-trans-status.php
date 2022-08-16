@@ -9,7 +9,7 @@
   
     $baseUrl = "https://bctestnet3.brimstone.xpxsirius.io";
     $wsReconnectionTimeout = 5000;
-    $hash = "4B203F8E02F4B776FD5C1C62C6CCD70DE57AE1F22266F3764BF6E82838343940";
+    $hash = "FBED89DFA13E56BD7F150E85ADC96B3F8962DB9D0E81815061DA59A134FA2AA4";
     $netType = Network::getIdfromName("publictest");
 
     if ($netType){

@@ -34,11 +34,11 @@ class MosaicLevyDTO {
 
     private $fee; //Array<number>
 
-    public function __construct($type, $recipient, $mosaicId, $fee){
-        $this->type = $type;
-        $this->recipient = $recipient;
-        $this->mosaicId = $mosaicId;
-        $this->fee = $fee;
+    public function __construct($data){
+        $this->type = $data->type;
+        $this->recipient = $data->recipient;
+        $this->mosaicId = $data->mosaicId;
+        $this->fee = $data->fee;
     }
 
     public function getType(){
